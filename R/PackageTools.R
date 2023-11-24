@@ -54,7 +54,13 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
 
   # Extract the descriptions
   descriptions <- gsub("^.*@description\\s*", "", description_lines)
+  print(tail(descriptions))
 
+  if (length(titles) != length(descriptions)) {
+    msg <- paste(" !!Unequality!! ", length(titles), "titles and"
+                 , length(descriptions), "descriptions are found!")
+    warning(msg)
+  }
   # Open a connection to the output file
   file_conn <- file(output_file, open = "w")
 
@@ -64,7 +70,11 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
   # Write each function name, title, and description to the output file
   for (i in seq_along(function_names)) {
     cat(paste0("- ", fun_header_level, " ", i, " `", function_names[i], "()`\n"), file = file_conn)
-    cat(paste0(titles[i], ". ", descriptions[i], "\n\n"), file = file_conn)
+
+    # Needed not to print NA to missing descriptions
+    descX <- if(is.na(descriptions[i])) description_lines[i] else descriptions[i]
+
+    cat(paste0(titles[i], ". ", descX, "\n\n"), file = file_conn)
   }
 
   # Close the connection
