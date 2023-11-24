@@ -66,6 +66,7 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
 
   cat(paste0("## List of Functions (", length(function_names)-1, ") \n"), file = file_conn)
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"),"\n"), file = file_conn)
+  cat('For details, please use the `help()` function, or browse the source code.')
 
   # Write each function name, title, and description to the output file
   for (i in seq_along(function_names)) {
@@ -200,6 +201,7 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
   # cat("## List of Functions\n", file = file_conn)
   cat(paste0("## List of Functions (", length(function_names)-1, ") \n"), file = file_conn)
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"),"\n"), file = file_conn)
+  cat('For details, please use the `help()` function, or browse the source code.')
 
   # Write each function name, title, and description to the output file
   for (i in seq_along(function_names)) {
