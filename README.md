@@ -5,11 +5,46 @@ Functions and wrappers to manage R packages (creation, documentation, dependenci
 
 
 
+# 1. PackageTools
+
+## Overview
+
+`PackageTools` is designed for parsing R function source files, specifically the extraction of function  documentation details from Roxygen comments. It offers two primary functions: `parse_roxygen_simple()` and the recommended `parse_roxygen()`. Both functions serve to automate the process of generating markdown documentation from Roxygen comments in R source files, streamlining the process of maintaining up-to-date documentation for R packages.
+
+### `parse_roxygen_simple()`
+
+- **Purpose**: Extracts basic information (function names, titles, and descriptions) from Roxygen comments in an R script and writes them to a markdown file.
+- **Usage**: Intended for simpler R scripts where a quick summary of functions is needed.
+- **Functionality**:
+  - Reads an R script, identifying functions and their corresponding Roxygen comments.
+  - Extracts function names, titles, and descriptions.
+  - Handles discrepancies in the number of titles and descriptions.
+  - Outputs the information in a structured markdown format.
+  - Optionally opens the resulting markdown file automatically.
+
+### `parse_roxygen()`
+
+- **Purpose**: A more advanced version of `parse_roxygen_simple`, offering enhanced parsing capabilities and additional options for output customization.
+- **Usage**: Suitable for more complex R scripts where detailed documentation is required.
+- **Functionality**:
+  - Parses Roxygen comments with greater depth, accommodating for descriptions spanning multiple lines.
+  - Incorporates functionality to handle edge cases and possible parsing issues.
+  - Provides options for including titles in the output and customizing the header level of function names in the markdown output.
+  - Outputs a detailed markdown document with a list of functions, their titles, and descriptions.
+  - Verifies the completeness of function extraction against the actual functions defined in the script.
+  - Outputs an assertion to confirm the existence of the generated documentation file.
+
+Both functions emphasize ease of use and automation in documentation generation, making them valuable tools for R developers looking to maintain clear and consistent documentation for their code. The script facilitates a more efficient workflow, especially beneficial in agile development environments where code changes are frequent, and documentation needs to be kept up-to-date with minimal effort.
+
+The functions are designed to be run on R scripts with properly formatted Roxygen comments. Proper use of these tools can significantly reduce the manual effort involved in maintaining accurate and comprehensive documentation for R packages.
 
 
-# DependencyTools
 
-`DependencyTools`, is the first working part of the R package `PackageTools` and it is designed to analyze and visualize **function-level dependencies** within and **across R packages**. It provides a suite of tools for extracting, filtering, and examining the intricate network of function calls, making it easier for developers and analysts to understand and manage code dependencies.
+------------------------------
+
+# 2. DependencyTools
+
+`DependencyTools`, is the first fully working part of the R package `PackageTools` and it is designed to analyze and visualize **function-level dependencies** within and **across R packages**. It provides a suite of tools for extracting, filtering, and examining the intricate network of function calls, making it easier for developers and analysts to understand and manage code dependencies.
 
 ## Motivation
 
@@ -91,6 +126,10 @@ $package_name
 ```
 
 For `filter_dependencies` and `filter_conflicts`, the output will be similar but filtered based on the criteria you set (presence of dependencies or conflicts).
+
+
+
+---
 
 
 
