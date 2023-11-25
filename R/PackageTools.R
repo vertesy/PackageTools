@@ -24,12 +24,13 @@
 #' @return This function does not return a value; it writes output to the specified file.
 #' @examples
 #' \dontrun{
-#'   parse_roxygen_simple("path/to/your_script.R", "path/to/output_file.txt")
+#' parse_roxygen_simple("path/to/your_script.R", "path/to/output_file.txt")
 #' }
 #' @export
 
-parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(file)
-                                 , fun_header_level = "####", open_results = TRUE) {
+parse_roxygen_simple <- function(
+    file, output_file = .convertFilePathToOutput(file),
+    fun_header_level = "####", open_results = TRUE) {
   # Input argument assertions
   stopifnot(is.character(file), length(file) == 1, file.exists(file))
   stopifnot(is.character(output_file), length(output_file) == 1)
@@ -39,7 +40,7 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
 
   # Find the lines containing function names
   function_lines <- grep("<- function", lines, value = TRUE)
-  cat(length(function_lines)-1, "functions are found. \n")
+  cat(length(function_lines) - 1, "functions are found. \n")
 
   # Find the lines containing @title
   title_lines <- grep("@title", lines, value = TRUE)
@@ -58,14 +59,16 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
   print(tail(descriptions))
 
   if (length(titles) != length(descriptions)) {
-    msg <- paste(" !!Unequality!! ", length(titles), "titles and"
-                 , length(descriptions), "descriptions are found!")
+    msg <- paste(
+      " !!Unequality!! ", length(titles), "titles and",
+      length(descriptions), "descriptions are found!"
+    )
     warning(msg)
   }
   # Open a connection to the output file
   file_conn <- file(output_file, open = "w")
 
-  cat(paste0("## List of Functions (", length(function_names)-1, ") \n"), file = file_conn)
+  cat(paste0("## List of Functions (", length(function_names) - 1, ") \n"), file = file_conn)
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
   cat("For details, please use the `help()` function, or browse the source code.")
 
@@ -112,13 +115,12 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
 #' @return This function does not return a value; it writes output to the specified markdown file.
 #' @examples
 #' \dontrun{
-#'   parse_roxygen("path/to/your_script.R", "path/to/output_file.md")
+#' parse_roxygen("path/to/your_script.R", "path/to/output_file.md")
 #' }
 #' @export
 
 parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
                           write_title_field = TRUE, fun_header_level = "####", open_results = TRUE) {
-
   warning("Does not find all functions sometimes!!!")
 
   # Input argument assertions
@@ -142,7 +144,6 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
   in_description <- FALSE
 
   for (line in lines) {
-
     # Detect the start of a function Roxygen skeleton
     if (grepl("^#' @title", line)) {
       # Extract the title
@@ -183,17 +184,18 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
       # Extract the function name
       current_function_name <- gsub("\\s*<-.*$", "", line)
     }
-
   }
 
-  cat(length(function_names)-1, "functions are found. \n")
-  { "check"
+  cat(length(function_names) - 1, "functions are found. \n")
+  {
+    "check"
     function_lines <- grep("<- function", lines, value = TRUE)
     if (length(function_lines) != length(function_names)) {
-      msg <- paste(length(function_names), "found here but", length(function_lines)
-                   , "functions are defined (as `<- function`)")
+      msg <- paste(
+        length(function_names), "found here but", length(function_lines),
+        "functions are defined (as `<- function`)"
+      )
       warning(msg)
-
     }
   }
 
@@ -202,21 +204,20 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
   file_conn <- file(output_file, open = "w")
 
   # cat("## List of Functions\n", file = file_conn)
-  cat(paste0("## List of Functions (", length(function_names)-1, ") \n"), file = file_conn)
+  cat(paste0("## List of Functions (", length(function_names) - 1, ") \n"), file = file_conn)
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
-  cat('For details, please use the `help()` function, or browse the source code.')
+  cat("For details, please use the `help()` function, or browse the source code.")
 
   # Write each function name, title, and description to the output file
   for (i in seq_along(function_names)) {
-    if (i==1) next
-    cat(paste0("- ", fun_header_level, " ", i-1,' `', function_names[i], "()`\n"), file = file_conn)
+    if (i == 1) next
+    cat(paste0("- ", fun_header_level, " ", i - 1, " `", function_names[i], "()`\n"), file = file_conn)
 
     if (write_title_field) {
-      cat(paste0(titles[i-1], ". ", descriptions[i-1], "\n\n"), file = file_conn)
+      cat(paste0(titles[i - 1], ". ", descriptions[i - 1], "\n\n"), file = file_conn)
     } else {
-      cat(paste0(descriptions[i-1], "\n\n"), file = file_conn)
+      cat(paste0(descriptions[i - 1], "\n\n"), file = file_conn)
     }
-
   }
 
   # Close the connection
@@ -279,8 +280,7 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
 #' source_file_stats_analyzer("path/to/your/script.R")
 #' @export
 source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
-                         patter_sourced_files = "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)") {
-
+                                       patter_sourced_files = "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)") {
   # Input argument assertions
   stopifnot(is.character(file_path), length(file_path) == 1)
   stopifnot(is.character(pattern), length(pattern) == 1)
@@ -295,15 +295,18 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
 
   # Extracting files sourced within this file
   sourced_files <- regmatches(code.lines, regexec(patter_sourced_files, code.lines))
-  sourced_files <- unlist(lapply(sourced_files, function(x) if(length(x) > 1) x[2] else NA))
-  sourced_files <- unique(sourced_files[!is.na(sourced_files)]);  print(sourced_files)
+  sourced_files <- unlist(lapply(sourced_files, function(x) if (length(x) > 1) x[2] else NA))
+  sourced_files <- unique(sourced_files[!is.na(sourced_files)])
+  print(sourced_files)
 
   # Output assertion
   stopifnot(is.list(sourced_files), is.numeric(nr.of.lines.code), is.numeric(nr.of.lines.comments))
 
-  return(list('nr.of.lines.code' = nr.of.lines.code,
-              'nr.of.lines.comments' = nr.of.lines.comments,
-              'sourced_files' = sourced_files))
+  return(list(
+    "nr.of.lines.code" = nr.of.lines.code,
+    "nr.of.lines.comments" = nr.of.lines.comments,
+    "sourced_files" = sourced_files
+  ))
 }
 
 
@@ -333,13 +336,14 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
 #' @return A string representing the converted file path in the specified markdown format.
 #' @examples
 #' \dontrun{
-  # .convertFilePathToOutput("path/to/your_script.R")
-  # .convertFilePathToOutput("path/to/your_script.R", fn_prefix = "custom.prefix.", ext = ".txt")
+# .convertFilePathToOutput("path/to/your_script.R")
+# .convertFilePathToOutput("path/to/your_script.R", fn_prefix = "custom.prefix.", ext = ".txt")
 #' }
 #' @export
 
-.convertFilePathToOutput <- function(inputPath, fn_prefix = "list.of.functions.in"
-                                     , ext = '.md') {
+.convertFilePathToOutput <- function(
+    inputPath, fn_prefix = "list.of.functions.in",
+    ext = ".md") {
   stopifnot(is.character(inputPath), length(inputPath) == 1)
 
   # Replace the file extension and modify the filename
