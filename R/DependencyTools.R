@@ -273,6 +273,7 @@ filter_conflicts <- function(dependencies) {
 #' @param direction The direction of the flowchart. One of 'TB', 'TD', 'BT', 'RL', 'LR'. Default: 'LR'.
 #' @param node_shape The shape of the nodes in the flowchart. One of 'round', 'default'. Default: 'round'.
 #' @param copy_to_clipboard Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.
+#' @param openMermaid open www.mermaid.live website? Default: TRUE.
 #' @return A string containing the Mermaid.js code for the flowchart.
 #' @examples
 #' result <- pkgnet::CreatePackageReport("YourPackage")
@@ -282,8 +283,9 @@ filter_conflicts <- function(dependencies) {
 #' @importFrom igraph get.edgelist
 #' @importFrom clipr write_clip
 #' @export
-convert_igraph_to_mermaid <- function(graph, direction = "LR", node_shape = "round"
-                                      , copy_to_clipboard = TRUE, openMermaid = TRUE) {
+convert_igraph_to_mermaid <- function(
+    graph, direction = "LR", node_shape = "round",
+    copy_to_clipboard = TRUE, openMermaid = TRUE) {
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR"),
@@ -313,7 +315,7 @@ convert_igraph_to_mermaid <- function(graph, direction = "LR", node_shape = "rou
     clipr::write_clip(mermaid_code)
   }
   print("Check output on https://mermaid.live")
-  if (openMermaid) browseURL('https://mermaid.live')
+  if (openMermaid) browseURL("https://mermaid.live")
   return(mermaid_code)
 }
 
