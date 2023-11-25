@@ -44,16 +44,17 @@ get_package_functions <- function(package_name) {
 #' @examples
 #' map_functions_to_packages(c("stats", "utils"), extended_search = TRUE)
 #' @export
-map_functions_to_packages <- function(packages, extended_search = FALSE, verbose = TRUE
-                                      , exclude_from_extended = character()) {
+map_functions_to_packages <- function(
+    packages, extended_search = FALSE, verbose = TRUE,
+    exclude_from_extended = character()) {
   stopifnot(is.character(packages), is.logical(extended_search), is.character(exclude_from_extended))
 
   func_to_pkg <- list()
 
   # Mapping within specified packages
-  cat('--- listing functions:', fill = T)
+  cat("--- listing functions:", fill = T)
   for (pkg in packages) {
-    cat( pkg, fill = T) # if(verbose)
+    cat(pkg, fill = T) # if(verbose)
 
     funcs <- get_package_functions(pkg)
     for (fn in funcs) {
@@ -62,24 +63,27 @@ map_functions_to_packages <- function(packages, extended_search = FALSE, verbose
   }
 
   if (extended_search) {
-    cat('--- extended search among installed packages:', fill = T)
+    cat("--- extended search among installed packages:", fill = T)
     all_installed_packages <- setdiff(installed.packages()[, "Package"], exclude_from_extended)
     cat(length(all_installed_packages), " installed packages.", fill = T)
 
     for (pkg in setdiff(all_installed_packages, packages)) {
-      if(verbose) cat( pkg, fill = T)
+      if (verbose) cat(pkg, fill = T)
 
       # Safely load package namespaces
-      tryCatch({
-        funcs <- get_package_functions(pkg)
-        for (fn in funcs) {
-          if (!is.null(func_to_pkg[[fn]])) {
-            func_to_pkg[[fn]] <- paste("CONFLICT", func_to_pkg[[fn]], pkg, sep = "::")
-          } else {
-            func_to_pkg[[fn]] <- pkg
+      tryCatch(
+        {
+          funcs <- get_package_functions(pkg)
+          for (fn in funcs) {
+            if (!is.null(func_to_pkg[[fn]])) {
+              func_to_pkg[[fn]] <- paste("CONFLICT", func_to_pkg[[fn]], pkg, sep = "::")
+            } else {
+              func_to_pkg[[fn]] <- pkg
+            }
           }
-        }
-      }, error = function(e) {})
+        },
+        error = function(e) {}
+      )
     }
   }
   return(func_to_pkg)
@@ -106,9 +110,10 @@ map_functions_to_packages <- function(packages, extended_search = FALSE, verbose
 #' @examples
 #' analyze_function_dependencies("lm", "stats", map_functions_to_packages(c("stats")), exclude_strings = c("HYPERLINK", "Deprecated"))
 #' @export
-analyze_function_dependencies <- function(func_name, package_name, func_to_pkg_map
-                                          , exclude_packages = c("base", "utils", "methods", "stats")
-                                          , exclude_strings = c("HYPERLINK", "Deprecated")) {
+analyze_function_dependencies <- function(
+    func_name, package_name, func_to_pkg_map,
+    exclude_packages = c("base", "utils", "methods", "stats"),
+    exclude_strings = c("HYPERLINK", "Deprecated")) {
   # Input assertions
   stopifnot(is.character(func_name), is.character(package_name), is.list(func_to_pkg_map), is.character(exclude_packages), is.character(exclude_strings))
 
@@ -159,8 +164,9 @@ analyze_function_dependencies <- function(func_name, package_name, func_to_pkg_m
 #' analyze_package_dependencies(c("stats", "utils"))
 #' @export
 
-analyze_package_dependencies <- function(packages, exclude_packages = c("base", "utils", "methods", "stats")
-                                         , extended_search = FALSE, verbose = FALSE) {
+analyze_package_dependencies <- function(
+    packages, exclude_packages = c("base", "utils", "methods", "stats"),
+    extended_search = FALSE, verbose = FALSE) {
   # Input assertions
   stopifnot(is.character(packages), is.character(exclude_packages), is.logical(extended_search))
   func_to_pkg_map <- map_functions_to_packages(packages, extended_search, verbose = verbose)
