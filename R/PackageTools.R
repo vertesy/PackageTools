@@ -20,6 +20,7 @@
 #' @param output_file Path to the output file where the summary will be written.
 #'                    Default: "1list.of.functions.in.YOURFILE.md"
 #' @param fun_header_level header level for functions. Default: "####"
+#' @param open_results Open resulting file? Default: TRUE.
 #' @return This function does not return a value; it writes output to the specified file.
 #' @examples
 #' \dontrun{
@@ -28,7 +29,7 @@
 #' @export
 
 parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(file)
-                                 , fun_header_level = "####") {
+                                 , fun_header_level = "####", open_results = TRUE) {
   # Input argument assertions
   stopifnot(is.character(file), length(file) == 1, file.exists(file))
   stopifnot(is.character(output_file), length(output_file) == 1)
@@ -84,6 +85,7 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
   # Output assertion
   stopifnot(file.exists(output_file))
 
+  if (open_results) system(paste0("open ", output_file), wait = FALSE)
   print(paste("Output written to", output_file))
 }
 
@@ -106,6 +108,7 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
 #'                          Default: TRUE.
 #' @param fun_header_level The markdown header level to be used for function names.
 #'                         Default: "####".
+#' @param open_results Open resulting file? Default: TRUE.
 #' @return This function does not return a value; it writes output to the specified markdown file.
 #' @examples
 #' \dontrun{
@@ -114,7 +117,7 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
 #' @export
 
 parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
-                          write_title_field = TRUE, fun_header_level = "####") {
+                          write_title_field = TRUE, fun_header_level = "####", open_results = TRUE) {
 
   warning("Does not find all functions sometimes!!!")
 
@@ -222,6 +225,7 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
   # Output assertion (Check if output file exists after writing)
   stopifnot(file.exists(output_file))
 
+  if (open_results) system(paste0("open ", output_file), wait = FALSE)
   print(paste("Output written to", output_file))
 }
 
