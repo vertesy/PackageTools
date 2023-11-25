@@ -259,7 +259,53 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
 
 
 # _____________________________________________________________________________________________ ----
-## Code Refactoring ---------------------------------------------------------------------------
+## Package Analysis and statistics ---------------------------------------------------------------------------
+
+#' @title Analyze File for Code and Comment Statistics
+#'
+#' @description This function analyzes a given file, counting the number of lines of code and comments.
+#' It also identifies files that are sourced within the provided file. The function uses regular
+#' expressions to differentiate between code and comment lines and to extract the names of sourced files.
+#'
+#' @param file_path The path to the file to be analyzed. Default: None (mandatory).
+#' @param pattern The regular expression pattern used to identify comment lines. Default: "^\\s*#".
+#' @param patter_sourced_files The regular expression pattern used to identify lines where files are sourced.
+#' Default: "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)".
+#'
+#' @return A list containing the number of lines of code, the number of comment lines, and the names of any sourced files.
+#'
+#' @examples
+#' # Example usage:
+#' source_file_stats_analyzer("path/to/your/script.R")
+#' @export
+source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
+                         patter_sourced_files = "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)") {
+
+  # Input argument assertions
+  stopifnot(is.character(file_path), length(file_path) == 1)
+  stopifnot(is.character(pattern), length(pattern) == 1)
+  stopifnot(is.character(patter_sourced_files), length(patter_sourced_files) == 1)
+
+  lines <- readLines(file_path, warn = FALSE)
+  idx.lines.comment <- grepl(pattern, lines)
+
+  nr.of.lines.comments <- sum(idx.lines.comment & nzchar(lines))
+  nr.of.lines.code <- sum(!idx.lines.comment & nzchar(lines))
+  code.lines <- lines[!idx.lines.comment & nzchar(lines)]
+
+  # Extracting files sourced within this file
+  sourced_files <- regmatches(code.lines, regexec(patter_sourced_files, code.lines))
+  sourced_files <- unlist(lapply(sourced_files, function(x) if(length(x) > 1) x[2] else NA))
+  sourced_files <- unique(sourced_files[!is.na(sourced_files)]);  print(sourced_files)
+
+  # Output assertion
+  stopifnot(is.list(sourced_files), is.numeric(nr.of.lines.code), is.numeric(nr.of.lines.comments))
+
+  return(list('nr.of.lines.code' = nr.of.lines.code,
+              'nr.of.lines.comments' = nr.of.lines.comments,
+              'sourced_files' = sourced_files))
+}
+
 
 
 
