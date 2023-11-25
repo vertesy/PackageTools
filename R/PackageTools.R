@@ -66,15 +66,15 @@ parse_roxygen_simple <- function(file, output_file = .convertFilePathToOutput(fi
   file_conn <- file(output_file, open = "w")
 
   cat(paste0("## List of Functions (", length(function_names)-1, ") \n"), file = file_conn)
-  cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"),"\n"), file = file_conn)
-  cat('For details, please use the `help()` function, or browse the source code.')
+  cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
+  cat("For details, please use the `help()` function, or browse the source code.")
 
   # Write each function name, title, and description to the output file
   for (i in seq_along(function_names)) {
     cat(paste0("- ", fun_header_level, " ", i, " `", function_names[i], "()`\n"), file = file_conn)
 
     # Needed not to print NA to missing descriptions
-    descX <- if(is.na(descriptions[i])) description_lines[i] else descriptions[i]
+    descX <- if (is.na(descriptions[i])) description_lines[i] else descriptions[i]
 
     cat(paste0(titles[i], ". ", descX, "\n\n"), file = file_conn)
   }
@@ -191,7 +191,7 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
     function_lines <- grep("<- function", lines, value = TRUE)
     if (length(function_lines) != length(function_names)) {
       msg <- paste(length(function_names), "found here but", length(function_lines)
-                   , "functions are defined (as `<- function`)" )
+                   , "functions are defined (as `<- function`)")
       warning(msg)
 
     }
@@ -203,7 +203,7 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
 
   # cat("## List of Functions\n", file = file_conn)
   cat(paste0("## List of Functions (", length(function_names)-1, ") \n"), file = file_conn)
-  cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"),"\n"), file = file_conn)
+  cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
   cat('For details, please use the `help()` function, or browse the source code.')
 
   # Write each function name, title, and description to the output file
