@@ -282,7 +282,8 @@ filter_conflicts <- function(dependencies) {
 #' @importFrom igraph get.edgelist
 #' @importFrom clipr write_clip
 #' @export
-convert_igraph_to_mermaid <- function(graph, direction = "LR", node_shape = "round", copy_to_clipboard = TRUE) {
+convert_igraph_to_mermaid <- function(graph, direction = "LR", node_shape = "round"
+                                      , copy_to_clipboard = TRUE, openMermaid = TRUE) {
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR"),
@@ -311,7 +312,8 @@ convert_igraph_to_mermaid <- function(graph, direction = "LR", node_shape = "rou
   if (copy_to_clipboard) {
     clipr::write_clip(mermaid_code)
   }
-
+  print("Check output on https://mermaid.live")
+  if (openMermaid) browseURL('https://mermaid.live')
   return(mermaid_code)
 }
 
