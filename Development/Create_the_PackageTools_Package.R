@@ -97,7 +97,7 @@ devtools::install_local(RepositoryDir, upgrade = F)
 
 
 # Test if you can install from github ------------------------------------------------
-# devtools::install_github(repo = "vertesy/PackageTools")
+pak::pkg_install("vertesy/PackageTools")
 
 # require("PackageTools")
 
@@ -121,7 +121,7 @@ devtools::install_local(RepositoryDir, upgrade = F)
 depFile = paste0(RepositoryDir, 'Development/Dependencies.R')
 
 (f.deps <- NCmisc::list.functions.in.file(filename = package.FnP))
-clipr::write_clip( f.deps$`character(0)`)
+clipr::write_clip( f.deps)
 
 sink(file = depFile); print(f.deps); sink()
 p.deps <- gsub(x = names(f.deps), pattern = 'package:', replacement = '')
