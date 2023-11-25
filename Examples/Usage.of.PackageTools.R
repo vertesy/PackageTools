@@ -1,7 +1,7 @@
 ######################################################################
 # Usage.of.PackageTools.R
 #####################################################################
-# source('~/GitHub/Projects')
+# source('~/GitHub/Packages/PackageTools/Examples/Usage.of.PackageTools.R')
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = T); gc()
 
 # Functions ------------------------------------------------
@@ -14,8 +14,7 @@
 
 
 
-parse_roxygen("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R"
-, write_title_field = F)
+parse_roxygen('~/GitHub/Packages/PackageTools/R/DependencyTools.R')
 
 
 parse_roxygen_simple("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
