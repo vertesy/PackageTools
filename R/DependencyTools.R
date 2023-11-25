@@ -263,6 +263,56 @@ filter_conflicts <- function(dependencies) {
 
 # _____________________________________________________________________________________________
 
+#' Convert an igraph object to a Mermaid.js flowchart
+#'
+#' This function takes an igraph object representing a network graph and converts it into Mermaid.js code for
+#' creating a flowchart. It allows customization of the flowchart's direction and node shapes and can optionally
+#' copy the resulting code to the clipboard.
+#'
+#' @param graph An igraph object representing a network graph. Default: None (must be provided).
+#' @param direction The direction of the flowchart. One of 'TB', 'TD', 'BT', 'RL', 'LR'. Default: 'LR'.
+#' @param node_shape The shape of the nodes in the flowchart. One of 'round', 'default'. Default: 'round'.
+#' @param copy_to_clipboard Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.
+#' @return A string containing the Mermaid.js code for the flowchart.
+#' @examples
+#' result <- pkgnet::CreatePackageReport('YourPackage')
+#' graph <- result$FunctionReporter$pkg_graph$igraph
+#' mermaid_code <- convert_igraph_to_mermaid(graph)
+#' cat(mermaid_code)
+#' @importFrom igraph get.edgelist
+#' @importFrom clipr write_clip
+#' @export
+convert_igraph_to_mermaid <- function(graph, direction = "LR", node_shape = "round", copy_to_clipboard = TRUE) {
+  stopifnot("graph must be an igraph object" = inherits(graph, "igraph"),
+            "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR"),
+            # "node_shape must be 'round' or 'default'" = node_shape %in% c("round", "default"), # not true!
+            )
+
+  edges <- igraph::get.edgelist(graph)
+  mermaid_code <- paste("flowchart", direction, "\n")
+
+  format_node <- function(node) {
+    if (node_shape == "round") {
+      return(sprintf("%s(%s)", node, node))
+    } else {
+      return(sprintf("%s[%s]", node, node))
+    }
+  }
+
+  for (edge in 1:nrow(edges)) {
+    from <- format_node(edges[edge, 1])
+    to <- format_node(edges[edge, 2])
+    mermaid_code <- paste(mermaid_code, sprintf("  %s --> %s", from, to), sep = "\n")
+  }
+
+  stopifnot("Mermaid.js code should be a non-empty string" = is.character(mermaid_code) && nchar(mermaid_code) > 0)
+
+  if (copy_to_clipboard) {
+    clipr::write_clip(mermaid_code)
+  }
+
+  return(mermaid_code)
+}
 
 
 # _____________________________________________________________________________________________
