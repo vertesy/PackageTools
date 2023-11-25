@@ -241,7 +241,12 @@ filter_conflicts <- function(dependencies) {
 }
 
 # _____________________________________________________________________________________________
-# Private function to count and print the number of functions in dependencies
+#' @title Count and print the number of functions results
+#'
+#' @description Private function to count and print the number of functions in results ("dependencies").
+#'
+#' @param dependencies Result from above functions dependencies
+#' @return Nothing.
 .count_and_print_function_summary <- function(dependencies) {
   counts <- sapply(dependencies, function(pkg_deps) length(pkg_deps))
   message_string <- paste(sapply(names(counts), function(pkg) paste(length(dependencies[[pkg]]), "functions in", pkg)), collapse = " and ")

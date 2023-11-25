@@ -47,3 +47,7 @@ Updated: 2023/11/25 14:00
 
   Filter Function Dependencies. Filters the function dependencies to either include only functions with dependencies               or only those without dependencies. 
 
+- #### 6 `filter_conflicts()`
+
+  Filter Out Conflict Dependencies. Filters the dependencies to extract only those with conflicts. 
+
