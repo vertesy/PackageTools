@@ -1,11 +1,12 @@
 # PackageTools
 Functions and wrappers to manage R packages (creation, documentation, dependencies, checks).
 
-
+![PackageTools.logo.small](Development/PackageTools.logo.small.png)
 
 
 
 ## List of Functions
+
 ### PackageTools.R (3) 
 
 Updated: 2023/11/24 16:45
