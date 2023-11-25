@@ -273,7 +273,8 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
 #' @param patter_sourced_files The regular expression pattern used to identify lines where files are sourced.
 #' Default: "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)".
 #'
-#' @return A list containing the number of lines of code, the number of comment lines, and the names of any sourced files.
+#' @return A list containing the number of lines of code, the number of comment lines,
+#' and the names of any sourced files.
 #'
 #' @examples
 #' # Example usage:
