@@ -1,0 +1,16 @@
+Package: PackageTools
+Title: PackageTools - utility functions for Seurat
+Version: 0.1.0
+Authors@R: 
+    person("Abel", "Vertesy", , "av@imba.oeaw.ac.at", role = c("aut", "cre"))
+Author: Abel Vertesy <av@imba.oeaw.ac.at> [aut, cre]
+Description: PackageTools is a collection of utility functions for code
+    base statistics & and dependencies.
+License: GPL-3 + file LICENSE
+BugReports: https://github.com/vertesy/PackageTools/issues
+Depends: 
+    base
+Encoding: UTF-8
+Packaged: 2023-11-25 14:13:47.268709
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
