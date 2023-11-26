@@ -274,6 +274,7 @@ filter_conflicts <- function(dependencies) {
 #' @param node_shape The shape of the nodes in the flowchart. One of 'round', 'default'. Default: 'round'.
 #' @param copy_to_clipboard Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.
 #' @param openMermaid open www.mermaid.live website? Default: TRUE.
+#' @param add_subgraph_template Add subgraph template? Default: TRUE.
 #' @return A string containing the Mermaid.js code for the flowchart.
 #' @examples
 #' result <- pkgnet::CreatePackageReport("YourPackage")
@@ -285,10 +286,11 @@ filter_conflicts <- function(dependencies) {
 #' @export
 convert_igraph_to_mermaid <- function(
     graph, direction = "LR", node_shape = "round",
-    copy_to_clipboard = TRUE, openMermaid = TRUE) {
+    copy_to_clipboard = TRUE, openMermaid = TRUE,
+    add_subgraph_template = TRUE) {
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
-    "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR"),
+    "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR")
     # "node_shape must be 'round' or 'default'" = node_shape %in% c("round", "default"), # not true!
   )
 
@@ -307,6 +309,11 @@ convert_igraph_to_mermaid <- function(
     from <- format_node(edges[edge, 1])
     to <- format_node(edges[edge, 2])
     mermaid_code <- paste(mermaid_code, sprintf("  %s --> %s", from, to), sep = "\n")
+  }
+
+  if (add_subgraph_template) {
+    mermaid_code <- paste(mermaid_code, "subgraph SubGraphOne", sep = "\n")
+    mermaid_code <- paste(mermaid_code, "end", sep = "\n")
   }
 
   stopifnot("Mermaid.js code should be a non-empty string" = is.character(mermaid_code) && nchar(mermaid_code) > 0)
