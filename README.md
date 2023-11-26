@@ -226,7 +226,7 @@ Updated: 2023/11/25 14:00
 
 
 ```mermaid
-flowchart LR 
+flowchart LR
 
 subgraph DependencyTools
   filter_dependencies(filter_dependencies) --> .count_and_print_function_summary(.count_and_print_function_summary)
@@ -243,7 +243,7 @@ subgraph RoxygenTools
 end
 ```
 
-
+> *created by `convert_igraph_to_mermaid()`*
 
 ## Contributing
 
