@@ -78,7 +78,7 @@ get_function_bodies <- function(file_content) {
 #' Default: empty character vector.
 #' @return A unique list of package calls found in the body content.
 #' @export
-find_package_calls <- function(body_content, pattern = "\\b\\w+::\\w+\\b", exclude_packages = c()) {
+find_package_calls <- function(body_content, pattern = "\\b\\w+::[\\w.]+\\b", exclude_packages = c()) {
   stopifnot(is.character(body_content), is.character(exclude_packages))
 
   calls <- list()
