@@ -101,17 +101,7 @@ pak::pkg_install("vertesy/PackageTools")
 # Clean up if not needed anymore ------------------------------------------------
 # View(installed.packages())
 # remove.packages("PackageTools")
-
-"check(RepositoryDir, cran = TRUE)"
-# as.package(RepositoryDir)
-#
-#
-# # source("https://install-github.me/r-lib/desc")
-# # library(desc)
-# # desc$set("PackageTools", "foo")
-# # desc$get(PackageTools)
-#
-#
+# "check(RepositoryDir, cran = TRUE)"
 # system("cd ~/GitHub/PackageTools/; ls -a; open .Rbuildignore")
 
 # Check package dependencies ------------------------------------------------
@@ -125,7 +115,15 @@ p.deps <- gsub(x = names(f.deps), pattern = 'package:', replacement = '')
 write(x = p.deps, file = depFile, append = T)
 
 
+# Package styling, and visualization ------------------------------------------------
+{
+  styler::style_pkg(RepositoryDir)
+}
 
+
+
+
+# Else ------------------------------------------------
 if (F) {
 
   findFunctionOrigin <- function(function_names) {
@@ -164,3 +162,5 @@ if (F) {
 }
 
 # NCmisc::list.functions.in.file(package.FnP)
+
+
