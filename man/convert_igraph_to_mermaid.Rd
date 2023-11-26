@@ -9,7 +9,9 @@ convert_igraph_to_mermaid(
   direction = "LR",
   node_shape = "round",
   copy_to_clipboard = TRUE,
-  openMermaid = TRUE
+  openMermaid = TRUE,
+  add_subgraph_template = TRUE,
+  add_embedding_comments = TRUE
 )
 }
 \arguments{
@@ -22,6 +24,11 @@ convert_igraph_to_mermaid(
 \item{copy_to_clipboard}{Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.}
 
 \item{openMermaid}{open www.mermaid.live website? Default: TRUE.}
+
+\item{add_subgraph_template}{Add subgraph template? Default: TRUE.}
+
+\item{add_embedding_comments}{Add lines for direct markdown embedding of the code,
+formatted as mermaid comments. The \code{\%\%} must be removed in the \code{.md} file.}
 }
 \value{
 A string containing the Mermaid.js code for the flowchart.

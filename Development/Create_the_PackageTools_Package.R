@@ -20,7 +20,7 @@ try(dev.off(), silent = TRUE)
 
 # Setup ------------------------
 package.name <- 	"PackageTools"
-package.version <- "0.2.0"
+package.version <- "0.2.1"
 setwd("~/GitHub/Packages/")
 
 RepositoryDir <- paste0("~/GitHub/Packages/", package.name, "/")
