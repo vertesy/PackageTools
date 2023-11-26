@@ -206,6 +206,50 @@ replace_tf_with_true_false("path/to/original_script.R", "path/to/modified_script
 
 
 
+
+
+---------
+
+# 5. DocumentationTools
+
+This utility streamlines the process of setting up and maintaining R packages. It sources `configuration` details from a specified file and performs tasks like setting up package structure, backing up files, and updating citation information.
+
+## Usage
+
+To use this utility, place a `config.R` file in the `Development` subdirectory of your package's directory. Then call the `create_package` function with the path to your package.
+
+### Creating a Package
+
+```R
+create_package("~/GitHub/Packages/YourPackageName", "config.R", update_citation = FALSE)
+```
+
+>  Set `update_citation` to `TRUE` if you have & want to update the CITATION file.
+
+
+
+### Configuring Your Package
+
+Create a `config.R` file with the following structure:
+
+```R
+config <- list(
+  package.name = "YourPackageName",
+  title = "Package Title",
+  description = "Description of your package",
+  version = "1.0.0",
+  author.given = "YourFirstName",
+  author.family = "YourLastName",
+  author.email = "youremail@example.com",
+  license = "LicenseType",
+  depends = "Dependencies",
+  imports = "Imports",
+  bugReports = "https://github.com/yourusername/YourPackageName/issues"
+)
+```
+
+
+
 ---------------------------------------------------------------------------------------------------------
 
 # List of Functions
