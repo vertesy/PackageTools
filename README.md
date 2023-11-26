@@ -219,7 +219,7 @@ Updated: 2023/11/25 14:00
 
 
 
-## Function relationshipw
+## Function relationships
 
 > (of connected functions)
 
