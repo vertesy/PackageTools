@@ -82,38 +82,27 @@ warnings()
 
 
 # Install your package ------------------------------------------------
-setwd(RepositoryDir)
 devtools::install_local(RepositoryDir, upgrade = F)
-# unload(PackageTools)
-# require("PackageTools")
-# # remove.packages("PackageTools")
-# # Test your package ------------------------------------------------
-# help("wplot")
-# cat("\014")
-# devtools::run_examples()
 
 
 # Test if you can install from github ------------------------------------------------
 pak::pkg_install("vertesy/PackageTools")
-
+# unload(PackageTools)
 # require("PackageTools")
+# # remove.packages("PackageTools")
 
-# Clean up if not needed anymore ------------------------------------------------
-# View(installed.packages())
-# remove.packages("PackageTools")
-# "check(RepositoryDir, cran = TRUE)"
-# system("cd ~/GitHub/PackageTools/; ls -a; open .Rbuildignore")
 
 # Check package dependencies ------------------------------------------------
-depFile = paste0(RepositoryDir, 'Development/Dependencies.R')
+{
+  depFile = paste0(RepositoryDir, 'Development/Dependencies.R')
 
-(f.deps <- NCmisc::list.functions.in.file(filename = package.FnP))
-clipr::write_clip( f.deps)
+  (f.deps <- NCmisc::list.functions.in.file(filename = package.FnP))
+  clipr::write_clip( f.deps)
 
-sink(file = depFile); print(f.deps); sink()
-p.deps <- gsub(x = names(f.deps), pattern = 'package:', replacement = '')
-write(x = p.deps, file = depFile, append = T)
-
+  sink(file = depFile); print(f.deps); sink()
+  p.deps <- gsub(x = names(f.deps), pattern = 'package:', replacement = '')
+  write(x = p.deps, file = depFile, append = T)
+}
 
 # Package styling, and visualization ------------------------------------------------
 {
