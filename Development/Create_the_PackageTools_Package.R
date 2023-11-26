@@ -30,7 +30,7 @@ package.FnP <-		paste0(RepositoryDir, "R/", fname)
 BackupDir <- "~/GitHub/Packages/PackageTools/Development/"
 dir.create(BackupDir)
 
-DESCRIPTION <- list("Title" = "PackageTools - utility functions for Seurat"
+DESCRIPTION <- list("Title" = "PackageTools - Help for R package development."
                     , "Author" = person(given = "Abel", family = "Vertesy", email = "av@imba.oeaw.ac.at", role =  c("aut", "cre") )
                     , "Authors@R" = 'person(given = "Abel", family = "Vertesy", email = "av@imba.oeaw.ac.at", role =  c("aut", "cre") )'
                     , "Description" = "PackageTools is a collection of utility functions for code base statistics & and dependencies."
