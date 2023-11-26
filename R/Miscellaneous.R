@@ -19,9 +19,8 @@
 #'               Valid options are 'experimental', 'active', 'archive', and 'hibernate'.
 #'               Default: 'experimental'.
 #' @param prefix The URL prefix for the badge images.
-#'               Default: "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".
-#' @return The function does not return a value but copies the relevant badge Markdown
-#'         code to the clipboard.
+#'               Default: "https:,//raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".
+#' @return The function does not return a value but copies the relevant badge Markdown#'         code to the clipboard.
 #' @examples
 #' copy_github_badge("experimental")
 #' copy_github_badge("active", "https://example.com/badges/")
