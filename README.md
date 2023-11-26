@@ -219,6 +219,32 @@ Updated: 2023/11/25 14:00
 
 
 
+## Function relationshipw
+
+> (of connected functions)
+
+
+
+```mermaid
+flowchart LR 
+
+subgraph DependencyTools
+  filter_dependencies(filter_dependencies) --> .count_and_print_function_summary(.count_and_print_function_summary)
+  filter_conflicts(filter_conflicts) --> .count_and_print_function_summary(.count_and_print_function_summary)
+  map_functions_to_packages(map_functions_to_packages) --> get_package_functions(get_package_functions)
+  analyze_package_dependencies(analyze_package_dependencies) --> map_functions_to_packages(map_functions_to_packages)
+  analyze_package_dependencies(analyze_package_dependencies) --> get_package_functions(get_package_functions)
+  analyze_package_dependencies(analyze_package_dependencies) --> analyze_function_dependencies(analyze_function_dependencies)
+end
+subgraph RoxygenTools
+  add_import_from(add_import_from) --> find_package_calls(find_package_calls)
+  add_importFrom_statements(add_importFrom_statements) --> get_function_bodies(get_function_bodies)
+  add_importFrom_statements(add_importFrom_statements) --> add_import_from(add_import_from)
+end
+```
+
+
+
 ## Contributing
 
 Contributions to DependencyTools are welcome, please communicate via issues.
