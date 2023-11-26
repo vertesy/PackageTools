@@ -37,6 +37,6 @@ function allows specifying the header level for functions in the markdown file.
 }
 \examples{
 \dontrun{
-  parse_roxygen("path/to/your_script.R", "path/to/output_file.md")
+parse_roxygen("path/to/your_script.R", "path/to/output_file.md")
 }
 }

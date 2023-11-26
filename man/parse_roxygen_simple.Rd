@@ -32,6 +32,6 @@ and writes a summary to an output file.
 }
 \examples{
 \dontrun{
-  parse_roxygen_simple("path/to/your_script.R", "path/to/output_file.txt")
+parse_roxygen_simple("path/to/your_script.R", "path/to/output_file.txt")
 }
 }

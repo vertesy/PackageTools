@@ -3,6 +3,8 @@ Functions and wrappers to manage R packages (creation, documentation, dependenci
 
 ![PackageTools.logo.small](Development/PackageTools.logo.small.png)
 
+[TOC]
+
 
 
 # 1. PackageTools
@@ -126,6 +128,42 @@ $package_name
 ```
 
 For `filter_dependencies` and `filter_conflicts`, the output will be similar but filtered based on the criteria you set (presence of dependencies or conflicts).
+
+
+
+
+
+------------------------------
+
+# 3. RoxygenTools
+`Currenly limited in scope`
+## Goal: Adding @importFrom Statements to Roxygen
+
+This R package provides functionality to automatically add `@importFrom` statements to the Roxygen documentation of functions in an R script. It scans for functions called using the `::` operator within function bodies and appends the corresponding `@importFrom` directives to the Roxygen blocks above the function definitions.
+
+
+## Usage
+
+To use the package, simply call the `add_importFrom_statements` function with the path to your R script. You can also specify a suffix for the `@importFrom` statements and a list of packages to exclude from processing.
+
+`warning: add_importFrom_statements() overwrites your file, with the @importFrom statements added`
+
+```R
+# Example script path
+script_path <- '~/path/to/your/my_functions.R'
+
+# Exclude specific packages (optional) - not to add them to 
+exclude_packages <- c("MarkdownReports")
+
+# Add @importFrom statements
+add_importFrom_statements(script_path, suffix = "ADDED_BY_add_importFrom_statements", exclude_packages = exclude_packages)
+
+# Now open the file (ideally it's under git) and check each line containing the suffix.
+```
+
+After running this function, your R script will have `@importFrom` statements and `suffix` added to the Roxygen documentation of functions that use other packages' functions with the `::` operator.
+
+They are not at the correct place, but easy to fix.
 
 
 

@@ -20,7 +20,7 @@ try(dev.off(), silent = TRUE)
 
 # Setup ------------------------
 package.name <- 	"PackageTools"
-package.version <- "0.1.0"
+package.version <- "0.2.0"
 setwd("~/GitHub/Packages/")
 
 RepositoryDir <- paste0("~/GitHub/Packages/", package.name, "/")
@@ -39,7 +39,7 @@ DESCRIPTION <- list("Title" = "PackageTools - utility functions for Seurat"
                     , "Packaged" =  Sys.time()
                     # , "Repository" =  "CRAN"
                     , "Depends" =  "base"
-                    # , "Imports" = ""
+                    , "Imports" = "checkmate"
                     # , "Suggests" = ""
                     , "BugReports"= "https://github.com/vertesy/PackageTools/issues"
 )
@@ -57,9 +57,6 @@ if ( !dir.exists(RepositoryDir) ) { devtools::create(path = RepositoryDir, DESCR
 
 # go and write fun's ------------------------------------------------------------------------
 # file.edit(package.FnP)
-
-# Create Roxygen Skeletons ------------------------
-# RoxygenReady(package.FnP)
 
 # replace output files ------------------------------------------------
 BackupOldFile <-	paste0(BackupDir, "Development", ".bac")
