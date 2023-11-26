@@ -16,11 +16,14 @@
 #'                     Default: None, a valid package name must be provided.
 #' @return A character vector of function names from the package.
 #' @examples
-#' get_package_functions("stats")
+#' get_package_functions("tibble")
 #' @export
 get_package_functions <- function(package_name) {
   stopifnot(is.character(package_name), length(package_name) == 1)
 
+  if (package_name %in% c("base", "utils", "methods", "stats")) {
+    stop("Accessing the namespace of base packages is not allowed")
+  }
   ns <- asNamespace(package_name)
   fun_names <- ls(ns)
   fun_names[sapply(fun_names, function(x) is.function(get(x, envir = ns)))]
@@ -108,7 +111,9 @@ map_functions_to_packages <- function(
 #'                        Default: c("HYPERLINK", "Deprecated")
 #' @return A vector of function names that the specified function depends on, excluding specified strings.
 #' @examples
-#' analyze_function_dependencies("lm", "stats", map_functions_to_packages(c("stats")), exclude_strings = c("HYPERLINK", "Deprecated"))
+#' analyze_function_dependencies(func_name = "column_to_rownames", package_name = "tibble,
+#' exclude_packages = c("base", "utils", "methods", "stats"),
+#' exclude_strings = c("HYPERLINK", "Deprecated"))
 #' @export
 analyze_function_dependencies <- function(
     func_name, package_name, func_to_pkg_map,

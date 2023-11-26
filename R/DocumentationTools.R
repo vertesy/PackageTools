@@ -91,8 +91,6 @@ create_package <- function(package_dir,
 #'
 #' @param config_path The file path of the configuration file.
 #'
-#' @importFrom utils person
-#' @importFrom base source
 #' @return A list representing the DESCRIPTION file.
 .parse_description <- function(config_path) {
   source(config_path)
