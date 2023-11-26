@@ -171,7 +171,44 @@ They are not at the correct place, but easy to fix.
 
 
 
-## List of Functions
+# 4. ReplacementTools.R
+
+`Replace T and F with TRUE and FALSE in R Scripts.` This script contains a utility function for R scripts that **<u>safely</u>** replaces shorthand boolean representations (`T` and `F`) with their full representations (`TRUE` and `FALSE`). 
+
+**Why Use This Function?** R allows `T` and `F` as shorthand for `TRUE` and `FALSE`. However, it's considered best practice to use `TRUE` and `FALSE` for clarity and to avoid accidental errors. The `T` and `F` are just regular objects in R that can be overwritten, which can lead to bugs if they are redefined unintentionally. This function helps in refactoring existing R scripts to replace these shorthands with their full representations.
+
+## Features
+
+- Safely replaces `T` and `F` with `TRUE` and `FALSE` in R scripts. **Still you have to manually check the results**!
+- Offers a `strict_mode` to replace `T` and `F` only *when they are surrounded by specific characters or at the end of a line* (recommended, default).
+- Customizable for different contexts through user-defined preceding and following characters.
+- Useful for cleaning up and standardizing R scripts.
+
+## Function Usage
+
+### `replace_tf_with_true_false`
+
+Replaces all instances of `T` and `F` in an R script with `TRUE` and `FALSE`, respectively.
+
+#### Arguments
+
+- `file_path`: Path to the R script file.
+- `output_path`: Path where the modified script will be saved. Defaults to `file_path`.
+- `strict_mode`: Logical; if `TRUE`, only replaces `T` and `F` that are surrounded by specified characters. Default is `TRUE`.
+- `preceding_chars`: Characters that can precede `T` or `F`. Default is `"\\s"`.
+- `following_chars`: Characters that can follow `T` or `F`. Default is `c(",", "\\)", "\\]")`.
+
+#### Example
+
+```R
+replace_tf_with_true_false("path/to/original_script.R", "path/to/modified_script.R")
+```
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+# List of Functions
 
 ### PackageTools.R (3) 
 
@@ -245,7 +282,7 @@ end
 
 > *created by `convert_igraph_to_mermaid()`*
 
-## Contributing
+# Contributing
 
 Contributions to DependencyTools are welcome, please communicate via issues.
 
