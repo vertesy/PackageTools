@@ -24,7 +24,9 @@ found in a specified package directory and writes them to a dependencies file, s
 by script.
 }
 \examples{
-extract_package_dependencies("~/GitHub/Packages/PackageX",
-                         "Development/Dependencies.R")
+extract_package_dependencies(
+  "~/GitHub/Packages/PackageX",
+  "Development/Dependencies.R"
+)
 
 }

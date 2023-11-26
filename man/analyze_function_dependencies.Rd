@@ -35,8 +35,10 @@ A vector of function names that the specified function depends on, excluding spe
 Analyzes dependencies of functions within a package, excluding specified packages and strings.
 }
 \examples{
-analyze_function_dependencies(func_name = "column_to_rownames", package_name = "tibble",
-exclude_packages = c("base", "utils", "methods", "stats"),
-exclude_strings = c("HYPERLINK", "Deprecated"))
+analyze_function_dependencies(
+  func_name = "column_to_rownames", package_name = "tibble",
+  exclude_packages = c("base", "utils", "methods", "stats"),
+  exclude_strings = c("HYPERLINK", "Deprecated")
+)
 
 }
