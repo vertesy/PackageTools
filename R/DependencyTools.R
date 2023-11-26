@@ -111,9 +111,12 @@ map_functions_to_packages <- function(
 #'                        Default: c("HYPERLINK", "Deprecated")
 #' @return A vector of function names that the specified function depends on, excluding specified strings.
 #' @examples
-#' analyze_function_dependencies(func_name = "column_to_rownames", package_name = "tibble,
-#' exclude_packages = c("base", "utils", "methods", "stats"),
-#' exclude_strings = c("HYPERLINK", "Deprecated"))
+#' analyze_function_dependencies(
+#'   func_name = "column_to_rownames", package_name = "tibble",
+#'   exclude_packages = c("base", "utils", "methods", "stats"),
+#'   exclude_strings = c("HYPERLINK", "Deprecated")
+#' )
+#'
 #' @export
 analyze_function_dependencies <- function(
     func_name, package_name, func_to_pkg_map,

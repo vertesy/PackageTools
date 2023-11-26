@@ -37,8 +37,10 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
   script_lines <- readLines(file_path, warn = FALSE)
 
   # Process each line
-  processed_lines <- sapply(script_lines, .safely_replace_tf, USE.NAMES = FALSE,
-                            strict_mode, preceding_chars, following_chars)
+  processed_lines <- sapply(script_lines, .safely_replace_tf,
+    USE.NAMES = FALSE,
+    strict_mode, preceding_chars, following_chars
+  )
 
   # Write the modified script
   writeLines(processed_lines, output_path)
@@ -69,9 +71,13 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
 
     # Replace 'T' and 'F'
     modified_line <- gsub(paste0(preceding_pattern, "T", following_pattern),
-                          "\\1TRUE\\2", line, perl = TRUE)
+      "\\1TRUE\\2", line,
+      perl = TRUE
+    )
     modified_line <- gsub(paste0(preceding_pattern, "F", following_pattern),
-                          "\\1FALSE\\2", modified_line, perl = TRUE)
+      "\\1FALSE\\2", modified_line,
+      perl = TRUE
+    )
   } else {
     # Replace standalone 'T' and 'F'
     modified_line <- gsub("\\bT\\b", "TRUE", line, perl = TRUE)

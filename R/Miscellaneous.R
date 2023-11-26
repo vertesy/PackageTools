@@ -25,7 +25,7 @@
 #' copy_github_badge("experimental")
 #' copy_github_badge("active", "https://example.com/badges/")
 #' @export
-copy_github_badge <- function(status = 'experimental',
+copy_github_badge <- function(status = "experimental",
                               prefix = "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/") {
   valid_statuses <- c("experimental", "active", "archive", "hibernate")
   if (!status %in% valid_statuses) {
@@ -37,4 +37,3 @@ copy_github_badge <- function(status = 'experimental',
 
   clipr::write_clip(markdown_text)
 }
-

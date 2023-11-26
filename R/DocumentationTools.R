@@ -33,13 +33,14 @@
 #' @return None
 #' @importFrom usethis create_package
 #' @importFrom devtools create document
+#' @importFrom rstudioapi isAvailable
 #'
 #' @examples
 #' create_package("~/GitHub/Packages/PackageX", "config.R", TRUE)
 #'
 #' @export
 create_package <- function(package_dir,
-                           config_file = 'config.R',
+                           config_file = "config.R",
                            backup_r_script = TRUE,
                            update_citation = TRUE) {
   # Source configuration file
@@ -99,11 +100,15 @@ create_package <- function(package_dir,
     # Type = "Package",
     Title = DESCRIPTION$"title",
     Version = DESCRIPTION$"version",
-    Author = person(given = DESCRIPTION$"author.given", family = DESCRIPTION$"author.family",
-                    email = DESCRIPTION$"author.email", role = c("aut", "cre")),
-    "Authors@R" = paste0('person(given = "', DESCRIPTION$"author.given",
-                      '", family = "', DESCRIPTION$"author.family",
-                      '", email = "', DESCRIPTION$"author.email", '", role = c("aut", "cre"))'),
+    Author = person(
+      given = DESCRIPTION$"author.given", family = DESCRIPTION$"author.family",
+      email = DESCRIPTION$"author.email", role = c("aut", "cre")
+    ),
+    "Authors@R" = paste0(
+      'person(given = "', DESCRIPTION$"author.given",
+      '", family = "', DESCRIPTION$"author.family",
+      '", email = "', DESCRIPTION$"author.email", '", role = c("aut", "cre"))'
+    ),
     Description = DESCRIPTION$"description",
     License = DESCRIPTION$"license",
     Depends = DESCRIPTION$"depends",
@@ -123,10 +128,12 @@ create_package <- function(package_dir,
 #' @importFrom xfun gsub_file
 #' @return None
 .update_citation_file <- function(RepositoryDir, version) {
-  citpath <- file.path(RepositoryDir, 'CITATION.cff')
-  xfun::gsub_file(file = citpath, perl = TRUE,
-                  pattern = "^version: v.+",
-                  replacement = paste0("version: v", version))
+  citpath <- file.path(RepositoryDir, "CITATION.cff")
+  xfun::gsub_file(
+    file = citpath, perl = TRUE,
+    pattern = "^version: v.+",
+    replacement = paste0("version: v", version)
+  )
 }
 
 
@@ -146,14 +153,16 @@ create_package <- function(package_dir,
 #' @return None
 #'
 #' @examples
-#' extract_package_dependencies("~/GitHub/Packages/PackageX",
-#'                          "Development/Dependencies.R")
+#' extract_package_dependencies(
+#'   "~/GitHub/Packages/PackageX",
+#'   "Development/Dependencies.R"
+#' )
 #'
 #' @importFrom NCmisc list.functions.in.file
 #' @importFrom clipr write_clip
 #'
 #' @export
-extract_package_dependencies <- function(package_dir, output_file = 'Development/Dependencies.R') {
+extract_package_dependencies <- function(package_dir, output_file = "Development/Dependencies.R") {
   # Assertions
   stopifnot(
     is.character(package_dir),
@@ -165,7 +174,7 @@ extract_package_dependencies <- function(package_dir, output_file = 'Development
   r_files <- list.files(file.path(package_dir, "R"), full.names = TRUE, pattern = "\\.R$")
 
   # Overwrite with timestamp at the beginning
-  cat(paste("Dependency file generated on", date(), "\n\n"), append = FALSE,file = depFile)
+  cat(paste("Dependency file generated on", date(), "\n\n"), append = FALSE, file = depFile)
 
   # Iterating over R files
   for (file in r_files) {
@@ -176,19 +185,14 @@ extract_package_dependencies <- function(package_dir, output_file = 'Development
     # Writing to dependencies file
     sink(file = depFile, append = TRUE)
     cat("", file = depFile, append = TRUE)
-    cat(paste0(rep("#",100),collapse = ""), "\n", file = depFile, append = TRUE) # Separator
+    cat(paste0(rep("#", 100), collapse = ""), "\n", file = depFile, append = TRUE) # Separator
     cat(basename(file), file = depFile, append = TRUE, fill = TRUE)
-    cat(paste0(rep("#",100),collapse = ""), "\n", file = depFile, append = TRUE) # Separator
+    cat(paste0(rep("#", 100), collapse = ""), "\n", file = depFile, append = TRUE) # Separator
     print(f.deps)
     sink()
-    p.deps <- gsub(x = names(f.deps), pattern = 'package:', replacement = '')
+    p.deps <- gsub(x = names(f.deps), pattern = "package:", replacement = "")
     write(x = p.deps, file = depFile, append = TRUE)
   }
   # Output assertion
   stopifnot(file.exists(depFile))
 }
-
-
-
-
-
