@@ -8,10 +8,11 @@ DESCRIPTION <- list(
   author.given = "Abel",
   author.family = "Vertesy",
   author.email = "av@imba.oeaw.ac.at",
+  github.user = "vertesy",
   license = "GPL-3 + file LICENSE",
   depends = "base",
   imports = "NCmisc, clipr, devtools, igraph, usethis, xfun, rstudioapi",
-  github.user = "vertesy"
+  suggests = ""
 )
 
 
