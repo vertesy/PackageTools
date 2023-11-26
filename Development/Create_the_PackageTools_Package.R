@@ -130,9 +130,12 @@ write(x = p.deps, file = depFile, append = T)
     PackageTools::convert_igraph_to_mermaid(graph = fun_graph, openMermaid = T, copy_to_clipboard = T)
   }
 
-
-  # Add @importFrom statements
-  PackageTools::add_importFrom_statements(package.FnP, exclude_packages = "")
+  if (F) {
+    # Add @importFrom statements
+    (FNP <- package.FnP)
+    (FNP <-  "~/GitHub/Packages/PackageTools/R/DependencyTools.R")
+    PackageTools::add_importFrom_statements(FNP, exclude_packages = "")
+  }
 
 }
 
