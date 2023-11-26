@@ -10,6 +10,8 @@ DESCRIPTION <- list(
   author.email = "av@imba.oeaw.ac.at",
   license = "GPL-3 + file LICENSE",
   depends = "base",
-  imports = "checkmate",
+  imports = "NCmisc, clipr, devtools, igraph, usethis, xfun, rstudioapi",
   github.user = "vertesy"
 )
+
+

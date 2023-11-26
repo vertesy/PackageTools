@@ -9,9 +9,11 @@ try(dev.off(), silent = TRUE)
 RepositoryDir <- "~/GitHub/Packages/PackageTools"
 
 # Setup ------------------------
+"TAKE A LOOK AT"
+"~/GitHub/Packages/PackageTools/Development/config.R"
+
+
 PackageTools::create_package(RepositoryDir, config_file = 'config.R')
-create_package(RepositoryDir, config_file = 'config.R')
-#  '~/GitHub/Packages/PackageTools/Development/config.R'
 'git add commit push to remote'
 
 

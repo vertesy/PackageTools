@@ -11,8 +11,14 @@ BugReports: https://github.com/vertesy/PackageTools/issues
 Depends: 
     base
 Imports: 
-    checkmate
+    clipr,
+    devtools,
+    igraph,
+    NCmisc,
+    rstudioapi,
+    usethis,
+    xfun
 Encoding: UTF-8
-Packaged: 2023-11-26 22:59:34.322031
+Packaged: 2023-11-26 23:18:41.913382
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

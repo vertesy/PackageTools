@@ -16,3 +16,6 @@ A character vector of function names from the package.
 \description{
 Retrieves all function names from a specified package.
 }
+\examples{
+get_package_functions("tibble")
+}
