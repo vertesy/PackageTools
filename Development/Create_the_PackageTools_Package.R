@@ -10,11 +10,15 @@ RepositoryDir <- "~/GitHub/Packages/PackageTools"
 
 # Setup ------------------------
 PackageTools::create_package(RepositoryDir, config_file = 'config.R')
+create_package(RepositoryDir, config_file = 'config.R')
 #  '~/GitHub/Packages/PackageTools/Development/config.R'
 'git add commit push to remote'
 
 
 # Install your package ------------------------------------------------
+"disable rprofile by"
+rprofile()
+
 devtools::install_local(RepositoryDir, upgrade = F)
 # devtools::
 

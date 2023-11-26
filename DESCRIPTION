@@ -1,4 +1,3 @@
-Type: Package
 Package: PackageTools
 Title: PackageTools - Help for R package development.
 Version: 0.4.0
@@ -14,6 +13,6 @@ Depends:
 Imports: 
     checkmate
 Encoding: UTF-8
-Packaged: 2023-11-26 22:49:00.539559
+Packaged: 2023-11-26 22:59:34.322031
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

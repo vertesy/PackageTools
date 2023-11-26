@@ -34,6 +34,3 @@ A vector of function names that the specified function depends on, excluding spe
 \description{
 Analyzes dependencies of functions within a package, excluding specified packages and strings.
 }
-\examples{
-analyze_function_dependencies("lm", "stats", map_functions_to_packages(c("stats")), exclude_strings = c("HYPERLINK", "Deprecated"))
-}
