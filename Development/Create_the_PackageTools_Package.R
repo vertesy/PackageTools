@@ -13,7 +13,7 @@ RepositoryDir <- "~/GitHub/Packages/PackageTools"
 "~/GitHub/Packages/PackageTools/Development/config.R"
 
 
-PackageTools::create_package(RepositoryDir, config_file = 'config.R')
+PackageTools::document_and_create_package(RepositoryDir, config_file = 'config.R')
 'git add commit push to remote'
 
 

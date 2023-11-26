@@ -21,7 +21,7 @@
 #' @title Create R Package from Configuration
 #'
 #' @description Automate the creation of an R package from a configuration file.
-#' This function automates the creation of an R package by sourcing a configuration file
+#' This function automates the creation of an R package by sourcinÏg a configuration file
 #' from the specified package directory. It assumes the presence of a `config.R` file in
 #' the `Development` subdirectory of the package.
 #'
@@ -36,10 +36,10 @@
 #' @importFrom rstudioapi isAvailable
 #'
 #' @examples
-#' create_package("~/GitHub/Packages/PackageX", "config.R", TRUE)
+#' document_and_create_package("~/GitHub/Packages/PackageX", "config.R", TRUE)
 #'
 #' @export
-create_package <- function(package_dir,
+document_and_create_package <- function(package_dir,
                            config_file = "config.R",
                            backup_r_script = TRUE,
                            update_citation = TRUE) {
