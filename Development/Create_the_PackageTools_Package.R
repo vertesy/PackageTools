@@ -25,7 +25,8 @@ devtools::install_local(RepositoryDir, upgrade = F)
 # devtools::
 
 # Test if you can install from github ------------------------------------------------
-pak::pkg_install("vertesy/PackageTools")
+remote.path <- file.path(DESCRIPTION$'github.user', DESCRIPTION$'package.name')
+pak::pkg_install(remote.path)
 # unload(PackageTools)
 # require("PackageTools")
 # # remove.packages("PackageTools")
@@ -55,13 +56,19 @@ PackageTools::extract_package_dependencies(RepositoryDir)
 
 # Try to find and add missing @importFrom statements------------------------------------------------
 if (F) {
+  devtools::load_all("~/GitHub/Packages/PackageTools/")
+  (excluded.packages <- unlist(strsplit(DESCRIPTION$'depends', split = ", ")))
   (FNP <- list.files(file.path(RepositoryDir, "R"), full.names = T))
   for (Fx in FNP) {
-    PackageTools::add_importFrom_statements(Fx, exclude_packages = "")
+    PackageTools::add_importFrom_statements(Fx, exclude_packages = excluded.packages)
   }
 }
 
 
+
+
+# Generate the list of functions ------------------------------------------------
+PackageTools::parse_roxygen(FNP)
 
 
 
