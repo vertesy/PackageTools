@@ -14,7 +14,10 @@
 # _____________________________________________________________________________________________ ----
 
 
-# ____________________________________________________________________________________________ ----
+# _____________________________________________________________________________________________ ----
+# 1. Package Section ---------------------------------------------------------------------------
+
+
 #' @title Create R Package from Configuration
 #'
 #' @description Automate the creation of an R package from a configuration file.
@@ -46,7 +49,7 @@ create_package <- function(package_dir,
   }
 
   # Parse DESCRIPTION
-  DESCRIPTION <- parse_description(config_path)
+  DESCRIPTION <- .parse_description(config_path)
 
   # Set up directories and file paths
   RepositoryDir <- package_dir
@@ -77,11 +80,11 @@ create_package <- function(package_dir,
 
   # Update CITATION.cff if requested
   if (update_citation) {
-    update_citation_file(RepositoryDir, DESCRIPTION$Version)
+    .update_citation_file(RepositoryDir, DESCRIPTION$Version)
   }
 }
 
-# _____________________________________________________________________________________________ ----
+# _____________________________________________________________________________________________
 #' @title Parse DESCRIPTION File
 #'
 #' @description Helper function to parse the DESCRIPTION file from a configuration file.
@@ -91,7 +94,7 @@ create_package <- function(package_dir,
 #' @importFrom utils person
 #' @importFrom base source
 #' @return A list representing the DESCRIPTION file.
-parse_description <- function(config_path) {
+.parse_description <- function(config_path) {
   source(config_path)
   list(
     Package = DESCRIPTION$"package.name",
@@ -112,7 +115,7 @@ parse_description <- function(config_path) {
   )
 }
 
-# _____________________________________________________________________________________________ ----
+# _____________________________________________________________________________________________
 #' @title Helper function to update the CITATION file of a package.
 #' @description Update the CITATION.cff file of a package based on its version.
 #'
@@ -121,7 +124,7 @@ parse_description <- function(config_path) {
 #'
 #' @importFrom xfun gsub_file
 #' @return None
-update_citation_file <- function(RepositoryDir, version) {
+.update_citation_file <- function(RepositoryDir, version) {
   citpath <- file.path(RepositoryDir, 'CITATION.cff')
   xfun::gsub_file(file = citpath, perl = TRUE,
                   pattern = "^version: v.+",
@@ -129,6 +132,63 @@ update_citation_file <- function(RepositoryDir, version) {
 }
 
 
+
+# _____________________________________________________________________________________________ ----
+# 2. Documenting Dependencies ---------------------------------------------------------------------------
+
+#' @title Extract Package Dependencies
+#'
+#' @description This function checks the package dependencies by listing functions used in all R scripts
+#' found in a specified package directory and writes them to a dependencies file, separated
+#' by script.
+#'
+#' @param package_dir The path to the package directory. Default: '~/GitHub/Packages/PackageX'.
+#' @param path_dep_file The relative path from the package directory to the dependencies file.
+#'                      Default: 'Development/Dependencies.R'.
+#' @return None
+#'
+#' @examples
+#' extract_package_dependencies("~/GitHub/Packages/PackageX",
+#'                          "Development/Dependencies.R")
+#'
+#' @importFrom NCmisc list.functions.in.file
+#' @importFrom clipr write_clip
+#'
+#' @export
+extract_package_dependencies <- function(package_dir, output_file = 'Development/Dependencies.R') {
+  # Assertions
+  stopifnot(
+    is.character(package_dir),
+    is.character(output_file),
+    dir.exists(file.path(package_dir, "R"))
+  )
+
+  depFile <- file.path(package_dir, output_file)
+  r_files <- list.files(file.path(package_dir, "R"), full.names = TRUE, pattern = "\\.R$")
+
+  # Overwrite with timestamp at the beginning
+  cat(paste("Dependency file generated on", date(), "\n\n"), append = FALSE,file = depFile)
+
+  # Iterating over R files
+  for (file in r_files) {
+    print(file)
+    f.deps <- NCmisc::list.functions.in.file(filename = file)
+    clipr::write_clip(f.deps)
+
+    # Writing to dependencies file
+    sink(file = depFile, append = TRUE)
+    cat("", file = depFile, append = TRUE)
+    cat(paste0(rep("#",100),collapse = ""), "\n", file = depFile, append = TRUE) # Separator
+    cat(basename(file), file = depFile, append = TRUE, fill = TRUE)
+    cat(paste0(rep("#",100),collapse = ""), "\n", file = depFile, append = TRUE) # Separator
+    print(f.deps)
+    sink()
+    p.deps <- gsub(x = names(f.deps), pattern = 'package:', replacement = '')
+    write(x = p.deps, file = depFile, append = TRUE)
+  }
+  # Output assertion
+  stopifnot(file.exists(depFile))
+}
 
 
 
