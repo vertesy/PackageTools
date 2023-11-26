@@ -333,6 +333,9 @@ convert_igraph_to_mermaid <- function(
     mermaid_code <- paste0("\n", mermaid_code, "%% ```\n")
   }
 
+  mermaid_code <- paste0("\n", mermaid_code, "%% *created by `convert_igraph_to_mermaid()`*\n")
+
+
   stopifnot("Mermaid.js code should be a non-empty string" = is.character(mermaid_code) && nchar(mermaid_code) > 0)
 
   if (copy_to_clipboard) {
