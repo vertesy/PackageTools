@@ -1,4 +1,4 @@
-# PackageTools
+# PackageTools ![status: experimental](https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/experimental.svg)
 Functions and wrappers to manage R packages (creation, documentation, dependencies, checks).
 
 ![PackageTools.logo.small](Development/PackageTools.logo.small.png)
