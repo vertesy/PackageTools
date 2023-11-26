@@ -261,7 +261,11 @@ filter_conflicts <- function(dependencies) {
 
 
 
-# _____________________________________________________________________________________________
+# _____________________________________________________________________________________________ ----
+## Diagram visualization ---------------------------------------------------------------------------
+
+
+
 
 #' Convert an igraph object to a Mermaid.js flowchart
 #'
@@ -275,6 +279,8 @@ filter_conflicts <- function(dependencies) {
 #' @param copy_to_clipboard Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.
 #' @param openMermaid open www.mermaid.live website? Default: TRUE.
 #' @param add_subgraph_template Add subgraph template? Default: TRUE.
+#' @param add_embedding_comments Add lines for direct markdown embedding of the code,
+#' formatted as mermaid comments. The `%%` must be removed in the `.md` file.
 #' @return A string containing the Mermaid.js code for the flowchart.
 #' @examples
 #' result <- pkgnet::CreatePackageReport("YourPackage")
@@ -287,7 +293,7 @@ filter_conflicts <- function(dependencies) {
 convert_igraph_to_mermaid <- function(
     graph, direction = "LR", node_shape = "round",
     copy_to_clipboard = TRUE, openMermaid = TRUE,
-    add_subgraph_template = TRUE) {
+    add_subgraph_template = TRUE, add_embedding_comments = TRUE) {
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR")
@@ -295,7 +301,14 @@ convert_igraph_to_mermaid <- function(
   )
 
   edges <- igraph::get.edgelist(graph)
-  mermaid_code <- paste("flowchart", direction, "\n")
+
+  if (add_embedding_comments) {
+    mermaid_code <- paste0("\n%%## Function relationships\n")
+    mermaid_code <- paste0(mermaid_code, "%% > (of connected functions)\n")
+    mermaid_code <- paste0(mermaid_code, "\n%% ```mermaid\n")
+  }
+
+  mermaid_code <- paste(mermaid_code, "flowchart", direction, "\n")
 
   format_node <- function(node) {
     if (node_shape == "round") {
@@ -312,8 +325,12 @@ convert_igraph_to_mermaid <- function(
   }
 
   if (add_subgraph_template) {
-    mermaid_code <- paste(mermaid_code, "subgraph SubGraphOne", sep = "\n")
-    mermaid_code <- paste(mermaid_code, "end", sep = "\n")
+    mermaid_code <- paste0(mermaid_code, "\nsubgraph SubGraphOne\n")
+    mermaid_code <- paste0(mermaid_code, "\nend\n")
+  }
+
+  if (add_embedding_comments) {
+    mermaid_code <- paste0("\n", mermaid_code, "%% ```\n")
   }
 
   stopifnot("Mermaid.js code should be a non-empty string" = is.character(mermaid_code) && nchar(mermaid_code) > 0)
