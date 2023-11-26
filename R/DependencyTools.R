@@ -103,7 +103,7 @@ map_functions_to_packages <- function(
 #'                  Default: None, a valid function name must be provided.
 #' @param package_name The name of the package containing the function.
 #'                     Default: None, a valid package name must be provided.
-#' @param func_to_pkg_map A list mapping function names to their source package.
+#' @param ls_fun_names_to_map A list function names mapped to their source package.
 #'                        Default: None, a valid mapping must be provided.
 #' @param exclude_packages A vector of package names whose functions should be excluded from the analysis.
 #'                         Default: c("base", "utils", "methods", "stats").
@@ -113,17 +113,18 @@ map_functions_to_packages <- function(
 #' @examples
 #' analyze_function_dependencies(
 #'   func_name = "column_to_rownames", package_name = "tibble",
+#'   ls_fun_names_to_map = map_functions_to_packages('tibble'),
 #'   exclude_packages = c("base", "utils", "methods", "stats"),
 #'   exclude_strings = c("HYPERLINK", "Deprecated")
 #' )
 #'
 #' @export
 analyze_function_dependencies <- function(
-    func_name, package_name, func_to_pkg_map,
+    func_name, package_name, ls_fun_names_to_map,
     exclude_packages = c("base", "utils", "methods", "stats"),
     exclude_strings = c("HYPERLINK", "Deprecated")) {
   # Input assertions
-  stopifnot(is.character(func_name), is.character(package_name), is.list(func_to_pkg_map), is.character(exclude_packages), is.character(exclude_strings))
+  stopifnot(is.character(func_name), is.character(package_name), is.list(ls_fun_names_to_map), is.character(exclude_packages), is.character(exclude_strings))
 
   func <- get(func_name, envir = asNamespace(package_name))
   func_body <- deparse(body(func))
@@ -142,7 +143,7 @@ analyze_function_dependencies <- function(
 
   # Map function calls to their packages
   func_calls_with_pkg <- sapply(func_calls, function(fn) {
-    pkg <- func_to_pkg_map[[fn]]
+    pkg <- ls_fun_names_to_map[[fn]]
     if (!is.null(pkg)) {
       return(paste0(pkg, "::", fn))
     }
@@ -177,10 +178,10 @@ analyze_package_dependencies <- function(
     extended_search = FALSE, verbose = FALSE) {
   # Input assertions
   stopifnot(is.character(packages), is.character(exclude_packages), is.logical(extended_search))
-  func_to_pkg_map <- map_functions_to_packages(packages, extended_search, verbose = verbose)
+  ls_fun_names_to_map <- map_functions_to_packages(packages, extended_search, verbose = verbose)
   dependencies <- lapply(packages, function(pkg) {
     funcs <- get_package_functions(pkg)
-    deps <- lapply(funcs, function(fn) analyze_function_dependencies(fn, pkg, func_to_pkg_map, exclude_packages))
+    deps <- lapply(funcs, function(fn) analyze_function_dependencies(fn, pkg, ls_fun_names_to_map, exclude_packages))
     setNames(deps, funcs)
   })
   setNames(dependencies, packages)

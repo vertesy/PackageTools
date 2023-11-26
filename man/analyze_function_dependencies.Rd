@@ -7,7 +7,7 @@
 analyze_function_dependencies(
   func_name,
   package_name,
-  func_to_pkg_map,
+  ls_fun_names_to_map,
   exclude_packages = c("base", "utils", "methods", "stats"),
   exclude_strings = c("HYPERLINK", "Deprecated")
 )
@@ -19,7 +19,7 @@ Default: None, a valid function name must be provided.}
 \item{package_name}{The name of the package containing the function.
 Default: None, a valid package name must be provided.}
 
-\item{func_to_pkg_map}{A list mapping function names to their source package.
+\item{ls_fun_names_to_map}{A list mapping function names to their source package.
 Default: None, a valid mapping must be provided.}
 
 \item{exclude_packages}{A vector of package names whose functions should be excluded from the analysis.
@@ -37,6 +37,7 @@ Analyzes dependencies of functions within a package, excluding specified package
 \examples{
 analyze_function_dependencies(
   func_name = "column_to_rownames", package_name = "tibble",
+  ls_fun_names_to_map = map_functions_to_packages('tibble'),
   exclude_packages = c("base", "utils", "methods", "stats"),
   exclude_strings = c("HYPERLINK", "Deprecated")
 )
