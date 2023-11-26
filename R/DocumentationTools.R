@@ -95,12 +95,12 @@ parse_description <- function(config_path) {
   source(config_path)
   list(
     Package = DESCRIPTION$"package.name",
-    Type = "Package",
+    # Type = "Package",
     Title = DESCRIPTION$"title",
     Version = DESCRIPTION$"version",
     Author = person(given = DESCRIPTION$"author.given", family = DESCRIPTION$"author.family",
                     email = DESCRIPTION$"author.email", role = c("aut", "cre")),
-    AuthorsR = paste0('person(given = "', DESCRIPTION$"author.given",
+    "Authors@R" = paste0('person(given = "', DESCRIPTION$"author.given",
                       '", family = "', DESCRIPTION$"author.family",
                       '", email = "', DESCRIPTION$"author.email", '", role = c("aut", "cre"))'),
     Description = DESCRIPTION$"description",
