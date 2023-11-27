@@ -126,7 +126,7 @@ list_of_funs_to_markdown_simple <- function(
 #' @export
 
 list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
-                          write_title_field = TRUE, fun_header_level = "####", open_results = TRUE,
+                          write_title_field = TRUE, fun_header_level = "####", open_results = TRUE
                           # add_script_name = TRUE
                           ) {
   warning("Does not find all functions sometimes!!!")
