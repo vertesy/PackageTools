@@ -10,7 +10,6 @@ require(PackageTools)
 devtools::load_all("~/GitHub/Packages/PackageTools/")
 
 # Setup ------------------------
-
 repository.dir <- "~/GitHub/Packages/PackageTools"
 config.path <- file.path(repository.dir, "Development/config.R")
 
