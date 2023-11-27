@@ -264,7 +264,8 @@ filter_conflicts <- function(dependencies) {
 #' @return Nothing.
 .count_and_print_function_summary <- function(dependencies) {
   counts <- sapply(dependencies, function(pkg_deps) length(pkg_deps))
-  message_string <- paste(sapply(names(counts), function(pkg) paste(length(dependencies[[pkg]]), "functions in", pkg)), collapse = " and ")
+  message_string <- paste(sapply(names(counts), function(pkg)
+      paste(length(dependencies[[pkg]]), "functions in", pkg)), collapse = " and ")
   message(message_string, " are returned")
 }
 
@@ -290,6 +291,8 @@ filter_conflicts <- function(dependencies) {
 #' @param add_subgraph_template Add subgraph template? Default: TRUE.
 #' @param add_embedding_comments Add lines for direct markdown embedding of the code,
 #' formatted as mermaid comments. The `%%` must be removed in the `.md` file.
+#' @param pkg_path_for_scripts_as_subgraphs Do you want to add it to subgraphs? Provide the package
+#'  path for scripts represented as subgraphs."
 #' @return A string containing the Mermaid.js code for the flowchart.
 #' @examples
 #' result <- pkgnet::CreatePackageReport("YourPackage")
@@ -301,8 +304,9 @@ filter_conflicts <- function(dependencies) {
 #' @export
 convert_igraph_to_mermaid <- function(
     graph, direction = "LR", node_shape = "round",
-    copy_to_clipboard = TRUE, openMermaid = TRUE,
+    copy_to_clipboard = TRUE, openMermaid = TRUE, pkg_path_for_scripts_as_subgraphs = FALSE
     add_subgraph_template = TRUE, add_embedding_comments = TRUE) {
+
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR")
@@ -334,8 +338,17 @@ convert_igraph_to_mermaid <- function(
   }
 
   if (add_subgraph_template) {
-    mermaid_code <- paste0(mermaid_code, "\nsubgraph SubGraphOne\n")
-    mermaid_code <- paste0(mermaid_code, "\nend\n")
+    if (isFALSE(pkg_path_for_scripts_as_subgraphs)) {
+      mermaid_code <- paste0(mermaid_code, "\nsubgraph SubGraphOne\n")
+      mermaid_code <- paste0(mermaid_code, "\nend\n")
+    } else {
+      stopifnot(dir.exists(pkg_path_for_scripts_as_subgraphs))
+      ls.scripts <- list.files(file.path(pkg_path_for_scripts_as_subgraphs,"R"), pattern = "*.R$")
+      for (script in ls.scripts) {
+        mermaid_code <- paste0(mermaid_code, "\nsubgraph ", script, "\n")
+        mermaid_code <- paste0(mermaid_code, "\nend\n")
+      }
+    }
   }
 
   if (add_embedding_comments) {
