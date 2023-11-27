@@ -30,5 +30,5 @@ A list of dependencies for each function in the specified packages.
 Analyzes and maps the dependencies of all functions in a set of packages.
 }
 \examples{
-analyze_package_dependencies(c("stats", "utils"))
+analyze_package_dependencies(c("tibble", "forcats"))
 }

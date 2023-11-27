@@ -37,7 +37,7 @@ Analyzes dependencies of functions within a package, excluding specified package
 \examples{
 analyze_function_dependencies(
   func_name = "column_to_rownames", package_name = "tibble",
-  ls_fun_names_to_map = map_functions_to_packages('tibble'),
+  ls_fun_names_to_map = map_functions_to_packages("tibble"),
   exclude_packages = c("base", "utils", "methods", "stats"),
   exclude_strings = c("HYPERLINK", "Deprecated")
 )
