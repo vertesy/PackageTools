@@ -6,7 +6,7 @@
 \usage{
 find_package_calls(
   body_content,
-  pattern = "\\\\b\\\\w+::\\\\w+\\\\b",
+  pattern = "\\\\b\\\\w+::[\\\\w.]+\\\\b",
   exclude_packages = c()
 )
 }

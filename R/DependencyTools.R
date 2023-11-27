@@ -304,7 +304,7 @@ filter_conflicts <- function(dependencies) {
 #' @export
 convert_igraph_to_mermaid <- function(
     graph, direction = "LR", node_shape = "round",
-    copy_to_clipboard = TRUE, openMermaid = TRUE, pkg_path_for_scripts_as_subgraphs = FALSE
+    copy_to_clipboard = TRUE, openMermaid = TRUE, pkg_path_for_scripts_as_subgraphs = FALSE,
     add_subgraph_template = TRUE, add_embedding_comments = TRUE) {
 
   stopifnot(

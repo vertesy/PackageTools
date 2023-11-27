@@ -19,7 +19,7 @@ Default: None, a valid function name must be provided.}
 \item{package_name}{The name of the package containing the function.
 Default: None, a valid package name must be provided.}
 
-\item{ls_fun_names_to_map}{A list mapping function names to their source package.
+\item{ls_fun_names_to_map}{A list function names mapped to their source package.
 Default: None, a valid mapping must be provided.}
 
 \item{exclude_packages}{A vector of package names whose functions should be excluded from the analysis.

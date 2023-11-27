@@ -10,6 +10,7 @@ convert_igraph_to_mermaid(
   node_shape = "round",
   copy_to_clipboard = TRUE,
   openMermaid = TRUE,
+  pkg_path_for_scripts_as_subgraphs = FALSE,
   add_subgraph_template = TRUE,
   add_embedding_comments = TRUE
 )
@@ -24,6 +25,9 @@ convert_igraph_to_mermaid(
 \item{copy_to_clipboard}{Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.}
 
 \item{openMermaid}{open www.mermaid.live website? Default: TRUE.}
+
+\item{pkg_path_for_scripts_as_subgraphs}{Do you want to add it to subgraphs? Provide the package
+path for scripts represented as subgraphs."}
 
 \item{add_subgraph_template}{Add subgraph template? Default: TRUE.}
 

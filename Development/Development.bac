@@ -25,13 +25,14 @@
 #' @return This function does not return a value; it writes output to the specified file.
 #' @examples
 #' \dontrun{
-#' parse_roxygen_simple("path/to/your_script.R", "path/to/output_file.txt")
+#' list_of_funs_to_markdown_simple("path/to/your_script.R", "path/to/output_file.txt")
 #' }
 #' @export
 
-parse_roxygen_simple <- function(
+list_of_funs_to_markdown_simple <- function(
     file, output_file = .convertFilePathToOutput(file),
     fun_header_level = "####", open_results = TRUE) {
+
   # Input argument assertions
   stopifnot(is.character(file), length(file) == 1, file.exists(file))
   stopifnot(is.character(output_file), length(output_file) == 1)
@@ -70,6 +71,9 @@ parse_roxygen_simple <- function(
   file_conn <- file(output_file, open = "w")
 
   cat(paste0("## List of Functions (", length(function_names) - 1, ") \n"), file = file_conn)
+  cat(paste0("## List of Functions in ", basename(file), " ("
+             , length(function_names) - 1, ") \n"), file = file_conn)
+
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
   cat("For details, please use the `help()` function, or browse the source code.")
 
@@ -94,7 +98,7 @@ parse_roxygen_simple <- function(
 }
 
 # Use the function
-# parse_roxygen_simple("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
+# list_of_funs_to_markdown_simple("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
 
 
 # __________________________________________________________________________________________
@@ -113,15 +117,18 @@ parse_roxygen_simple <- function(
 #' @param fun_header_level The markdown header level to be used for function names.
 #'                         Default: "####".
 #' @param open_results Open resulting file? Default: TRUE.
+# #' @param add_script_name add the R script's name to .md? Default: TRUE.
 #' @return This function does not return a value; it writes output to the specified markdown file.
 #' @examples
 #' \dontrun{
-#' parse_roxygen("path/to/your_script.R", "path/to/output_file.md")
+#' list_of_funs_to_markdown("path/to/your_script.R", "path/to/output_file.md")
 #' }
 #' @export
 
-parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
-                          write_title_field = TRUE, fun_header_level = "####", open_results = TRUE) {
+list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
+                          write_title_field = TRUE, fun_header_level = "####", open_results = TRUE
+                          # add_script_name = TRUE
+                          ) {
   warning("Does not find all functions sometimes!!!")
 
   # Input argument assertions
@@ -204,8 +211,10 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
   # Open a connection to the output file
   file_conn <- file(output_file, open = "w")
 
+
   # cat("## List of Functions\n", file = file_conn)
-  cat(paste0("## List of Functions (", length(function_names) - 1, ") \n"), file = file_conn)
+  cat(paste0("## List of Functions in ", basename(file), " ("
+             , length(function_names) - 1, ") \n"), file = file_conn)
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
   cat("For details, please use the `help()` function, or browse the source code.")
 
@@ -234,7 +243,7 @@ parse_roxygen <- function(file, output_file = .convertFilePathToOutput(file, ext
 
 
 # Use the function
-# parse_roxygen("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
+# list_of_funs_to_markdown("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
 
 
 
