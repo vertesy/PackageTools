@@ -254,25 +254,9 @@ config <- list(
 
 # List of Functions
 
-### PackageTools.R (3) 
+## List of Functions in DependencyTools.R (6) 
 
-Updated: 2023/11/24 16:45
-
-- #### 1 `list_of_funs_to_markdown_simple()`
-
-  Parse Roxygen Comments. Extracts and summarizes Roxygen documentation comments from a specified R script file.
-
-- #### 2 `list_of_funs_to_markdown()`
-
-
-- #### 3 `.convertFilePathToOutput()`
-
-  Convert File Path for Documentation. Converts a file path from an R script format to a markdown file format,
-
-
-### DependencyTools.R (5) 
-
-Updated: 2023/11/25 14:00
+Updated: 2023/11/27 11:07
 
 - #### 1 `get_package_functions()`
 
@@ -300,31 +284,105 @@ Updated: 2023/11/25 14:00
 
 
 
-## Function relationships
+## List of Functions in DocumentationTools.R (3) 
 
-> (of connected functions)
+Updated: 2023/11/27 11:07
+
+- #### 1 `document_and_create_package()`
+
+  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcinÏg a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
+
+- #### 2 `.parse_description()`
+
+  Parse DESCRIPTION File. Helper function to parse the DESCRIPTION file from a configuration file. 
+
+- #### 3 `.update_citation_file()`
+
+  Helper function to update the CITATION file of a package.. Update the CITATION.cff file of a package based on its version. 
 
 
 
-```mermaid
-flowchart LR
+## List of Functions in RoxygenTools.R (3) 
 
-subgraph DependencyTools
-  filter_dependencies(filter_dependencies) --> .count_and_print_function_summary(.count_and_print_function_summary)
-  filter_conflicts(filter_conflicts) --> .count_and_print_function_summary(.count_and_print_function_summary)
-  map_functions_to_packages(map_functions_to_packages) --> get_package_functions(get_package_functions)
-  analyze_package_dependencies(analyze_package_dependencies) --> map_functions_to_packages(map_functions_to_packages)
-  analyze_package_dependencies(analyze_package_dependencies) --> get_package_functions(get_package_functions)
-  analyze_package_dependencies(analyze_package_dependencies) --> analyze_function_dependencies(analyze_function_dependencies)
+Updated: 2023/11/27 11:07
+
+- #### 1 `add_importFrom_statements()`
+
+  Main Function to Process R Script for Package Calls. Reads an R script file, processes its content to find and add `@importFrom` statements  for package function calls in function bodies. The statements are added to the Roxygen documentation  blocks of the functions. Default: Excludes "MarkdownReports" from processing.
+
+- #### 2 `get_function_bodies()`
+
+  Extract Function Bodies from R Script. This function identifies the start and end lines of each function body in an R script.  Each function body is extracted for further processing. Default: Extracts function bodies from  a given R script content.
+
+- #### 3 `find_package_calls()`
+
+  Finding `::` Usage within Function Bodies. Searches for package function calls using the `::` operator within the given content of  function bodies, excluding specified packages. Default: Searches for `::` usage, excluding packages  listed in `exclude_packages`.
+
+  
+
+## List of Functions in ReplacementTools.R (1) 
+
+Updated: 2023/11/27 11:07
+
+- #### 1 `replace_tf_with_true_false()`
+
+  Replace T and F with TRUE and FALSE in R Scripts. This function reads an R script, safely replaces all instances of `T` with `TRUE`  and `F` with `FALSE`, under specific conditions, and writes the modified script back to a file. 
+
+
+
+## List of Functions in PackageTools.R (3) 
+
+Updated: 2023/11/27 11:07
+
+- #### 1 `  function_lines()`
+
+  Parse Roxygen Comments. Extracts and summarizes Roxygen documentation comments from a specified R script file.  This function reads an R script, identifies Roxygen comments for function titles and descriptions,  and writes a summary to an output file. 
+
+- #### 2 `        "functions are defined (as `()`
+
+  Parse Roxygen Comments from R Script. This function parses a given R script for Roxygen comments, extracts function titles and descriptions,               and writes a summary to an output markdown file. The output file can have a custom name, and the               function allows specifying the header level for functions in the markdown file. 
+
+- #### 3 `source_file_stats_analyzer()`
+
+  Analyze File for Code and Comment Statistics. This function analyzes a given file, counting the number of lines of code and comments.  It also identifies files that are sourced within the provided file. The function uses regular  expressions to differentiate between code and comment lines and to extract the names of sourced files. 
+
+
+
+# Function relationships
+ > (of connected functions)
+
+ ```mermaid
+ flowchart LR 
+  
+subgraph DependencyTools.R
+
+    map_functions_to_packages(map_functions_to_packages) --> get_package_functions(get_package_functions)
+    analyze_package_dependencies(analyze_package_dependencies) --> map_functions_to_packages(map_functions_to_packages)
+    analyze_package_dependencies(analyze_package_dependencies) --> get_package_functions(get_package_functions)
+    analyze_package_dependencies(analyze_package_dependencies) --> analyze_function_dependencies(analyze_function_dependencies)
+  
+    filter_dependencies(filter_dependencies) --> .count_and_print_function_summary(.count_and_print_function_summary)
+    filter_conflicts(filter_conflicts) --> .count_and_print_function_summary(.count_and_print_function_summary)
+
 end
-subgraph RoxygenTools
-  add_import_from(add_import_from) --> find_package_calls(find_package_calls)
+
+subgraph DocumentationTools.R
+    document_and_create_package(document_and_create_package) --> .update_citation_file(.update_citation_file)
+    document_and_create_package(document_and_create_package) --> .parse_description(.parse_description)
+end
+
+
+subgraph ReplacementTools.R
+    replace_tf_with_true_false(replace_tf_with_true_false) --> .safely_replace_tf(.safely_replace_tf)
+end
+
+subgraph RoxygenTools.R
+add_import_from(add_import_from) --> find_package_calls(find_package_calls)
   add_importFrom_statements(add_importFrom_statements) --> get_function_bodies(get_function_bodies)
   add_importFrom_statements(add_importFrom_statements) --> add_import_from(add_import_from)
 end
-```
-
-> *created by `convert_igraph_to_mermaid()`*
+ ```
+ *created by `convert_igraph_to_mermaid()`*
 
 # Contributing
 
