@@ -32,7 +32,6 @@
 list_of_funs_to_markdown_simple <- function(
     file, output_file = .convertFilePathToOutput(file),
     fun_header_level = "####", open_results = TRUE) {
-
   # Input argument assertions
   stopifnot(is.character(file), length(file) == 1, file.exists(file))
   stopifnot(is.character(output_file), length(output_file) == 1)
@@ -71,8 +70,10 @@ list_of_funs_to_markdown_simple <- function(
   file_conn <- file(output_file, open = "w")
 
   cat(paste0("## List of Functions (", length(function_names) - 1, ") \n"), file = file_conn)
-  cat(paste0("## List of Functions in ", basename(file), " ("
-             , length(function_names) - 1, ") \n"), file = file_conn)
+  cat(paste0(
+    "## List of Functions in ", basename(file), " (",
+    length(function_names) - 1, ") \n"
+  ), file = file_conn)
 
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
   cat("For details, please use the `help()` function, or browse the source code.")
@@ -126,9 +127,9 @@ list_of_funs_to_markdown_simple <- function(
 #' @export
 
 list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
-                          write_title_field = TRUE, fun_header_level = "####", open_results = TRUE
-                          # add_script_name = TRUE
-                          ) {
+                                     write_title_field = TRUE, fun_header_level = "####", open_results = TRUE
+                                     # add_script_name = TRUE
+) {
   warning("Does not find all functions sometimes!!!")
 
   # Input argument assertions
@@ -213,8 +214,10 @@ list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutpu
 
 
   # cat("## List of Functions\n", file = file_conn)
-  cat(paste0("## List of Functions in ", basename(file), " ("
-             , length(function_names) - 1, ") \n"), file = file_conn)
+  cat(paste0(
+    "## List of Functions in ", basename(file), " (",
+    length(function_names) - 1, ") \n"
+  ), file = file_conn)
   cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n"), file = file_conn)
   cat("For details, please use the `help()` function, or browse the source code.")
 

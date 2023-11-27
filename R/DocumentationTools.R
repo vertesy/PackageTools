@@ -40,9 +40,9 @@
 #'
 #' @export
 document_and_create_package <- function(package_dir,
-                           config_file = "config.R",
-                           backup_r_script = TRUE,
-                           update_citation = TRUE) {
+                                        config_file = "config.R",
+                                        backup_r_script = TRUE,
+                                        update_citation = TRUE) {
   # Source configuration file
   config_path <- file.path(package_dir, "Development", config_file)
   if (!file.exists(config_path)) {

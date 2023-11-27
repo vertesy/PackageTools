@@ -113,7 +113,7 @@ map_functions_to_packages <- function(
 #' @examples
 #' analyze_function_dependencies(
 #'   func_name = "column_to_rownames", package_name = "tibble",
-#'   ls_fun_names_to_map = map_functions_to_packages('tibble'),
+#'   ls_fun_names_to_map = map_functions_to_packages("tibble"),
 #'   exclude_packages = c("base", "utils", "methods", "stats"),
 #'   exclude_strings = c("HYPERLINK", "Deprecated")
 #' )
@@ -264,8 +264,9 @@ filter_conflicts <- function(dependencies) {
 #' @return Nothing.
 .count_and_print_function_summary <- function(dependencies) {
   counts <- sapply(dependencies, function(pkg_deps) length(pkg_deps))
-  message_string <- paste(sapply(names(counts), function(pkg)
-      paste(length(dependencies[[pkg]]), "functions in", pkg)), collapse = " and ")
+  message_string <- paste(sapply(names(counts), function(pkg) {
+    paste(length(dependencies[[pkg]]), "functions in", pkg)
+  }), collapse = " and ")
   message(message_string, " are returned")
 }
 
@@ -306,7 +307,6 @@ convert_igraph_to_mermaid <- function(
     graph, direction = "LR", node_shape = "round",
     copy_to_clipboard = TRUE, openMermaid = TRUE, pkg_path_for_scripts_as_subgraphs = FALSE,
     add_subgraph_template = TRUE, add_embedding_comments = TRUE) {
-
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR")
@@ -343,7 +343,7 @@ convert_igraph_to_mermaid <- function(
       mermaid_code <- paste0(mermaid_code, "\nend\n")
     } else {
       stopifnot(dir.exists(pkg_path_for_scripts_as_subgraphs))
-      ls.scripts <- list.files(file.path(pkg_path_for_scripts_as_subgraphs,"R"), pattern = "*.R$")
+      ls.scripts <- list.files(file.path(pkg_path_for_scripts_as_subgraphs, "R"), pattern = "*.R$")
       for (script in ls.scripts) {
         mermaid_code <- paste0(mermaid_code, "\nsubgraph ", script, "\n")
         mermaid_code <- paste0(mermaid_code, "\nend\n")
