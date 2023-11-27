@@ -2,7 +2,7 @@
 # Miscellaneous.R
 #####################################################################
 # source('~/GitHub/Packages/PackageTools/R/Miscellaneous.R')
-# stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = T); gc()
+# stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
 # _____________________________________________________________________________________________ ----

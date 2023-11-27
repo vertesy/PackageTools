@@ -2,7 +2,7 @@
 # DependencyTools.R
 #####################################################################
 # source('~/GitHub/Packages/PackageTools/R/DependencyTools.R')
-# stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = T); gc()
+# stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
 # _____________________________________________________________________________________________ ----
@@ -55,9 +55,9 @@ map_functions_to_packages <- function(
   func_to_pkg <- list()
 
   # Mapping within specified packages
-  cat("--- listing functions:", fill = T)
+  cat("--- listing functions:", fill = TRUE)
   for (pkg in packages) {
-    cat(pkg, fill = T) # if(verbose)
+    cat(pkg, fill = TRUE) # if(verbose)
 
     funcs <- get_package_functions(pkg)
     for (fn in funcs) {
@@ -66,12 +66,12 @@ map_functions_to_packages <- function(
   }
 
   if (extended_search) {
-    cat("--- extended search among installed packages:", fill = T)
+    cat("--- extended search among installed packages:", fill = TRUE)
     all_installed_packages <- setdiff(installed.packages()[, "Package"], exclude_from_extended)
-    cat(length(all_installed_packages), " installed packages.", fill = T)
+    cat(length(all_installed_packages), " installed packages.", fill = TRUE)
 
     for (pkg in setdiff(all_installed_packages, packages)) {
-      if (verbose) cat(pkg, fill = T)
+      if (verbose) cat(pkg, fill = TRUE)
 
       # Safely load package namespaces
       tryCatch(
@@ -215,7 +215,7 @@ filter_dependencies <- function(dependencies, include_only_with_deps = TRUE) {
       lapply(dependencies, function(pkg_deps) Filter(function(d) length(d) == 0, pkg_deps))
     }
   # w_wo <- if(include_only_with_deps) "with" else  "without"
-  # cat(">>>", length(dependencies_filtered), "functions found", w_wo, "dependencies.", fill = T)
+  # cat(">>>", length(dependencies_filtered), "functions found", w_wo, "dependencies.", fill = TRUE)
   .count_and_print_function_summary(dependencies_filtered)
 
   return(dependencies_filtered)

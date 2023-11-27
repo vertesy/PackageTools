@@ -2,7 +2,7 @@
 # ReplacementTools.R
 #####################################################################
 # source('~/GitHub/Packages/PackageTools/R/ReplacementTools.R')
-# stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = T); gc()
+# stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
 
@@ -92,8 +92,8 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
 # scriptPath <- '~/GitHub/Packages/Seurat.utils/R/Seurat.Utils.R'
 #
 # # Now use the function with the expanded path
-# replace_tf_with_true_false(file_path = scriptPath, strict_mode = T,
+# replace_tf_with_true_false(file_path = scriptPath, strict_mode = TRUE,
 #                            preceding_chars =  "\\s",
 #                            following_chars = c(",", "\\)", "\\]", "$"))
 #
-# replace_tf_with_true_false(file_path = scriptPath, strict_mode = F)
+# replace_tf_with_true_false(file_path = scriptPath, strict_mode = FALSE)
