@@ -32,7 +32,8 @@ pak::pkg_install(remote.path)
 # # remove.packages(DESCRIPTION$'package.name')
 
 # CMD CHECK ------------------------------------------------
-checkres <- devtools::check(repository.dir, cran = FALSE)
+# checkres <-
+  devtools::check(repository.dir, cran = FALSE)
 
 
 

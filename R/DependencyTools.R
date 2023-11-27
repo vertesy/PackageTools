@@ -170,7 +170,7 @@ analyze_function_dependencies <- function(
 #' @param verbose Print logs? Default: FALSE.
 #' @return A list of dependencies for each function in the specified packages.
 #' @examples
-#' analyze_package_dependencies(c("stats", "utils"))
+#' analyze_package_dependencies(c("tibble", "forcats"))
 #' @export
 
 analyze_package_dependencies <- function(
