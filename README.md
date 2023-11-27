@@ -11,9 +11,9 @@ Functions and wrappers to manage R packages (creation, documentation, dependenci
 
 ## Overview
 
-`PackageTools` is designed for parsing R function source files, specifically the extraction of function  documentation details from Roxygen comments. It offers two primary functions: `parse_roxygen_simple()` and the recommended `parse_roxygen()`. Both functions serve to automate the process of generating markdown documentation from Roxygen comments in R source files, streamlining the process of maintaining up-to-date documentation for R packages.
+`PackageTools` is designed for parsing R function source files, specifically the extraction of function  documentation details from Roxygen comments. It offers two primary functions: `list_of_funs_to_markdown_simple()` and the recommended `list_of_funs_to_markdown()`. Both functions serve to automate the process of generating markdown documentation from Roxygen comments in R source files, streamlining the process of maintaining up-to-date documentation for R packages.
 
-### `parse_roxygen_simple()`
+### `list_of_funs_to_markdown_simple()`
 
 - **Purpose**: Extracts basic information (function names, titles, and descriptions) from Roxygen comments in an R script and writes them to a markdown file.
 - **Usage**: Intended for simpler R scripts where a quick summary of functions is needed.
@@ -24,9 +24,9 @@ Functions and wrappers to manage R packages (creation, documentation, dependenci
   - Outputs the information in a structured markdown format.
   - Optionally opens the resulting markdown file automatically.
 
-### `parse_roxygen()`
+### `list_of_funs_to_markdown()`
 
-- **Purpose**: A more advanced version of `parse_roxygen_simple`, offering enhanced parsing capabilities and additional options for output customization.
+- **Purpose**: A more advanced version of `list_of_funs_to_markdown_simple`, offering enhanced parsing capabilities and additional options for output customization.
 - **Usage**: Suitable for more complex R scripts where detailed documentation is required.
 - **Functionality**:
   - Parses Roxygen comments with greater depth, accommodating for descriptions spanning multiple lines.
@@ -258,11 +258,11 @@ config <- list(
 
 Updated: 2023/11/24 16:45
 
-- #### 1 `parse_roxygen_simple()`
+- #### 1 `list_of_funs_to_markdown_simple()`
 
   Parse Roxygen Comments. Extracts and summarizes Roxygen documentation comments from a specified R script file.
 
-- #### 2 `parse_roxygen()`
+- #### 2 `list_of_funs_to_markdown()`
 
 
 - #### 3 `.convertFilePathToOutput()`
