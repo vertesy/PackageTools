@@ -14,10 +14,10 @@
 
 
 
-parse_roxygen('~/GitHub/Packages/PackageTools/R/DependencyTools.R')
+list_of_funs_to_markdown('~/GitHub/Packages/PackageTools/R/DependencyTools.R')
 
 
-parse_roxygen_simple("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
+list_of_funs_to_markdown_simple("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
 
 scripts = c(
   '~/GitHub/Packages/Stringendo/R/Stringendo.R',
@@ -50,6 +50,6 @@ scripts = c(
 
 
 for (i in 1:length(scripts)) {
-  parse_roxygen(file = scripts[i], write_title_field = T)
-  parse_roxygen_simple(file = scripts[i])
+  list_of_funs_to_markdown(file = scripts[i], write_title_field = T)
+  list_of_funs_to_markdown_simple(file = scripts[i])
 }
