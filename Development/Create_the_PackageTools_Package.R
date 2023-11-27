@@ -51,15 +51,18 @@ PackageTools::extract_package_dependencies(repository.dir)
   pkgnet_result <- pkgnet::CreatePackageReport(DESCRIPTION$'package.name')
   fun_graph     <- pkgnet_result$FunctionReporter$pkg_graph$'igraph'
 
-  PackageTools::convert_igraph_to_mermaid(graph = fun_graph, openMermaid = T, copy_to_clipboard = T)
+  PackageTools::convert_igraph_to_mermaid(graph = fun_graph
+                                          , pkg_path_for_scripts_as_subgraphs = repository.dir
+                                          , openMermaid = T, copy_to_clipboard = T)
 }
 
 
 # Try to find and add missing @importFrom statements------------------------------------------------
 devtools::load_all("~/GitHub/Packages/PackageTools/")
+(ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T, pattern = "*.R$"))
+
 if (F) {
   (excluded.packages <- unlist(strsplit(DESCRIPTION$'depends', split = ", ")))
-  (ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T))
   for (scriptX in ls.scripts.full.path) {
     PackageTools::add_importFrom_statements(scriptX, exclude_packages = excluded.packages)
   }
