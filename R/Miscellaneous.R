@@ -24,6 +24,7 @@
 #' @examples
 #' copy_github_badge("experimental")
 #' copy_github_badge("active", "https://example.com/badges/")
+#' @importFrom clipr write_clip
 #' @export
 copy_github_badge <- function(status = "experimental",
                               prefix = "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/") {
@@ -35,5 +36,9 @@ copy_github_badge <- function(status = "experimental",
   badge_link <- paste0(prefix, status, ".svg")
   markdown_text <- paste0("![status: ", status, "](", badge_link, ")")
 
-  clipr::write_clip(markdown_text)
+  if (require(clipr)) {
+    clipr::write_clip(markdown_text)
+  } else {
+    return(markdown_text)
+  }
 }
