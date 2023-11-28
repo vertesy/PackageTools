@@ -1,7 +1,7 @@
 # Configuration for the Package
 DESCRIPTION <- list(
   package.name = "PackageTools",
-  version = "0.4.8",
+  version = "0.5.0",
   title = "PackageTools - Help for R package development.",
   description = "PackageTools is a collection of utility functions for code base statistics & and dependencies.",
 

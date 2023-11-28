@@ -10,122 +10,71 @@
 
 # _____________________________________________________________________________________________ ----
 
-#' @title Set Up a New R Package
-#' @description This function sets up a new R package by copying src_pkg content into a specified directory
-#' and replacing src_pkg placeholders in file names and file contents.
+#' Setup New Package from Template
 #'
-#' @param package_name The name of the new package.
-#'                     Default: None, a valid package name must be provided.
-#' @param packages_path The root path where packages are located.
-#'                      Default: "~/GitHub/Packages/".
-#' @param src_pkg The src_pkg package name.
-#'                 Default: "PackageTools".
+#' This function sets up a new R package by copying contents from a template directory,
+#' replacing template placeholders in file names and file contents with the specified package name.
+#'
+#' @title Setup New Package from Template
+#' @description Setup a new R package by copying template contents and replacing placeholders.
+#'
+#' @param package_name Name of the new package.
+#'        Default: 'NewPackage'.
+#' @param packages_path Path to the packages directory.
+#'        Default: '~/GitHub/Packages/'.
+#' @param template_pkg Name of the template package.
+#'        Default: 'PackageTools'.
 #'
 #' @return None
 #' @export
 #'
 #' @examples
-#' setupNewRPackage("MyNewPackage", packages_path = "~/GitHub/Packages/", src_pkg = "PackageTools")
-#'
-#' @importFrom base dir.exists file.copy
-#' @importFrom stringr str_replace_all
-setupNewRPackage <- function(package_name, packages_path = "~/GitHub/Packages", src_pkg = "PackageTools") {
-  stopifnot(is.character(package_name), nchar(package_name) > 0,
-            is.character(packages_path), dir.exists(packages_path),
-            is.character(src_pkg), nchar(src_pkg) > 0)
+#' setup_new_package_from_template("MyNewPackage", "~/GitHub/Packages/", "PackageTools")
+
+setup_new_package_from_template <- function(package_name = 'NewPackage',
+                                        packages_path = '~/GitHub/Packages/',
+                                        template_pkg = 'PackageTools') {
+  stopifnot(is.character(package_name), is.character(packages_path), is.character(template_pkg))
 
   # Paths
-  template_path <- file.path(packages_path, src_pkg, "Templates")
-  print(paste("template_path", template_path))
+  template_path <- file.path(packages_path, template_pkg, 'Templates')
   new_package_path <- file.path(packages_path, package_name)
-  print(paste("new_package_path", new_package_path))
+    print(paste("From template_path", template_path))
+    print(paste("To new_package_path", new_package_path))
 
-  # Copy src_pkg contents
+  # Ensure the template directory exists
   stopifnot(dir.exists(template_path))
-  if (dir.exists(new_package_path)) warning("new_package_path exists.")
 
-  file.copy(template_path, new_package_path, recursive = TRUE)
-
-  # Rename files and replace content
-  files <- list.files(new_package_path, recursive = TRUE, full.names = TRUE)
-  for (file in files) {
-    new_file_name <- stringr::str_replace_all(file, src_pkg, package_name)
-    file.rename(file, new_file_name)
-    file_content <- readLines(new_file_name)
-    file_content <- stringr::str_replace_all(file_content, src_pkg, package_name)
-    writeLines(file_content, new_file_name)
-  }
-
-  stopifnot(dir.exists(new_package_path))
-}
-
-
-
-
-#' Set Up New R Package from Template
-#'
-#' This function sets up a new R package by copying contents from a template directory,
-#' replacing placeholder text in filenames and file contents.
-#'
-#' @title Set Up New R Package from Template
-#' @description Automate the setup of a new R package using a predefined template.
-#'
-#' @param package_name The name of the new package.
-#'                     Default: None, a valid package name must be provided.
-#' @param packages_path The path to the packages directory.
-#'                      Default: "~/GitHub/Packages/".
-#' @param template The name of the template to use.
-#'                 Default: "PackageTools".
-#'
-#' @return None
-#' @export
-#' @importFrom base dir file.exists
-#' @importFrom stringr str_replace
-setupNewPackageFromTemplate <- function(package_name,
-                                        packages_path = "~/GitHub/Packages",
-                                        template = "PackageTools") {
-  # Assertions
-  stopifnot(is.character(package_name),
-            is.character(packages_path),
-            is.character(template),
-            nchar(package_name) > 0,
-            dir.exists(packages_path),
-            dir.exists(file.path(packages_path, template, "Templates")))
-
-  # Paths
-  template_path <- file.path(packages_path, template, "Templates")
-  print(paste("template_path", template_path))
-  new_package_path <- file.path(packages_path, package_name)
-  print(paste("new_package_path", new_package_path))
-
-  # Copy Templates contents
-  stopifnot(dir.exists(template_path))
   if (dir.exists(new_package_path)) {
-    warning("new_package_path exists.")
+    warning("new_package_path already exists.")
   } else {
+    warning("new_package_path does not exists. Use usethis create_package().")
     dir.create(new_package_path, recursive = TRUE)
   }
 
-  # Copying files from the template directory
-  template_files <- list.files(template_path, full.names = TRUE)
-  sapply(template_files, function(file) {
-    new_file_name <- gsub(template, package_name, basename(file))
-    file.copy(from = file, to = file.path(new_package_path, new_file_name))
-  })
+  # Copying contents from template directory
+  file.copy(list.files(template_path, full.names = TRUE), new_package_path, recursive = TRUE)
 
-  # Replacing template name in all files
-  new_package_files <- list.files(new_package_path, full.names = TRUE, recursive = TRUE)
-  lapply(new_package_files, function(file) {
-    file_content <- readLines(file, warn = FALSE)
-    file_content <- gsub(template, package_name, file_content)
-    writeLines(file_content, file)
-  })
+  # Get all files in the new package directory
+  package_files <- list.files(new_package_path, full.names = TRUE, recursive = TRUE)
 
-  # Output assertion
-  stopifnot(dir.exists(new_package_path))
+  # Renaming files and replacing contents
+  for (file in package_files) {
+    # Replace in file names
+    file_new_name <- gsub(template_pkg, package_name, file)
+    if (file != file_new_name) {
+      file.rename(file, file_new_name)
+    }
+
+    # Replace contents if the file is a text file
+    if (grepl("\\.(R|Rmd|md|txt)$", file_new_name)) {
+      file_contents <- readLines(file_new_name, warn = FALSE)
+      file_contents <- gsub(template_pkg, package_name, file_contents)
+      writeLines(file_contents, file_new_name)
+    }
+  }
 }
 
 
-
-setupNewRPackage(package_name = "GenotypeUnmixer")
+# setup_new_package_from_template(package_name = "GenotypeUnmixerTest")
 

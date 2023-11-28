@@ -1,7 +1,7 @@
 ######################################################################################################
 # PackageTools.R
 ######################################################################################################
-# source("~/GitHub/Packages/PackageTools/Development/Create_the_PackageTools_Package.R")
+# source("~/GitHub/Packages/PackageTools/R/PackageTools.R")
 clipr::write_clip(paste0('source("',rstudioapi::getSourceEditorContext()$path,'")'))
 # rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE)
 
