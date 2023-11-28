@@ -392,7 +392,7 @@ get_parse_pkg_deps <- function(pkg = rstudioapi::getActiveProject() ) {
   stopifnot(is.character(deps$Package), length(deps$Package) > 1)
 
   # Append the import line to the config file
-  import_line <- paste0('imports = ,"', paste(deps$Package, collapse = ", "), '",')
+  import_line <- paste0('imports = "', paste(deps$Package, collapse = ", "), '",')
 
   config_file_path <- file.path(pkg, "Development/config.R")
   stopifnot(file.exists(config_file_path))
