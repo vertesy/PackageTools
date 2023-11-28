@@ -249,6 +249,13 @@ config <- list(
 ```
 
 
+# 6. PackageSetupTools
+[PackageSetupTools Wiki](../../wiki/PackageSetupTools) 
+
+
+
+
+
 
 ---------------------------------------------------------------------------------------------------------
 
