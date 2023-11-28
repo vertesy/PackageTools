@@ -42,3 +42,37 @@ copy_github_badge <- function(status = "experimental",
     return(markdown_text)
   }
 }
+
+
+
+
+# _____________________________________________________________________________________________
+#' @title Open README.md of the Current Active RStudio Project
+#'
+#' @description Opens the README.md file located in the root of the currently active RStudio project.
+#'              This function automatically detects the operating system to use the appropriate
+#'              system command for opening the file.
+#'
+#' @return Invisible NULL. The function is used for its side effect of opening a file.
+#' @importFrom rstudioapi getActiveProject
+#' @examples openReadme()  # Opens README.md in the active RStudio project
+#' @export
+
+openReadme <- function() {
+  if(requireNamespace("rstudioapi", quietly = TRUE)) {
+    readme_path <- file.path(rstudioapi::getActiveProject(), "README.md")
+  } else {
+    stop("rstudioapi package is required.")
+  }
+
+  if (Sys.info()["sysname"] == "Darwin") {
+    system(paste("open", shQuote(readme_path)))
+  } else if (Sys.info()["sysname"] == "Windows") {
+    system(paste("start", shQuote(readme_path)), wait = FALSE)
+  } else if (Sys.info()["sysname"] == "Linux") {
+    system(paste("xdg-open", shQuote(readme_path)))
+  } else {
+    stop("Unsupported operating system.")
+  }
+
+}
