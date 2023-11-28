@@ -41,7 +41,7 @@
 #' @export
 document_and_create_package <- function(package_dir,
                                         config_file = "config.R",
-                                        backup_r_script = TRUE,
+                                        backup_r_script = F,
                                         update_citation = TRUE) {
   # Source configuration file
   config_path <- file.path(package_dir, "Development", config_file)
@@ -51,11 +51,14 @@ document_and_create_package <- function(package_dir,
 
   # Parse DESCRIPTION
   DESCRIPTION <- .parse_description(config_path)
+  # print(DESCRIPTION)
+  stopifnot(!is.null(DESCRIPTION$'Version') )
+  stopifnot(!is.null(DESCRIPTION$'Package') )
 
   # Set up directories and file paths
   RepositoryDir <- package_dir
   BackupDir <- file.path(RepositoryDir, "Development")
-  package.FnP <- file.path(RepositoryDir, "R", paste0(DESCRIPTION$Package, ".R"))
+  package.FnP <- file.path(RepositoryDir, "R", paste0(DESCRIPTION$"Package", ".R"))
 
   # Create Backup Directory and Perform Backup
   if (backup_r_script) {
@@ -65,13 +68,28 @@ document_and_create_package <- function(package_dir,
   }
 
 
+  # Define the list
+  # DESCRIPTION <- list(Element1 = "Element1", Element2 = "Element2", Element3 = "", Element4 = "Element4")
+
+  # Get the indices of the empty elements
+  empty_indices <- names(which(sapply(DESCRIPTION, nchar) == 0))
+
+  # Loop over the empty indices and raise warnings
+  for(i in empty_indices) {
+    warning(paste(i, "in DESCRIPTION is empty, and now removed!"), immediate. = TRUE)
+  }
+  # Replace the empty elements with NULL
+  DESCRIPTION[empty_indices] <- NULL
+
+
+
   # Create or Update Package
   if (!dir.exists(RepositoryDir)) {
     devtools::create(path = RepositoryDir, DESCRIPTION, rstudio = rstudioapi::isAvailable())
   } else {
     setwd(RepositoryDir)
-    file.remove(c("DESCRIPTION", "NAMESPACE"))
-    usethis::create_package(path = RepositoryDir, fields = DESCRIPTION, open = FALSE)
+    # file.remove(c("DESCRIPTION", "NAMESPACE"))
+    usethis::create_tidy_package(path = RepositoryDir) #, fields = DESCRIPTION, open = FALSE
   }
 
   # Compile Package
@@ -81,9 +99,10 @@ document_and_create_package <- function(package_dir,
 
   # Update CITATION.cff if requested
   if (update_citation) {
-    .update_citation_file(RepositoryDir, DESCRIPTION$Version)
+    .update_citation_file(RepositoryDir, DESCRIPTION$"Version")
   }
 }
+# document_and_create_package(repository.dir, config_file = 'config.R')
 
 # _____________________________________________________________________________________________
 #' @title Parse DESCRIPTION File
@@ -196,3 +215,4 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
   # Output assertion
   stopifnot(file.exists(depFile))
 }
+
