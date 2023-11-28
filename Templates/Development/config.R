@@ -1,7 +1,7 @@
 # Configuration for the TEMPLATE package
 DESCRIPTION <- list(
   package.name = "TEMPLATE",
-  version = "",
+  version = "0.1.0", # do not put a "v"!
   title = ,
   description = ,
 
