@@ -1,7 +1,7 @@
 ######################################################################################################
-# Create_the_PackageTools_Package.R
+# Create_the_TEMPLATE_Package.R
 ######################################################################################################
-# source("~/GitHub/Packages/PackageTools/Development/Create_the_PackageTools_Package.R")
+# source("~/GitHub/Packages/TEMPLATE/Development/Create_the_TEMPLATE_Package.R")
 # rm(list = ls(all.names = TRUE));
 try(dev.off(), silent = TRUE)
 
@@ -10,7 +10,7 @@ require(PackageToo000ls)
 devtools::load_all("~/GitHub/Packages/PackageToo000ls")
 
 # Setup ------------------------
-repository.dir <- "~/GitHub/Packages/PackageTools"
+repository.dir <- "~/GitHub/Packages/TEMPLATE"
 config.path <- file.path(repository.dir, "Development/config.R")
 
 "TAKE A LOOK AT"
@@ -18,7 +18,7 @@ file.edit(config.path)
 source(config.path)
 
 # Install your package ------------------------------------------------
-PackageTools::document_and_create_package(repository.dir, config_file = 'config.R')
+TEMPLATE::document_and_create_package(repository.dir, config_file = 'config.R')
 'git add commit push to remote'
 
 
@@ -46,7 +46,7 @@ styler::style_pkg(repository.dir)
 
 
 # Extract package dependencies ------------------------------------------------
-PackageTools::extract_package_dependencies(repository.dir)
+TEMPLATE::extract_package_dependencies(repository.dir)
 
 
 # Visualize function dependencies within the package------------------------------------------------
@@ -55,35 +55,35 @@ PackageTools::extract_package_dependencies(repository.dir)
   pkgnet_result <- pkgnet::CreatePackageReport(DESCRIPTION$'package.name')
   fun_graph     <- pkgnet_result$FunctionReporter$pkg_graph$'igraph'
 
-  PackageTools::convert_igraph_to_mermaid(graph = fun_graph
+  TEMPLATE::convert_igraph_to_mermaid(graph = fun_graph
                                           , pkg_path_for_scripts_as_subgraphs = repository.dir
                                           , openMermaid = T, copy_to_clipboard = T)
 }
 
 
 # Try to find and add missing @importFrom statements------------------------------------------------
-devtools::load_all("~/GitHub/Packages/PackageTools/")
+devtools::load_all("~/GitHub/Packages/TEMPLATE/")
 (ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T, pattern = "*.R$"))
 
 if (F) {
   (excluded.packages <- unlist(strsplit(DESCRIPTION$'depends', split = ", ")))
   for (scriptX in ls.scripts.full.path) {
-    PackageTools::add_importFrom_statements(scriptX, exclude_packages = excluded.packages)
+    TEMPLATE::add_importFrom_statements(scriptX, exclude_packages = excluded.packages)
   }
 }
 
 
 # Generate the list of functions ------------------------------------------------
 for (scriptX in ls.scripts.full.path) {
-  PackageTools::list_of_funs_to_markdown(scriptX)
+  TEMPLATE::list_of_funs_to_markdown(scriptX)
 }
 
-PackageTools::copy_github_badge("active") # Add badge to readme via clipboard
+TEMPLATE::copy_github_badge("active") # Add badge to readme via clipboard
 
 
 # Replaces T with TRUE and F with FALSE ------------------------------------------------
 for (scriptX in ls.scripts.full.path) {
-  PackageTools::replace_tf_with_true_false(scriptX)
+  TEMPLATE::replace_tf_with_true_false(scriptX)
 }
 
 

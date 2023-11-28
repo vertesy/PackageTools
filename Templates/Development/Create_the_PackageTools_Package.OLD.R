@@ -1,7 +1,7 @@
 ######################################################################################################
-# Create_the_PackageTools_Package.R
+# Create_the_TEMPLATE_Package.R
 ######################################################################################################
-# source("~/GitHub/Packages/PackageTools/Development/Create_the_PackageTools_Package.R")
+# source("~/GitHub/Packages/TEMPLATE/Development/Create_the_TEMPLATE_Package.R")
 # rm(list = ls(all.names = TRUE));
 try(dev.off(), silent = TRUE)
 
@@ -19,7 +19,7 @@ try(dev.off(), silent = TRUE)
 
 
 # Setup ------------------------
-package.name <- 	"PackageTools"
+package.name <- 	"TEMPLATE"
 package.version <- "0.3.0"
 setwd("~/GitHub/Packages/")
 
@@ -27,13 +27,13 @@ RepositoryDir <- paste0("~/GitHub/Packages/", package.name, "/")
 fname <-	paste0(package.name, ".R")
 package.FnP <-		paste0(RepositoryDir, "R/", fname)
 
-BackupDir <- "~/GitHub/Packages/PackageTools/Development/"
+BackupDir <- "~/GitHub/Packages/TEMPLATE/Development/"
 dir.create(BackupDir)
 
-DESCRIPTION <- list("Title" = "PackageTools - ..."
+DESCRIPTION <- list("Title" = "TEMPLATE - ..."
                     , "Author" = person(given = "Abel", family = "Vertesy", email = "av@imba.oeaw.ac.at", role =  c("aut", "cre") )
                     , "Authors@R" = 'person(given = "Abel", family = "Vertesy", email = "av@imba.oeaw.ac.at", role =  c("aut", "cre") )'
-                    , "Description" = "PackageTools is a set of R tools for ...."
+                    , "Description" = "TEMPLATE is a set of R tools for ...."
                     , "License" = "GPL-3 + file LICENSE"
                     , "Version" = package.version
                     , "Packaged" =  Sys.time()
@@ -41,7 +41,7 @@ DESCRIPTION <- list("Title" = "PackageTools - ..."
                     , "Depends" =  ""
                     , "Imports" = ""
                     # , "Suggests" = ""
-                    , "BugReports"= "https://github.com/vertesy/PackageTools/issues"
+                    , "BugReports"= "https://github.com/vertesy/TEMPLATE/issues"
 )
 
 
@@ -49,7 +49,7 @@ setwd(RepositoryDir)
 if ( !dir.exists(RepositoryDir) ) { devtools::create(path = RepositoryDir, DESCRIPTION, rstudio = rstudioapi::isAvailable())
 } else {
   getwd()
-  try(file.remove(c("DESCRIPTION","NAMESPACE"))) # , "PackageTools.Rproj"
+  try(file.remove(c("DESCRIPTION","NAMESPACE"))) # , "TEMPLATE.Rproj"
   usethis::create_package(path = RepositoryDir,fields = DESCRIPTION, open = FALSE)
 }
 
@@ -86,10 +86,10 @@ devtools::install_local(RepositoryDir, upgrade = F)
 
 
 # Test if you can install from github ------------------------------------------------
-pak::pkg_install("vertesy/PackageTools")
-# unload(PackageTools)
-# require("PackageTools")
-# # remove.packages("PackageTools")
+pak::pkg_install("vertesy/TEMPLATE")
+# unload(TEMPLATE)
+# require("TEMPLATE")
+# # remove.packages("TEMPLATE")
 
 
 # Check package dependencies ------------------------------------------------
@@ -115,15 +115,15 @@ pak::pkg_install("vertesy/PackageTools")
     pkgnet_result <- pkgnet::CreatePackageReport(package.name)
     fun_graph     <- pkgnet_result$FunctionReporter$pkg_graph$'igraph'
 
-    # devtools::load_all('~/GitHub/Packages/PackageTools/R/DependencyTools.R')
-    PackageTools::convert_igraph_to_mermaid(graph = fun_graph, openMermaid = T, copy_to_clipboard = T)
+    # devtools::load_all('~/GitHub/Packages/TEMPLATE/R/DependencyTools.R')
+    TEMPLATE::convert_igraph_to_mermaid(graph = fun_graph, openMermaid = T, copy_to_clipboard = T)
   }
 
   if (F) {
     # Add @importFrom statements
     (FNP <- package.FnP)
-    (FNP <-  "~/GitHub/Packages/PackageTools/R/DependencyTools.R")
-    PackageTools::add_importFrom_statements(FNP, exclude_packages = "")
+    (FNP <-  "~/GitHub/Packages/TEMPLATE/R/DependencyTools.R")
+    TEMPLATE::add_importFrom_statements(FNP, exclude_packages = "")
   }
 
 }

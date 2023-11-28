@@ -1,6 +1,6 @@
-# Configuration for the Package
+# Configuration for the TEMPLATE package
 DESCRIPTION <- list(
-  package.name = "",
+  package.name = "TEMPLATE",
   version = "",
   title = ,
   description = ,
