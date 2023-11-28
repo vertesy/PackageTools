@@ -18,12 +18,10 @@
 #' @title Setup New Package from Template
 #' @description Setup a new R package by copying template contents and replacing placeholders.
 #'
-#' @param package_name Name of the new package.
-#'        Default: 'NewPackage'.
-#' @param packages_path Path to the packages directory.
-#'        Default: '~/GitHub/Packages/'.
-#' @param template_pkg Name of the template package.
-#'        Default: 'PackageTools'.
+#' @param package_name Name of the new package. Default: 'NewPackage'.
+#' @param packages_path Path to the packages directory. Default: '~/GitHub/Packages/'.
+#' @param template_pkg Name of the template package. Default: 'PackageTools'.
+#' @param place_holder place holder string to replace. Default: 'TEMPLATE'.
 #'
 #' @return None
 #' @export
@@ -33,7 +31,7 @@
 
 setup_new_package_from_template <- function(package_name = 'NewPackage',
                                         packages_path = '~/GitHub/Packages/',
-                                        template_pkg = 'PackageTools') {
+                                        template_pkg = 'PackageTools', place_holder = "TEMPLATE") {
   stopifnot(is.character(package_name), is.character(packages_path), is.character(template_pkg))
 
   # Paths
@@ -61,7 +59,7 @@ setup_new_package_from_template <- function(package_name = 'NewPackage',
   # Renaming files and replacing contents
   for (file in package_files) {
     # Replace in file names
-    file_new_name <- gsub(template_pkg, package_name, file)
+    file_new_name <- gsub(place_holder, package_name, file)
     if (file != file_new_name) {
       file.rename(file, file_new_name)
     }
@@ -69,7 +67,7 @@ setup_new_package_from_template <- function(package_name = 'NewPackage',
     # Replace contents if the file is a text file
     if (grepl("\\.(R|Rmd|md|txt)$", file_new_name)) {
       file_contents <- readLines(file_new_name, warn = FALSE)
-      file_contents <- gsub(template_pkg, package_name, file_contents)
+      file_contents <- gsub(place_holder, package_name, file_contents)
       writeLines(file_contents, file_new_name)
     }
   }
