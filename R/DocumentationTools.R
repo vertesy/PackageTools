@@ -82,14 +82,13 @@ document_and_create_package <- function(package_dir,
   DESCRIPTION[empty_indices] <- NULL
 
 
-
   # Create or Update Package
   if (!dir.exists(RepositoryDir)) {
     devtools::create(path = RepositoryDir, DESCRIPTION, rstudio = rstudioapi::isAvailable())
   } else {
     setwd(RepositoryDir)
-    # file.remove(c("DESCRIPTION", "NAMESPACE"))
-    usethis::create_tidy_package(path = RepositoryDir) #, fields = DESCRIPTION, open = FALSE
+    file.remove(c("DESCRIPTION", "NAMESPACE"))
+    usethis::create_package(path = RepositoryDir, fields = DESCRIPTION, open = FALSE)
   }
 
   # Compile Package
