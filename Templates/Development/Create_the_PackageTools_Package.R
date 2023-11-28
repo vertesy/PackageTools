@@ -6,8 +6,8 @@
 try(dev.off(), silent = TRUE)
 
 # Functions ------------------------
-require(PackageTools)
-devtools::load_all("~/GitHub/Packages/PackageTools/")
+require(PackageToo000ls)
+devtools::load_all("~/GitHub/Packages/PackageToo000ls")
 
 # Setup ------------------------
 repository.dir <- "~/GitHub/Packages/PackageTools"
