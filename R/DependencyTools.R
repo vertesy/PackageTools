@@ -370,3 +370,35 @@ convert_igraph_to_mermaid <- function(
 
 
 # _____________________________________________________________________________________________
+#' Parse and Get Package Dependencies for an R Package
+#'
+#' @description Extracts package dependencies from R scripts in a specified directory, typically
+#'              the 'R/' directory of an R package. This function leverages 'renv::dependencies()'
+#'              to parse the scripts and extract package names. It then appends these dependencies
+#'              to a specified configuration file.
+#'
+#' @param pkg Directory containing R scripts from which to extract dependencies.
+#'            Default: Active RStudio project's 'R' directory (assumes an RStudio project environment).
+#' @importFrom renv dependencies
+#' @importFrom rstudioapi getActiveProject
+#' @return A character vector of package dependencies found in the R scripts.
+#' @examples get_parse_pkg_deps() # Assuming an RStudio project
+#' @export
+get_parse_pkg_deps <- function(pkg = rstudioapi::getActiveProject() ) {
+  stopifnot(is.character(pkg), dir.exists(pkg))
+
+  # Extract dependencies using renv
+  deps <- renv::dependencies(path = file.path(pkg, "R"))
+  stopifnot(is.character(deps$Package), length(deps$Package) > 1)
+
+  # Append the import line to the config file
+  import_line <- paste0('imports = ,"', paste(deps$Package, collapse = ", "), '",')
+
+  config_file_path <- file.path(pkg, "Development/config.R")
+  stopifnot(file.exists(config_file_path))
+
+  cat(import_line, file = config_file_path, append = TRUE, fill = TRUE)
+
+  return(deps$Package)
+}
+
