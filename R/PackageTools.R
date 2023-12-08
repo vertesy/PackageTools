@@ -2,6 +2,8 @@
 # PackageTools.R ----
 ##################################################################### _
 # source('~/GitHub/Packages/PackageTools/R/PackageTools.R')
+# devtools::load_all("~/GitHub/Packages/PackageTools")
+# devtools::document("~/GitHub/Packages/PackageTools"); devtools::load_all("~/GitHub/Packages/PackageTools")
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
