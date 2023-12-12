@@ -7,18 +7,18 @@
 setup_new_package_from_template(
   package_name = "NewPackage",
   packages_path = "~/GitHub/Packages/",
-  template_pkg = "PackageTools"
+  template_pkg = "PackageTools",
+  place_holder = "TEMPLATE"
 )
 }
 \arguments{
-\item{package_name}{Name of the new package.
-Default: 'NewPackage'.}
+\item{package_name}{Name of the new package. Default: 'NewPackage'.}
 
-\item{packages_path}{Path to the packages directory.
-Default: '~/GitHub/Packages/'.}
+\item{packages_path}{Path to the packages directory. Default: '~/GitHub/Packages/'.}
 
-\item{template_pkg}{Name of the template package.
-Default: 'PackageTools'.}
+\item{template_pkg}{Name of the template package. Default: 'PackageTools'.}
+
+\item{place_holder}{place holder string to replace. Default: 'TEMPLATE'.}
 }
 \value{
 None
