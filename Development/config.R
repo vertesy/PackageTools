@@ -10,7 +10,7 @@ DESCRIPTION <- list(
   author.email = "av@imba.oeaw.ac.at",
   github.user = "vertesy",
   license = "GPL-3 + file LICENSE",
-  depends = "base",
+  depends = "",
   imports = "NCmisc, clipr, devtools, igraph, usethis, xfun, rstudioapi, pkgnet",
   suggests = ""
 )
