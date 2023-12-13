@@ -28,16 +28,17 @@
 #'
 #' @examples
 #' setup_new_package_from_template("MyNewPackage", "~/GitHub/Packages/", "PackageTools")
-setup_new_package_from_template <- function(package_name = "NewPackage",
-                                            packages_path = "~/GitHub/Packages/",
-                                            template_pkg = "PackageTools", place_holder = "TEMPLATE") {
+
+setup_new_package_from_template <- function(package_name = 'NewPackage',
+                                        packages_path = '~/GitHub/Packages/',
+                                        template_pkg = 'PackageTools', place_holder = "TEMPLATE") {
   stopifnot(is.character(package_name), is.character(packages_path), is.character(template_pkg))
 
   # Paths
-  template_path <- file.path(packages_path, template_pkg, "Templates")
+  template_path <- file.path(packages_path, template_pkg, 'Templates')
   new_package_path <- file.path(packages_path, package_name)
-  print(paste("From template_path", template_path))
-  print(paste("To new_package_path", new_package_path))
+    print(paste("From template_path", template_path))
+    print(paste("To new_package_path", new_package_path))
 
   # Ensure the template directory exists
   stopifnot(dir.exists(template_path))
@@ -74,3 +75,4 @@ setup_new_package_from_template <- function(package_name = "NewPackage",
 
 
 # setup_new_package_from_template(package_name = "GenotypeUnmixerTest")
+

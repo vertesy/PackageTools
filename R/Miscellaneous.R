@@ -55,11 +55,11 @@ copy_github_badge <- function(status = "experimental",
 #'
 #' @return Invisible NULL. The function is used for its side effect of opening a file.
 #' @importFrom rstudioapi getActiveProject
-#' @examples openReadme() # Opens README.md in the active RStudio project
+#' @examples openReadme()  # Opens README.md in the active RStudio project
 #' @export
 
 openReadme <- function() {
-  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+  if(requireNamespace("rstudioapi", quietly = TRUE)) {
     readme_path <- file.path(rstudioapi::getActiveProject(), "README.md")
   } else {
     stop("rstudioapi package is required.")
@@ -74,4 +74,5 @@ openReadme <- function() {
   } else {
     stop("Unsupported operating system.")
   }
+
 }

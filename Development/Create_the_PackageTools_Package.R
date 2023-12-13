@@ -7,7 +7,6 @@ try(dev.off(), silent = TRUE)
 
 # Functions ------------------------
 require(PackageTools)
-# devtools::document("~/GitHub/Packages/PackageTools/")
 devtools::load_all("~/GitHub/Packages/PackageTools/")
 
 # Setup ------------------------
