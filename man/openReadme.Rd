@@ -15,5 +15,5 @@ This function automatically detects the operating system to use the appropriate
 system command for opening the file.
 }
 \examples{
-openReadme() # Opens README.md in the active RStudio project
+openReadme()  # Opens README.md in the active RStudio project
 }
