@@ -68,6 +68,7 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
 #'
 #' @return None
 #' @importFrom stringr str_replace_all
+#'
 #' @export
 replace_l_with_length <- function(file_path, output_path = file_path, strict_mode = TRUE) {
   warning("Much safer results are obtained if you ran styler::style_file(file_path). Did you do it?")

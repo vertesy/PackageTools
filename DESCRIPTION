@@ -8,8 +8,6 @@ Description: PackageTools is a collection of utility functions for code
     base statistics & and dependencies.
 License: GPL-3 + file LICENSE
 BugReports: https://github.com/vertesy/PackageTools/issues
-Depends: 
-    base
 Imports: 
     clipr,
     devtools,
@@ -20,6 +18,6 @@ Imports:
     usethis,
     xfun
 Encoding: UTF-8
-Packaged: 2023-11-28 15:25:09.652045
+Packaged: 2024-01-06 19:47:29.970718
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
