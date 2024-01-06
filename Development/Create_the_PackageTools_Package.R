@@ -19,7 +19,7 @@ source(config.path)
 
 # Install your package ------------------------------------------------
 PackageTools::document_and_create_package(repository.dir, config_file = 'config.R')
-document_and_create_package(repository.dir, config_file = 'config.R')
+# document_and_create_package(repository.dir, config_file = 'config.R')
 'git add commit push to remote'
 
 
