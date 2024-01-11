@@ -5,6 +5,75 @@
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
+
+
+# _____________________________________________________________________________________________ ----
+#' @title Find which Package a given Function belongs to
+#' @description Determines the package that a given function is defined in and optionally copies
+#' the result to the clipboard. Warns if the function is found in multiple packages.
+#'
+#' @param functionName The name of the function (character or function object).
+#' @param searchInstalled If TRUE, searches all installed packages (default FALSE).
+#' @param toClipboard If TRUE, copies the result to the clipboard (default TRUE).
+#' @return The name of the package containing the function, or NULL if not found.
+#' @importFrom clipr write_clip
+#' @examples
+#'  find_package_of_this_function('sppp')
+#'  find_package_of_this_function(sppp)
+#'  find_package_of_this_function(filter)
+#'  find_package_of_this_function("filterzzz")
+#'
+#' @export
+
+find_package_of_this_function <- function(functionName, searchInstalled = FALSE, toClipboard = TRUE) {
+  # Validate input
+  if (is.function(functionName)) {
+    functionName <- deparse(substitute(functionName))
+  } else if (!is.character(functionName) || length(functionName) != 1) {
+    stop("functionName must be a single character string or a function object.")
+  }
+
+  packagesFound <- character(0)
+
+  # Search in loaded namespaces
+  searchSpaces <- search()
+  for (space in searchSpaces) {
+    if (startsWith(space, "package:")) {
+      packageName <- substring(space, 9) # Remove "package:" prefix
+      if (exists(functionName, envir = asNamespace(packageName), inherits = FALSE)) {
+        packagesFound <- c(packagesFound, packageName)
+      }
+    }
+  }
+
+  # Optionally search in installed packages
+  if (searchInstalled && length(packagesFound) == 0) {
+    installedPkgs <- installed.packages()[, "Package"]
+    for (pkg in installedPkgs) {
+      if (exists(functionName, envir = asNamespace(pkg), inherits = FALSE)) {
+        packagesFound <- c(packagesFound, pkg)
+      }
+    }
+  }
+
+  # Check for multiple packages
+  if (length(packagesFound) > 1) {
+    warning(functionName, " found in multiple packages: ", paste(packagesFound, collapse = ", "), immediate. = TRUE)
+  } else if (length(packagesFound) == 0) {
+    warning(functionName , " not found!", immediate. = TRUE)
+    return(NULL)
+  }
+
+  # Handle clipboard and return
+  foundPackage <- packagesFound[1]
+  if (toClipboard) {
+    try(clipr::write_clip(foundPackage), silent = TRUE)
+  }
+  return(foundPackage)
+}
+
+
+
 # _____________________________________________________________________________________________ ----
 ## Package Section ---------------------------------------------------------------------------
 
