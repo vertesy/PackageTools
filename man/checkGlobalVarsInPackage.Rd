@@ -14,14 +14,14 @@ Default is TRUE.}
 }
 \description{
 \code{checkGlobalVarsInPackage} iterates over all functions in a specified package
-and checks each function for the usage of global variables using \code{isoENV::checkGlobalVars}.
+and checks each function for the usage of global variables using \code{checkGlobalVars}.
 }
 \details{
 The function uses \code{all_funs()} to retrieve all function names from the specified package.
 Then, it checks for global variable usage in each function. Warnings can be toggled on or off.
 }
 \note{
-This function depends on \code{isoENV::checkGlobalVars} to check for global variable usage.
+This function depends on \code{checkGlobalVars} to check for global variable usage.
 Ensure that the isoENV package is installed and loaded before using this function.
 }
 \examples{

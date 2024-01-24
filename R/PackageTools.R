@@ -271,7 +271,7 @@ list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutpu
 #' ".__S3MethodsTable__." Additionally, it does not list functions that start with a dot ('.'),
 #' which are usually internal.
 #'
-#' @export
+#' @export all_funs
 all_funs <- function(packageName) {
   stopifnot(is.character(packageName), length(packageName) == 1) # Validate input
 
@@ -296,7 +296,7 @@ all_funs <- function(packageName) {
 #'
 #' @description
 #' `checkGlobalVarsInPackage` iterates over all functions in a specified package
-#' and checks each function for the usage of global variables using `isoENV::checkGlobalVars`.
+#' and checks each function for the usage of global variables using `checkGlobalVars`.
 #'
 #' @param packageName A string specifying the name of the package.
 #' @param warn A logical value indicating whether to display warnings for global variable usage.
@@ -311,10 +311,9 @@ all_funs <- function(packageName) {
 #' checkGlobalVarsInPackage("dplyr")
 #'
 #' @note
-#' This function depends on `isoENV::checkGlobalVars` to check for global variable usage.
+#' This function depends on `checkGlobalVars` to check for global variable usage.
 #' Ensure that the isoENV package is installed and loaded before using this function.
 #'
-#' @importFrom isoENV checkGlobalVars
 #' @export
 checkGlobalVarsInPackage <- function(packageName, warn = TRUE) {
   stopifnot(is.character(packageName), length(packageName) == 1) # Validate input
