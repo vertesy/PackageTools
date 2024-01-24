@@ -252,9 +252,126 @@ list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutpu
 
 
 
+# __________________________________________________________________________________________
+#' @title List All Functions in a Package
+#'
+#' @description Lists all function names available in a specified R package. It excludes certain
+#' internal objects and functions that are not intended for end users.
+#'
+#' @param packageName A character string specifying the name of the package.
+#'
+#' @return A character vector containing the names of all functions in the specified package,
+#'         excluding internal functions and certain predefined objects.
+#'
+#' @examples
+#' all_funs("dplyr") # Lists all functions in the 'dplyr' package
+#'
+#' @note
+#' The function excludes objects like ".__DEVTOOLS__", ".__NAMESPACE__.", and
+#' ".__S3MethodsTable__." Additionally, it does not list functions that start with a dot ('.'),
+#' which are usually internal.
+#'
+#' @export
+all_funs <- function(packageName) {
+  stopifnot(is.character(packageName), length(packageName) == 1) # Validate input
+
+  # List all items in the package namespace
+  items <- ls(getNamespace(packageName), all.names = TRUE)
+
+  # Exclude specific items and internal functions (starting with '.')
+  excludedItems <- c(".__DEVTOOLS__", ".__NAMESPACE__.", ".__S3MethodsTable__.")
+  items <- setdiff(items, excludedItems)
+  return(items[!grepl("^\\.", items)])
+}
+
+
+
+
 # _____________________________________________________________________________________________ ----
 # 2. Package Analysis and statistics ---------------------------------------------------------------------------
 
+
+# _____________________________________________________________________________________________
+#' @title Check for Global Variables in Package Functions
+#'
+#' @description
+#' `checkGlobalVarsInPackage` iterates over all functions in a specified package
+#' and checks each function for the usage of global variables using `isoENV::checkGlobalVars`.
+#'
+#' @param packageName A string specifying the name of the package.
+#' @param warn A logical value indicating whether to display warnings for global variable usage.
+#'        Default is TRUE.
+#'
+#' @details
+#' The function uses `all_funs()` to retrieve all function names from the specified package.
+#' Then, it checks for global variable usage in each function. Warnings can be toggled on or off.
+#'
+#' @examples
+#' # Assuming the isoENV package is loaded and all_funs() is defined
+#' checkGlobalVarsInPackage("dplyr")
+#'
+#' @note
+#' This function depends on `isoENV::checkGlobalVars` to check for global variable usage.
+#' Ensure that the isoENV package is installed and loaded before using this function.
+#'
+#' @importFrom isoENV checkGlobalVars
+#' @export
+checkGlobalVarsInPackage <- function(packageName, warn = TRUE) {
+  stopifnot(is.character(packageName), length(packageName) == 1) # Validate input
+
+  # Use all_funs() to get all function names from the package
+  funcNames <- all_funs(packageName)
+
+  # Check global variables for each function
+  funzy <- lapply(funcNames, get)
+  for (i in seq(funzy)) {
+    message("----------------")
+    message(funcNames[i])
+    checkGlobalVars(f = funzy[[i]], warn = warn)
+  }
+}
+
+
+# ____________________________________________________________________
+#' @title Check for Use of Global Variables in a Function
+#'
+#' @description This function checks whether the specified function (`f`) uses any global variables.
+#' It returns `TRUE` if no global variables are used, and `FALSE` otherwise. If global variables are found
+#' and `silent` is `FALSE`, a warning is issued listing the global variables.
+#'
+#' @param f The function to be checked for global variable usage.
+#' @param silent Logical parameter with a default value of `FALSE`.
+#' If `TRUE`, the function suppresses warnings about global variable usage.
+#' @importFrom codetools findGlobals
+#' @return Returns `TRUE` if no global variables are used in the function `f`, `FALSE` otherwise.
+#' If `silent` is `FALSE` and global variables are found, a warning is issued.
+#' @export
+#'
+#' @examples
+#' testFunction <- function(x, y) { z <- x + y; return(z) }
+#' checkGlobalVars(testFunction)
+#' checkGlobalVars(testFunction, silent = TRUE)
+checkGlobalVars <- function(f, silent = FALSE, warn = T) {
+
+  stopifnot(is.function(f), is.logical(silent))
+
+  if (!requireNamespace("codetools", quietly = TRUE)) {
+    stop("Please install codetools, using install.packages('codetools')")
+  }
+  vars <- codetools::findGlobals(f)
+  found <- !vapply(vars, exists, logical(1), envir=as.environment(2))
+  if (!silent && any(found)) {
+    msg <- paste("global variables used: ", paste(names(found)[found], collapse=', '))
+    if (warn) warning(msg, immediate. = TRUE) else message(msg)
+    return(invisible(FALSE))
+  }
+  !any(found)
+}
+
+
+
+
+# _____________________________________________________________________________________________
 #' @title Analyze File for Code and Comment Statistics
 #'
 #' @description This function analyzes a given file, counting the number of lines of code and comments.
