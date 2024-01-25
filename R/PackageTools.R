@@ -1,11 +1,11 @@
 ##################################################################### _
 # PackageTools.R ----
 ##################################################################### _
+# rstudioapi::getSourceEditorContext()$path
 # source('~/GitHub/Packages/PackageTools/R/PackageTools.R')
 # devtools::load_all("~/GitHub/Packages/PackageTools")
 # devtools::document("~/GitHub/Packages/PackageTools"); devtools::load_all("~/GitHub/Packages/PackageTools")
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
-
 
 
 
@@ -347,20 +347,22 @@ checkGlobalVarsInPackage <- function(packageName, warn = TRUE) {
 #' @export
 #'
 #' @examples
-#' testFunction <- function(x, y) { z <- x + y; return(z) }
+#' testFunction <- function(x, y) {
+#'   z <- x + y
+#'   return(z)
+#' }
 #' checkGlobalVars(testFunction)
 #' checkGlobalVars(testFunction, silent = TRUE)
-checkGlobalVars <- function(f, silent = FALSE, warn = T) {
-
+checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
   stopifnot(is.function(f), is.logical(silent))
 
   if (!requireNamespace("codetools", quietly = TRUE)) {
     stop("Please install codetools, using install.packages('codetools')")
   }
   vars <- codetools::findGlobals(f)
-  found <- !vapply(vars, exists, logical(1), envir=as.environment(2))
+  found <- !vapply(vars, exists, logical(1), envir = as.environment(2))
   if (!silent && any(found)) {
-    msg <- paste("global variables used: ", paste(names(found)[found], collapse=', '))
+    msg <- paste("global variables used: ", paste(names(found)[found], collapse = ", "))
     if (warn) warning(msg, immediate. = TRUE) else message(msg)
     return(invisible(FALSE))
   }
@@ -449,8 +451,6 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
 # .convertFilePathToOutput("path/to/your_script.R")
 # .convertFilePathToOutput("path/to/your_script.R", fn_prefix = "custom.prefix.", ext = ".txt")
 #' }
-#' @export
-
 .convertFilePathToOutput <- function(
     inputPath, fn_prefix = "list.of.functions.in",
     ext = ".md") {

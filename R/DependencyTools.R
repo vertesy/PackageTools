@@ -384,7 +384,7 @@ convert_igraph_to_mermaid <- function(
 #' @return A character vector of package dependencies found in the R scripts.
 #' @examples get_parse_pkg_deps() # Assuming an RStudio project
 #' @export
-get_parse_pkg_deps <- function(pkg = rstudioapi::getActiveProject() ) {
+get_parse_pkg_deps <- function(pkg = rstudioapi::getActiveProject()) {
   stopifnot(is.character(pkg), dir.exists(pkg))
 
   # Extract dependencies using renv
@@ -401,4 +401,3 @@ get_parse_pkg_deps <- function(pkg = rstudioapi::getActiveProject() ) {
 
   return(deps$Package)
 }
-

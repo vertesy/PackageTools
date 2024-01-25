@@ -20,15 +20,18 @@
 #' @export
 checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"),
                               env = NULL, packages_load = c("Seurat"),
-                              packages_load_default = c("utils", "grDevices", "graphics", "stats", "methods"
-                                                        , "ggplot2"
-                                                        , "Stringendo", "ReadWriter", "CodeAndRoll2", "MarkdownHelpers"
-                                                        , "MarkdownReports", "ggExpress", "Seurat.utils", "isoENV", "UVI.tools"
-                                                        , "Connectome.tools", "NestedMultiplexer"),
+                              packages_load_default = c(
+                                "utils", "grDevices", "graphics", "stats", "methods",
+                                "ggplot2",
+                                "Stringendo", "ReadWriter", "CodeAndRoll2", "MarkdownHelpers",
+                                "MarkdownReports", "ggExpress", "Seurat.utils", "isoENV", "UVI.tools",
+                                "Connectome.tools", "NestedMultiplexer"
+                              ),
                               replace_missing_calls = FALSE) {
-
-  stopifnot(is.character(path), length(path) == 1, file.exists(path),
-            is.character(input.variables), is.character(exclude_var))
+  stopifnot(
+    is.character(path), length(path) == 1, file.exists(path),
+    is.character(input.variables), is.character(exclude_var)
+  )
   warning("Experimental Function", immediate. = TRUE)
 
   all_packages_load <- union(packages_load_default, packages_load)
@@ -59,15 +62,18 @@ checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"
 
   # Classify symbols into functions and variables based on their type in standard environments
   symbol_types <- sapply(symbols, function(sym) {
-    if (exists(sym, envir = baseenv())) return(typeof(get(sym, envir = baseenv())))
-    if (exists(sym, envir = asNamespace("base"))) return(typeof(get(sym, envir = asNamespace("base"))))
+    if (exists(sym, envir = baseenv())) {
+      return(typeof(get(sym, envir = baseenv())))
+    }
+    if (exists(sym, envir = asNamespace("base"))) {
+      return(typeof(get(sym, envir = asNamespace("base"))))
+    }
     return(NA)
   })
 
   # Identify missing functions and variables
-  not_found_funs <- names(symbol_types)[symbol_types == "closure"
-
-                                        & !sapply(names(symbol_types), function(x) exists(x, envir = env))] |>
+  not_found_funs <- names(symbol_types)[symbol_types == "closure" &
+    !sapply(names(symbol_types), function(x) exists(x, envir = env))] |>
     na.omit() |>
     as.character()
   not_found_vars <- names(symbol_types)[!symbol_types %in% c("closure", NA) & !sapply(names(symbol_types), function(x) exists(x, envir = env))]
@@ -215,11 +221,11 @@ copy_github_badge <- function(status = "experimental",
 #'
 #' @return Invisible NULL. The function is used for its side effect of opening a file.
 #' @importFrom rstudioapi getActiveProject
-#' @examples openReadme()  # Opens README.md in the active RStudio project
+#' @examples openReadme() # Opens README.md in the active RStudio project
 #' @export
 
 openReadme <- function() {
-  if(requireNamespace("rstudioapi", quietly = TRUE)) {
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
     readme_path <- file.path(rstudioapi::getActiveProject(), "README.md")
   } else {
     stop("rstudioapi package is required.")
@@ -234,5 +240,4 @@ openReadme <- function() {
   } else {
     stop("Unsupported operating system.")
   }
-
 }

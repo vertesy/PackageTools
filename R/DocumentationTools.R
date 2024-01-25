@@ -41,7 +41,7 @@
 #' @export
 document_and_create_package <- function(package_dir,
                                         config_file = "config.R",
-                                        backup_r_script = F,
+                                        backup_r_script = FALSE,
                                         update_citation = TRUE) {
   # Source configuration file
   config_path <- file.path(package_dir, "Development", config_file)
@@ -52,8 +52,8 @@ document_and_create_package <- function(package_dir,
   # Parse DESCRIPTION
   DESCRIPTION <- .parse_description(config_path)
   # print(DESCRIPTION)
-  stopifnot(!is.null(DESCRIPTION$'Version') )
-  stopifnot(!is.null(DESCRIPTION$'Package') )
+  stopifnot(!is.null(DESCRIPTION$"Version"))
+  stopifnot(!is.null(DESCRIPTION$"Package"))
 
   # Set up directories and file paths
   RepositoryDir <- package_dir
@@ -75,7 +75,7 @@ document_and_create_package <- function(package_dir,
   empty_indices <- names(which(sapply(DESCRIPTION, nchar) == 0))
 
   # Loop over the empty indices and raise warnings
-  for(i in empty_indices) {
+  for (i in empty_indices) {
     warning(paste(i, "in DESCRIPTION is empty, and now removed!"), immediate. = TRUE)
   }
   # Replace the empty elements with NULL
@@ -214,4 +214,3 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
   # Output assertion
   stopifnot(file.exists(depFile))
 }
-
