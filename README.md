@@ -261,9 +261,99 @@ config <- list(
 
 # List of Functions
 
-## List of Functions in DependencyTools.R (6) 
+## List of Functions in PackageTools.R (6) 
 
-Updated: 2023/11/27 11:07
+Updated: 2024/01/25 15:22
+
+- #### 1 `  function_lines()`
+
+  Parse Roxygen Comments. Extracts and summarizes Roxygen documentation comments from a specified R script file.  This function reads an R script, identifies Roxygen comments for function titles and descriptions,  and writes a summary to an output file. 
+
+- #### 2 `        "functions are defined (as `()`
+
+  Parse Roxygen Comments from R Script. This function parses a given R script for Roxygen comments, extracts function titles and descriptions,               and writes a summary to an output markdown file. The output file can have a custom name, and the               function allows specifying the header level for functions in the markdown file. 
+
+- #### 3 `all_funs()`
+
+  List All Functions in a Package. Lists all function names available in a specified R package. It excludes certain  internal objects and functions that are not intended for end users. 
+
+- #### 4 `checkGlobalVarsInPackage()`
+
+  Check for Global Variables in Package Functions.   `checkGlobalVarsInPackage` iterates over all functions in a specified package  and checks each function for the usage of global variables using `checkGlobalVars`. 
+
+- #### 5 `checkGlobalVars()`
+
+  Check for Use of Global Variables in a Function. This function checks whether the specified function (`f`) uses any global variables.  It returns `TRUE` if no global variables are used, and `FALSE` otherwise. If global variables are found  and `silent` is `FALSE`, a warning is issued listing the global variables. 
+
+- #### 6 `source_file_stats_analyzer()`
+
+  Analyze File for Code and Comment Statistics. This function analyzes a given file, counting the number of lines of code and comments.  It also identifies files that are sourced within the provided file. The function uses regular  expressions to differentiate between code and comment lines and to extract the names of sourced files. 
+
+
+
+## List of Functions in RoxygenTools.R (3) 
+
+Updated: 2024/01/25 15:22
+
+- #### 1 `add_importFrom_statements()`
+
+  Main Function to Process R Script for Package Calls. Reads an R script file, processes its content to find and add `@importFrom` statements  for package function calls in function bodies. The statements are added to the Roxygen documentation  blocks of the functions. Default: Excludes "MarkdownReports" from processing.
+
+- #### 2 `get_function_bodies()`
+
+  Extract Function Bodies from R Script. This function identifies the start and end lines of each function body in an R script.  Each function body is extracted for further processing. Default: Extracts function bodies from  a given R script content.
+
+- #### 3 `find_package_calls()`
+
+  Finding `::` Usage within Function Bodies. Searches for package function calls using the `::` operator within the given content of  function bodies, excluding specified packages. Default: Searches for `::` usage, excluding packages  listed in `exclude_packages`.
+
+
+
+## List of Functions in ReplacementTools.R (5) 
+
+Updated: 2024/01/25 15:22
+
+- #### 1 `replace_tf_with_true_false()`
+
+  Replace T and F with TRUE and FALSE in R Scripts. This function reads an R script, safely replaces all instances of `T` with `TRUE`  and `F` with `FALSE`, under specific conditions, and writes the modified script back to a file. 
+
+- #### 2 `replace_short_calls()`
+
+  Replace Short Function Calls with Full Names in an R Script. Reads an R script file and replaces instances of `l(` with `length(` and `p0` with `paste0(`.  It supports a strict mode to ensure accurate replacements. 
+
+- #### 3 `replace_l_with_length()`
+
+  Replace l() with length() in an R Script. This function reads an R script file and replaces instances of `l(` with `length(`.  It supports a strict mode to ensure accurate replacement. 
+
+- #### 4 `.safely_replace_tf()`
+
+  Safely Replace T and F in a Line of R Script. This helper function replaces instances of `T` and `F` in a single line of R  script based on the specified mode and character constraints. 
+
+- #### 5 `.safely_replace_calls()`
+
+  Safely Replace Short Function Calls in a Line of R Script. Safely replaces instances of `l(` with `length(` and `p0` with `paste0(` in a given line of R script.  Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
+
+## List of Functions in DocumentationTools.R (3) 
+
+Updated: 2024/01/25 15:22
+
+- #### 1 `document_and_create_package()`
+
+  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcinÏg a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
+
+- #### 2 `.parse_description()`
+
+  Parse DESCRIPTION File. Helper function to parse the DESCRIPTION file from a configuration file. 
+
+- #### 3 `.update_citation_file()`
+
+  Helper function to update the CITATION file of a package.. Update the CITATION.cff file of a package based on its version. 
+
+
+
+## List of Functions in DependencyTools.R (7) 
+
+Updated: 2024/01/25 15:22
 
 - #### 1 `get_package_functions()`
 
@@ -289,69 +379,21 @@ Updated: 2023/11/27 11:07
 
   Filter Out Conflict Dependencies. Filters the dependencies to extract only those with conflicts. 
 
+- #### 7 `  format_node()`
 
+  Count and print the number of functions results. Private function to count and print the number of functions in results ("dependencies"). 
 
-## List of Functions in DocumentationTools.R (3) 
+## List of Functions in Miscellaneous.R (2) 
 
-Updated: 2023/11/27 11:07
+Updated: 2024/01/25 15:22
 
-- #### 1 `document_and_create_package()`
+- #### 1 `# from()`
 
-  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcinÏg a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
+  Check Script Environment. Checks if all functions and variables called in a script are found in a specified environment.               Optionally replaces missing function calls in the script with their fully qualified names. 
 
-- #### 2 `.parse_description()`
+- #### 2 `copy_github_badge()`
 
-  Parse DESCRIPTION File. Helper function to parse the DESCRIPTION file from a configuration file. 
-
-- #### 3 `.update_citation_file()`
-
-  Helper function to update the CITATION file of a package.. Update the CITATION.cff file of a package based on its version. 
-
-
-
-## List of Functions in RoxygenTools.R (3) 
-
-Updated: 2023/11/27 11:07
-
-- #### 1 `add_importFrom_statements()`
-
-  Main Function to Process R Script for Package Calls. Reads an R script file, processes its content to find and add `@importFrom` statements  for package function calls in function bodies. The statements are added to the Roxygen documentation  blocks of the functions. Default: Excludes "MarkdownReports" from processing.
-
-- #### 2 `get_function_bodies()`
-
-  Extract Function Bodies from R Script. This function identifies the start and end lines of each function body in an R script.  Each function body is extracted for further processing. Default: Extracts function bodies from  a given R script content.
-
-- #### 3 `find_package_calls()`
-
-  Finding `::` Usage within Function Bodies. Searches for package function calls using the `::` operator within the given content of  function bodies, excluding specified packages. Default: Searches for `::` usage, excluding packages  listed in `exclude_packages`.
-
-  
-
-## List of Functions in ReplacementTools.R (1) 
-
-Updated: 2023/11/27 11:07
-
-- #### 1 `replace_tf_with_true_false()`
-
-  Replace T and F with TRUE and FALSE in R Scripts. This function reads an R script, safely replaces all instances of `T` with `TRUE`  and `F` with `FALSE`, under specific conditions, and writes the modified script back to a file. 
-
-
-
-## List of Functions in PackageTools.R (3) 
-
-Updated: 2023/11/27 11:07
-
-- #### 1 `  function_lines()`
-
-  Parse Roxygen Comments. Extracts and summarizes Roxygen documentation comments from a specified R script file.  This function reads an R script, identifies Roxygen comments for function titles and descriptions,  and writes a summary to an output file. 
-
-- #### 2 `        "functions are defined (as `()`
-
-  Parse Roxygen Comments from R Script. This function parses a given R script for Roxygen comments, extracts function titles and descriptions,               and writes a summary to an output markdown file. The output file can have a custom name, and the               function allows specifying the header level for functions in the markdown file. 
-
-- #### 3 `source_file_stats_analyzer()`
-
-  Analyze File for Code and Comment Statistics. This function analyzes a given file, counting the number of lines of code and comments.  It also identifies files that are sourced within the provided file. The function uses regular  expressions to differentiate between code and comment lines and to extract the names of sourced files. 
+  .   This function copies the Markdown code for a GitHub badge to the clipboard based on the  specified status. It supports four statuses: 'experimental', 'active', 'archive', and  'hibernate'. 
 
 
 
