@@ -13,13 +13,13 @@ replace_short_calls(file_path, output_path = file_path, strict_mode = TRUE)
 Default is the same as \code{file_path}.}
 
 \item{strict_mode}{A boolean flag to determine the strictness of the matches.
-If \code{TRUE}, matches \verb{l(} and \code{p0} only when they're not part of larger alphanumeric strings.
-If \code{FALSE}, all instances of \verb{l(} and \code{p0} are replaced.}
+If \code{TRUE}, matches \verb{length(} and \code{p0} only when they're not part of larger alphanumeric strings.
+If \code{FALSE}, all instances of \verb{length(} and \code{p0} are replaced.}
 }
 \value{
 None
 }
 \description{
-Reads an R script file and replaces instances of \verb{l(} with \verb{length(} and \code{p0} with \verb{paste0(}.
+Reads an R script file and replaces instances of \verb{length(} with \verb{length(} and \code{p0} with \verb{paste0(}.
 It supports a strict mode to ensure accurate replacements.
 }

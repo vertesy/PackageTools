@@ -7,7 +7,7 @@
 document_and_create_package(
   package_dir,
   config_file = "config.R",
-  backup_r_script = F,
+  backup_r_script = FALSE,
   update_citation = TRUE
 )
 }

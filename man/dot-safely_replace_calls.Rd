@@ -17,6 +17,6 @@ If \code{FALSE}, all instances are replaced.}
 A string representing the modified line.
 }
 \description{
-Safely replaces instances of \verb{l(} with \verb{length(} and \code{p0} with \verb{paste0(} in a given line of R script.
+Safely replaces instances of \verb{length(} with \verb{length(} and \code{p0} with \verb{paste0(} in a given line of R script.
 Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name.
 }

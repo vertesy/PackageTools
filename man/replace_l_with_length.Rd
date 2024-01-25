@@ -2,7 +2,7 @@
 % Please edit documentation in R/ReplacementTools.R
 \name{replace_l_with_length}
 \alias{replace_l_with_length}
-\title{Replace l() with length() in an R Script}
+\title{Replace length() with length() in an R Script}
 \usage{
 replace_l_with_length(file_path, output_path = file_path, strict_mode = TRUE)
 }
@@ -13,13 +13,13 @@ replace_l_with_length(file_path, output_path = file_path, strict_mode = TRUE)
 Default is the same as \code{file_path}.}
 
 \item{strict_mode}{A boolean flag to determine the strictness of the match.
-If \code{TRUE}, matches \verb{l(} only when it's not part of a larger alphanumeric string.
-If \code{FALSE}, all instances of \verb{l(} are replaced.}
+If \code{TRUE}, matches \verb{length(} only when it's not part of a larger alphanumeric string.
+If \code{FALSE}, all instances of \verb{length(} are replaced.}
 }
 \value{
 None
 }
 \description{
-This function reads an R script file and replaces instances of \verb{l(} with \verb{length(}.
+This function reads an R script file and replaces instances of \verb{length(} with \verb{length(}.
 It supports a strict mode to ensure accurate replacement.
 }

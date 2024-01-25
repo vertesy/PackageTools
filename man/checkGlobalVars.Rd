@@ -4,7 +4,7 @@
 \alias{checkGlobalVars}
 \title{Check for Use of Global Variables in a Function}
 \usage{
-checkGlobalVars(f, silent = FALSE, warn = T)
+checkGlobalVars(f, silent = FALSE, warn = TRUE)
 }
 \arguments{
 \item{f}{The function to be checked for global variable usage.}
@@ -22,7 +22,10 @@ It returns \code{TRUE} if no global variables are used, and \code{FALSE} otherwi
 and \code{silent} is \code{FALSE}, a warning is issued listing the global variables.
 }
 \examples{
-testFunction <- function(x, y) { z <- x + y; return(z) }
+testFunction <- function(x, y) {
+  z <- x + y
+  return(z)
+}
 checkGlobalVars(testFunction)
 checkGlobalVars(testFunction, silent = TRUE)
 }
