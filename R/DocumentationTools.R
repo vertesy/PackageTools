@@ -42,9 +42,10 @@
 document_and_create_package <- function(package_dir,
                                         config_file = "config.R",
                                         backup_r_script = FALSE,
-                                        update_citation = TRUE) {
+                                        update_citation = TRUE,
+                                        dev_folder = "Development") {
   # Source configuration file
-  config_path <- file.path(package_dir, "Development", config_file)
+  config_path <- file.path(package_dir, dev_folder, config_file)
   if (!file.exists(config_path)) {
     stop("Configuration file not found: ", config_path)
   }
@@ -57,7 +58,7 @@ document_and_create_package <- function(package_dir,
 
   # Set up directories and file paths
   RepositoryDir <- package_dir
-  BackupDir <- file.path(RepositoryDir, "Development")
+  BackupDir <- file.path(RepositoryDir, dev_folder)
   package.FnP <- file.path(RepositoryDir, "R", paste0(DESCRIPTION$"Package", ".R"))
 
   # Create Backup Directory and Perform Backup
