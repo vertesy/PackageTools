@@ -278,11 +278,11 @@ filter_conflicts <- function(dependencies) {
 
 
 
-#' Convert an igraph object to a Mermaid.js flowchart
+#' @title Convert an igraph object to a Mermaid.js flowchart
 #'
-#' This function takes an igraph object representing a network graph and converts it into Mermaid.js code for
-#' creating a flowchart. It allows customization of the flowchart's direction and node shapes and can optionally
-#' copy the resulting code to the clipboard.
+#' @description This function takes an igraph object representing a network graph and
+#' converts it into Mermaid.js code for creating a flowchart. It allows customization of the
+#' flowchart's direction and node shapes and can optionally copy the resulting code to the clipboard.
 #'
 #' @param graph An igraph object representing a network graph. Default: None (must be provided).
 #' @param direction The direction of the flowchart. One of 'TB', 'TD', 'BT', 'RL', 'LR'. Default: 'LR'.
@@ -305,24 +305,29 @@ filter_conflicts <- function(dependencies) {
 #' @export
 convert_igraph_to_mermaid <- function(
     graph, direction = "LR", node_shape = "round",
-    copy_to_clipboard = TRUE, openMermaid = TRUE, pkg_path_for_scripts_as_subgraphs = FALSE,
+    copy_to_clipboard = TRUE, openMermaid = TRUE,
+    pkg_path_for_scripts_as_subgraphs = FALSE,
     add_subgraph_template = TRUE, add_embedding_comments = TRUE) {
+
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR")
     # "node_shape must be 'round' or 'default'" = node_shape %in% c("round", "default"), # not true!
   )
-
+  # Extract edges from the igraph object
   edges <- igraph::get.edgelist(graph)
 
+  # Initialize Mermaid code with comments if requested
   if (add_embedding_comments) {
     mermaid_code <- paste0("\n%%## Function relationships\n")
     mermaid_code <- paste0(mermaid_code, "%% > (of connected functions)\n")
     mermaid_code <- paste0(mermaid_code, "\n%% ```mermaid\n")
   }
 
+  # Add flowchart direction
   mermaid_code <- paste(mermaid_code, "flowchart", direction, "\n")
 
+  # Helper function to format node appearance based on shape
   format_node <- function(node) {
     if (node_shape == "round") {
       return(sprintf("%s(%s)", node, node))
@@ -331,17 +336,22 @@ convert_igraph_to_mermaid <- function(
     }
   }
 
+  # Construct and append edges to Mermaid code
   for (edge in 1:nrow(edges)) {
     from <- format_node(edges[edge, 1])
     to <- format_node(edges[edge, 2])
     mermaid_code <- paste(mermaid_code, sprintf("  %s --> %s", from, to), sep = "\n")
   }
 
+  # Optionally add subgraph templates to Mermaid code
   if (add_subgraph_template) {
+
+    # Check if subgraphs should be based on script paths
     if (isFALSE(pkg_path_for_scripts_as_subgraphs)) {
       mermaid_code <- paste0(mermaid_code, "\nsubgraph SubGraphOne\n")
       mermaid_code <- paste0(mermaid_code, "\nend\n")
     } else {
+      # Validate directory and add subgraphs for each script found
       stopifnot(dir.exists(pkg_path_for_scripts_as_subgraphs))
       ls.scripts <- list.files(file.path(pkg_path_for_scripts_as_subgraphs, "R"), pattern = "*.R$")
       for (script in ls.scripts) {
@@ -351,18 +361,20 @@ convert_igraph_to_mermaid <- function(
     }
   }
 
+  # Close embedding comments if they were added
   if (add_embedding_comments) {
     mermaid_code <- paste0("\n", mermaid_code, "%% ```\n")
   }
 
+  # Add creation note at the end
   mermaid_code <- paste0("\n", mermaid_code, "%% *created by `convert_igraph_to_mermaid()`*\n")
-
 
   stopifnot("Mermaid.js code should be a non-empty string" = is.character(mermaid_code) && nchar(mermaid_code) > 0)
 
   if (copy_to_clipboard) {
     clipr::write_clip(mermaid_code)
   }
+
   print("Check output on https://mermaid.live")
   if (openMermaid) browseURL("https://mermaid.live")
   return(mermaid_code)
@@ -370,7 +382,7 @@ convert_igraph_to_mermaid <- function(
 
 
 # _____________________________________________________________________________________________
-#' Parse and Get Package Dependencies for an R Package
+#' @title Parse and Get Package Dependencies for an R Package
 #'
 #' @description Extracts package dependencies from R scripts in a specified directory, typically
 #'              the 'R/' directory of an R package. This function leverages 'renv::dependencies()'
