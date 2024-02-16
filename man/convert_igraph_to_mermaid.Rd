@@ -38,9 +38,9 @@ formatted as mermaid comments. The \code{\%\%} must be removed in the \code{.md}
 A string containing the Mermaid.js code for the flowchart.
 }
 \description{
-This function takes an igraph object representing a network graph and converts it into Mermaid.js code for
-creating a flowchart. It allows customization of the flowchart's direction and node shapes and can optionally
-copy the resulting code to the clipboard.
+This function takes an igraph object representing a network graph and
+converts it into Mermaid.js code for creating a flowchart. It allows customization of the
+flowchart's direction and node shapes and can optionally copy the resulting code to the clipboard.
 }
 \examples{
 result <- pkgnet::CreatePackageReport("YourPackage")

@@ -8,7 +8,8 @@ document_and_create_package(
   package_dir,
   config_file = "config.R",
   backup_r_script = FALSE,
-  update_citation = TRUE
+  update_citation = TRUE,
+  dev_folder = "Development"
 )
 }
 \arguments{
