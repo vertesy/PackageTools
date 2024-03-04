@@ -134,10 +134,11 @@ document_and_create_package <- function(package_dir,
     Depends = DESCRIPTION$"depends",
     Imports = DESCRIPTION$"imports",
     Suggests = DESCRIPTION$"suggests",
-    BugReports = file.path("https://github.com", DESCRIPTION$"github.user", DESCRIPTION$"package.name", "issues"),
+    BugReports = if(!is.null(DESCRIPTION$"bug.reports")) DESCRIPTION$"bug.reports" else file.path("https://github.com", DESCRIPTION$"github.user", DESCRIPTION$"package.name", "issues"),
     Packaged = Sys.time()
   )
 }
+
 
 # _____________________________________________________________________________________________
 #' @title Helper function to update the CITATION file of a package.
