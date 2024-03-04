@@ -113,7 +113,8 @@ document_and_create_package <- function(package_dir,
 #'
 #' @return A list representing the DESCRIPTION file.
 .parse_description <- function(config_path) {
-  source(config_path)
+  source(config_path) # Should create a DESCRIPTION list
+  stopifnot(exists("DESCRIPTION"))
   list(
     Package = DESCRIPTION$"package.name",
     # Type = "Package",
@@ -132,6 +133,7 @@ document_and_create_package <- function(package_dir,
     License = DESCRIPTION$"license",
     Depends = DESCRIPTION$"depends",
     Imports = DESCRIPTION$"imports",
+    Suggests = DESCRIPTION$"suggests",
     BugReports = file.path("https://github.com", DESCRIPTION$"github.user", DESCRIPTION$"package.name", "issues"),
     Packaged = Sys.time()
   )
