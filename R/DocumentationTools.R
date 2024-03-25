@@ -218,3 +218,6 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
   # Output assertion
   stopifnot(file.exists(depFile))
 }
+
+
+

@@ -428,10 +428,243 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
 
 
 
+# _____________________________________________________________________________________________ ----
+# 3. Vignette templates ---------------------------------------------------------------------------
+
+
+#' @title Parse RMD Vignette from Roxygen
+#'
+#' @description Extracts and summarizes Roxygen documentation comments from a specified R script file
+#' and creates a simple R Markdown vignette. It reads an R script, identifies Roxygen comments for
+#' function titles and descriptions, and writes a summary to an output file. If `parse_examples` is
+#' TRUE, it also includes examples found in the Roxygen comments.
+#'
+#' @param file The path to the R script file to be parsed. Default: "".
+#' @param output_file Path to the output file where the summary will be written. Default is generated
+#' using `.convertFilePathToOutput` with prefix "Vignette" and extension ".Rmd".
+#' @param fun_header_level The markdown header level for function names. Default: "####".
+#' @param open_results If TRUE, attempts to open the resulting file automatically. Default: TRUE.
+#' @param parse_examples If TRUE, function examples are parsed and included in the vignette.
+#' Default: TRUE.
+#' @param package_desc The package description, automatically retrieved from configuration.
+#' Default is obtained via `.get_description_from_config(file)`.
+#'
+#' @return Does not return a value; it writes output to the specified file.
+#' @examples
+#' parse_rmd_vignette_from_roxygen("path/to/script.R")
+#'
+#' @export
+#'
+parse_rmd_vignette_from_roxygen <- function(
+    file,
+    output_file = .convertFilePathToOutput(file,
+                                           fn_prefix = "Vignette",
+                                           ext = ".Rmd"),
+    fun_header_level = "####",
+    open_results = TRUE,
+    parse_examples = TRUE,
+    package_desc = .get_description_from_config(file)
+) {
+
+  print(output_file)
+  # Input argument assertions
+  stopifnot(is.character(file), length(file) == 1, file.exists(file))
+  stopifnot(is.character(output_file), length(output_file) == 1)
+
+  # Read the file as a vector of lines
+  lines <- readLines(file)
+
+  # Find the lines containing function names
+  function_lines <- grep("<- function", lines, value = TRUE)
+  cat(length(function_lines) - 1, "functions are found. \n")
+
+  # Find the lines containing @title
+  title_lines <- grep("@title", lines, value = TRUE)
+
+
+  # ------------------------------------------------------------------------------------------------
+  # Check if the number of function definitions and titles match
+  nr_fun_definitions <- length(function_lines)
+  nr_fun_titles <- length(title_lines)
+  if(nr_fun_definitions != nr_fun_titles) {
+    warning("\nThe number of function definitions and titles do not match.", immediate. = TRUE)
+    message("\nnr_fun_definitions, defined as `<- function` are: ", nr_fun_definitions,
+            "\nnr_fun_titles, defined as `@title` are: ", nr_fun_titles)
+
+    idx_function_def <- grep("<- function", lines)
+    idx_title_tag <- grep("@title", lines)
+
+    if (nr_fun_definitions > nr_fun_titles) {
+      idx_title_tagX <- idx_title_tag[1:nr_fun_titles]
+      idx_function_defX <- idx_function_def[1:nr_fun_titles]
+      matching_tag_and_def <- (idx_function_defX - idx_title_tagX)>0
+      first_mismatch <- which(!matching_tag_and_def)[1]
+      warning("\nFirst mismatch at function: ", first_mismatch, immediate. = TRUE)
+      message(title_lines[first_mismatch])
+      message(function_lines[first_mismatch])
+    } else {
+      idx_title_tagX <- idx_title_tag[1:nr_fun_definitions]
+      idx_function_defX <- idx_function_def[1:nr_fun_definitions]
+
+      dist_to_next_tag <- diff(idx_title_tagX)
+      dist_to_next_fun_def <- (idx_function_defX-idx_title_tagX)
+      matching_tag_and_def <- dist_to_next_tag < dist_to_next_fun_def
+      first_mismatch <- which(matching_tag_and_def)[1]
+      warning("\nFirst mismatch at title: ", first_mismatch, immediate. = TRUE)
+      message(title_lines[first_mismatch])
+      message(function_lines[first_mismatch],"\n\n")
+    }
+
+    stop("\nMismatch between function definitions and titles.")
+
+  }
+
+  # ------------------------------------------------------------------------------------------------
+
+  # Find the lines containing @description
+  description_lines <- grep("@description", lines, value = TRUE)
+
+  # Extract the function names
+  function_names <- gsub("\\s*<-.*$", "", function_lines)
+
+  # Extract the titles
+  titles <- gsub("^.*@title\\s*", "", title_lines)
+
+  # Extract the descriptions
+  descriptions <- gsub("^.*@description\\s*", "", description_lines)
+  # print(tail(descriptions))
+
+
+  # Open a connection to the output file
+  file_conn <- file(output_file, open = "w")
+
+  cat(paste0("# Vignette for ", length(function_names) - 1, " functions in ", basename(file), "\n"), file = file_conn)
+  cat(paste0("Updated: ", format(Sys.time(), "%Y/%m/%d %H:%M"), "\n\n"), file = file_conn)
+
+  if (!is.null(package_desc)) {
+    cat(paste0(package_desc, ""), file = file_conn)
+  }
+  cat("> For details, please use the `help()` function, or browse the source code.\n\n", file = file_conn)
+
+  # Write each function name, title, and description to the output file
+  for (i in seq_along(function_names)) {
+    iprint(">>>", function_names[i])
+
+    cat(paste0(fun_header_level, " ", i, ". ", titles[i], ": `", function_names[i], "()`\n"), file = file_conn)
+
+    # Needed not to print NA to missing descriptions
+    descX <- if (is.na(descriptions[i])) {description_lines[i]} else {descriptions[i]}
+
+    cat(paste0(descX, "\n\n"), file = file_conn)
+
+    if (parse_examples) {
+
+      # idx_roxy_start <- grep(title_lines[i], lines, fixed = T, perl = T)
+      idx_roxy_start <- match(title_lines[i], lines)
+      stopifnot(length(idx_roxy_start) <= 1)
+      # idx_roxy_end <- grep(function_lines[i], lines, fixed = T)
+      idx_roxy_end <- match(function_lines[i], lines)
+      stopifnot(length(idx_roxy_end) <= 1)
+
+      roxy_body <- lines[ idx_roxy_start:idx_roxy_end]
+
+      idx_example_start <- grep("@examples", roxy_body)
+      cat("```r\n", file = file_conn)
+
+      # If examples are found, extract and write them to the output file
+      if (length(idx_example_start)  > 0) {
+
+        # Identify the body of the example code
+        example_body <- roxy_body[(idx_example_start+1):length(roxy_body)]
+
+        idx_example_end_next_tag <- grep("#' @", example_body)
+        idx_example_end_roxy_end <- grep("#'", example_body, invert = T)
+        idx_example_body_end <- min(idx_example_end_next_tag, idx_example_end_roxy_end)
+        example_body_final <- example_body[1:idx_example_body_end-1]
+
+        # remove `\\dontrun` from the example code - if present
+        idx_dontrun <- grep('dontrun', example_body_final)
+        if (length(idx_dontrun) > 0) {
+          example_body_final <- example_body_final[-idx_dontrun]
+          # now also remove the final `}`
+          idx_closing_brackets <- grep("}", example_body_final)
+          idx_final_bracket <- idx_closing_brackets[length(idx_closing_brackets)]
+          example_body_final <- example_body_final[-idx_final_bracket]
+        }
+
+        # remove `interactive` from the example code
+        idx_interactive <- grep("\\(interactive\\(\\)", example_body_final)
+        if (length(idx_interactive) > 0) {
+          example_body_final <- example_body_final[-idx_interactive]
+          # now also remove the final `}`
+          idx_closing_brackets <- grep("}", example_body_final)
+          idx_final_bracket <- idx_closing_brackets[length(idx_closing_brackets)]
+          example_body_final <- example_body_final[-idx_final_bracket]
+        }
+
+
+        # Write the example code block to the output file
+        example_body_final <- gsub("^#'", "", example_body_final)
+        cat(example_body_final, sep = "\n", file = file_conn)
+      } else {
+        cat("No examples found.\n", file = file_conn)
+      }
+
+      cat("\n```\n<br>\n\n", file = file_conn)
+
+    } # if (parse_examples)
+  } # for
+
+  # Close the connection
+  close(file_conn)
+
+  # Output assertion
+  stopifnot(file.exists(output_file))
+
+  if (open_results) system(paste0("open -a Rstudio ", output_file), wait = FALSE)
+  print(paste("Output written to", output_file))
+}
+
+
+# _____________________________________________________________________________________________
+#' @title Helper to Get Description from Config
+#'
+#' @description This function retrieves the "description" field from the `DESCRIPTION` object,
+#' which is sourced from a `config.R` file located two directories above the specified file. The
+#' function checks for the existence of `config.R`, sources it, and validates the presence and
+#' non-nullity of the "description" field in the `DESCRIPTION` object.
+#'
+#' @param file A character string specifying the path to the current script or file of interest.
+#' The function constructs the path to `config.R` based on this path. Default: "".
+#'
+#' @return Returns the "description" field from the `DESCRIPTION` object if the conditions are met.
+#' Returns `NULL` otherwise.
+.get_description_from_config <- function(file) {
+  # Construct the path to the config.R file
+  config.path <- file.path(dirname(dirname(file)), "Development/config.R")
+
+  # Check if the config.R file exists
+  if(file.exists(config.path)) {
+    # Source the config.R file
+    source(config.path)
+
+    # Check if DESCRIPTION exists and has a non-null "description" field
+    if(exists("DESCRIPTION") && !is.null(DESCRIPTION[["description"]])) {
+      return(DESCRIPTION[["description"]])
+    } else {
+      message("DESCRIPTION variable not found or does not contain a 'description' field.")
+      return(NULL)
+    }
+  } else {
+    message("Configuration file not found: ", config.path)
+  }
+
+}
+
 # _____________________________________________________________________________________________
 
 # _____________________________________________________________________________________________ ----
-# 3. Auxiliary ---------------------------------------------------------------------------
+# 4. Auxiliary ---------------------------------------------------------------------------
 
 #' @title Convert File Path for Documentation
 #'

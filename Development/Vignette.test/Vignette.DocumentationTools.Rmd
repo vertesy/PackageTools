@@ -1,0 +1,50 @@
+# Vignette for 4 functions in DocumentationTools.R
+Updated: 2024/03/25 13:43
+
+PackageTools is a collection of utility functions for code base statistics & and dependencies.> For details, please use the `help()` function, or browse the source code.
+
+#### 1. Create R Package from Configuration: `document_and_create_package()`
+Automate the creation of an R package from a configuration file.
+
+```r
+ document_and_create_package("~/GitHub/Packages/PackageX", "config.R", TRUE)
+
+
+```
+
+#### 2. Parse DESCRIPTION File: `.parse_description()`
+Helper function to parse the DESCRIPTION file from a configuration file.
+
+```r
+No examples found.
+
+```
+
+#### 3. Helper function to update the CITATION file of a package.: `.update_citation_file()`
+Update the CITATION.cff file of a package based on its version.
+
+```r
+No examples found.
+
+```
+
+#### 4. Extract Package Dependencies: `extract_package_dependencies()`
+This function checks the package dependencies by listing functions used in all R scripts
+
+```r
+ extract_package_dependencies(
+   "~/GitHub/Packages/PackageX",
+   "Development/Dependencies.R"
+ )
+
+
+```
+
+#### 5. Helper to Get Description from Config: `.get_description_from_config()`
+This function retrieves the "description" field from the `DESCRIPTION` object,
+
+```r
+No examples found.
+
+```
+
