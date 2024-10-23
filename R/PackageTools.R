@@ -458,14 +458,13 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
 parse_rmd_vignette_from_roxygen <- function(
     file,
     output_file = .convertFilePathToOutput(file,
-                                           fn_prefix = "Vignette",
-                                           ext = ".Rmd"),
+      fn_prefix = "Vignette",
+      ext = ".Rmd"
+    ),
     fun_header_level = "####",
     open_results = TRUE,
     parse_examples = TRUE,
-    package_desc = .get_description_from_config(file)
-) {
-
+    package_desc = .get_description_from_config(file)) {
   print(output_file)
   # Input argument assertions
   stopifnot(is.character(file), length(file) == 1, file.exists(file))
@@ -486,10 +485,12 @@ parse_rmd_vignette_from_roxygen <- function(
   # Check if the number of function definitions and titles match
   nr_fun_definitions <- length(function_lines)
   nr_fun_titles <- length(title_lines)
-  if(nr_fun_definitions != nr_fun_titles) {
+  if (nr_fun_definitions != nr_fun_titles) {
     warning("\nThe number of function definitions and titles do not match.", immediate. = TRUE)
-    message("\nnr_fun_definitions, defined as `<- function` are: ", nr_fun_definitions,
-            "\nnr_fun_titles, defined as `@title` are: ", nr_fun_titles)
+    message(
+      "\nnr_fun_definitions, defined as `<- function` are: ", nr_fun_definitions,
+      "\nnr_fun_titles, defined as `@title` are: ", nr_fun_titles
+    )
 
     idx_function_def <- grep("<- function", lines)
     idx_title_tag <- grep("@title", lines)
@@ -497,7 +498,7 @@ parse_rmd_vignette_from_roxygen <- function(
     if (nr_fun_definitions > nr_fun_titles) {
       idx_title_tagX <- idx_title_tag[1:nr_fun_titles]
       idx_function_defX <- idx_function_def[1:nr_fun_titles]
-      matching_tag_and_def <- (idx_function_defX - idx_title_tagX)>0
+      matching_tag_and_def <- (idx_function_defX - idx_title_tagX) > 0
       first_mismatch <- which(!matching_tag_and_def)[1]
       warning("\nFirst mismatch at function: ", first_mismatch, immediate. = TRUE)
       message(title_lines[first_mismatch])
@@ -507,16 +508,15 @@ parse_rmd_vignette_from_roxygen <- function(
       idx_function_defX <- idx_function_def[1:nr_fun_definitions]
 
       dist_to_next_tag <- diff(idx_title_tagX)
-      dist_to_next_fun_def <- (idx_function_defX-idx_title_tagX)
+      dist_to_next_fun_def <- (idx_function_defX - idx_title_tagX)
       matching_tag_and_def <- dist_to_next_tag < dist_to_next_fun_def
       first_mismatch <- which(matching_tag_and_def)[1]
       warning("\nFirst mismatch at title: ", first_mismatch, immediate. = TRUE)
       message(title_lines[first_mismatch])
-      message(function_lines[first_mismatch],"\n\n")
+      message(function_lines[first_mismatch], "\n\n")
     }
 
     stop("\nMismatch between function definitions and titles.")
-
   }
 
   # ------------------------------------------------------------------------------------------------
@@ -553,37 +553,39 @@ parse_rmd_vignette_from_roxygen <- function(
     cat(paste0(fun_header_level, " ", i, ". ", titles[i], ": `", function_names[i], "()`\n"), file = file_conn)
 
     # Needed not to print NA to missing descriptions
-    descX <- if (is.na(descriptions[i])) {description_lines[i]} else {descriptions[i]}
+    descX <- if (is.na(descriptions[i])) {
+      description_lines[i]
+    } else {
+      descriptions[i]
+    }
 
     cat(paste0(descX, "\n\n"), file = file_conn)
 
     if (parse_examples) {
-
-      # idx_roxy_start <- grep(title_lines[i], lines, fixed = T, perl = T)
+      # idx_roxy_start <- grep(title_lines[i], lines, fixed = TRUE, perl = TRUE)
       idx_roxy_start <- match(title_lines[i], lines)
       stopifnot(length(idx_roxy_start) <= 1)
-      # idx_roxy_end <- grep(function_lines[i], lines, fixed = T)
+      # idx_roxy_end <- grep(function_lines[i], lines, fixed = TRUE)
       idx_roxy_end <- match(function_lines[i], lines)
       stopifnot(length(idx_roxy_end) <= 1)
 
-      roxy_body <- lines[ idx_roxy_start:idx_roxy_end]
+      roxy_body <- lines[idx_roxy_start:idx_roxy_end]
 
       idx_example_start <- grep("@examples", roxy_body)
       cat("```r\n", file = file_conn)
 
       # If examples are found, extract and write them to the output file
-      if (length(idx_example_start)  > 0) {
-
+      if (length(idx_example_start) > 0) {
         # Identify the body of the example code
-        example_body <- roxy_body[(idx_example_start+1):length(roxy_body)]
+        example_body <- roxy_body[(idx_example_start + 1):length(roxy_body)]
 
         idx_example_end_next_tag <- grep("#' @", example_body)
-        idx_example_end_roxy_end <- grep("#'", example_body, invert = T)
+        idx_example_end_roxy_end <- grep("#'", example_body, invert = TRUE)
         idx_example_body_end <- min(idx_example_end_next_tag, idx_example_end_roxy_end)
-        example_body_final <- example_body[1:idx_example_body_end-1]
+        example_body_final <- example_body[1:idx_example_body_end - 1]
 
         # remove `\\dontrun` from the example code - if present
-        idx_dontrun <- grep('dontrun', example_body_final)
+        idx_dontrun <- grep("dontrun", example_body_final)
         if (length(idx_dontrun) > 0) {
           example_body_final <- example_body_final[-idx_dontrun]
           # now also remove the final `}`
@@ -611,7 +613,6 @@ parse_rmd_vignette_from_roxygen <- function(
       }
 
       cat("\n```\n<br>\n\n", file = file_conn)
-
     } # if (parse_examples)
   } # for
 
@@ -644,12 +645,12 @@ parse_rmd_vignette_from_roxygen <- function(
   config.path <- file.path(dirname(dirname(file)), "Development/config.R")
 
   # Check if the config.R file exists
-  if(file.exists(config.path)) {
+  if (file.exists(config.path)) {
     # Source the config.R file
     source(config.path)
 
     # Check if DESCRIPTION exists and has a non-null "description" field
-    if(exists("DESCRIPTION") && !is.null(DESCRIPTION[["description"]])) {
+    if (exists("DESCRIPTION") && !is.null(DESCRIPTION[["description"]])) {
       return(DESCRIPTION[["description"]])
     } else {
       message("DESCRIPTION variable not found or does not contain a 'description' field.")
@@ -658,7 +659,6 @@ parse_rmd_vignette_from_roxygen <- function(
   } else {
     message("Configuration file not found: ", config.path)
   }
-
 }
 
 # _____________________________________________________________________________________________

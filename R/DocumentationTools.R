@@ -89,6 +89,7 @@ document_and_create_package <- function(package_dir,
   } else {
     setwd(RepositoryDir)
     file.remove(c("DESCRIPTION", "NAMESPACE"))
+    message("> usethis::create_package...")
     usethis::create_package(path = RepositoryDir, fields = DESCRIPTION, open = FALSE)
   }
 
@@ -138,7 +139,7 @@ document_and_create_package <- function(package_dir,
     Depends = DESCRIPTION$"depends",
     Imports = DESCRIPTION$"imports",
     Suggests = DESCRIPTION$"suggests",
-    BugReports = if(!is.null(DESCRIPTION$"bug.reports")) DESCRIPTION$"bug.reports" else file.path("https://github.com", DESCRIPTION$"github.user", DESCRIPTION$"package.name", "issues"),
+    BugReports = if (!is.null(DESCRIPTION$"bug.reports")) DESCRIPTION$"bug.reports" else file.path("https://github.com", DESCRIPTION$"github.user", DESCRIPTION$"package.name", "issues"),
     Packaged = Sys.time()
   )
 }
@@ -222,6 +223,3 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
   # Output assertion
   stopifnot(file.exists(depFile))
 }
-
-
-

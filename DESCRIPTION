@@ -1,6 +1,6 @@
 Package: PackageTools
 Title: PackageTools - Help for R package development.
-Version: 0.7.5
+Version: 0.7.9
 Authors@R: 
     person("Abel", "Vertesy", , "av@imba.oeaw.ac.at", role = c("aut", "cre"))
 Author: Abel Vertesy <av@imba.oeaw.ac.at> [aut, cre]
@@ -14,10 +14,11 @@ Imports:
     igraph,
     NCmisc,
     pkgnet,
+    renv,
     rstudioapi,
     usethis,
     xfun
 Encoding: UTF-8
-Packaged: 2024-03-25 14:28:53.397265
+Packaged: 2024-10-24 00:00:13.172826
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1

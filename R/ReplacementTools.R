@@ -39,10 +39,10 @@
 #' replace_a_string_in_a_file("my_file.txt", "from", "to", whole_word = FALSE, ignore_case = FALSE)
 #'
 #' @export
-replace_a_string_in_a_file <- function(file_path, from, to, whole_word = TRUE, ignore_case = FALSE
-                                       , perl = TRUE, backup = FALSE
-                                       , ...) {
-
+replace_a_string_in_a_file <- function(
+    file_path, from, to, whole_word = TRUE, ignore_case = FALSE,
+    perl = TRUE, backup = FALSE,
+    ...) {
   # Input argument assertions
   stopifnot(
     is.character(file_path) && length(file_path) == 1,
@@ -78,10 +78,12 @@ replace_a_string_in_a_file <- function(file_path, from, to, whole_word = TRUE, i
   writeLines(updated_content, file_path)
 
   # Message the number of instances replaced
-  message("Replacement complete: '", from, "' -> '", to, "'\nin ", file_path,
-          ".\n", match_count, " instances replaced.")
+  message(
+    "Replacement complete: '", from, "' -> '", to, "'\nin ", file_path,
+    ".\n", match_count, " instances replaced."
+  )
 
-  return(invisible(match_count))  # Return the count of replacements made
+  return(invisible(match_count)) # Return the count of replacements made
 }
 
 

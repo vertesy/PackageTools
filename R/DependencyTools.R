@@ -308,7 +308,6 @@ convert_igraph_to_mermaid <- function(
     copy_to_clipboard = TRUE, openMermaid = TRUE,
     pkg_path_for_scripts_as_subgraphs = FALSE,
     add_subgraph_template = TRUE, add_embedding_comments = TRUE) {
-
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR")
@@ -345,7 +344,6 @@ convert_igraph_to_mermaid <- function(
 
   # Optionally add subgraph templates to Mermaid code
   if (add_subgraph_template) {
-
     # Check if subgraphs should be based on script paths
     if (isFALSE(pkg_path_for_scripts_as_subgraphs)) {
       mermaid_code <- paste0(mermaid_code, "\nsubgraph SubGraphOne\n")
