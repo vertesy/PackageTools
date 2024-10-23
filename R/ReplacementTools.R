@@ -10,6 +10,83 @@
 # 1. Replacement Functions  ----
 # ____________________________________________________________________
 
+
+#' @title Replace a string in a file with options for whole word and case matching
+#'
+#' @description
+#' The `replace_a_string_in_a_file()` function replaces all instances of a string in a file, with
+#' options to replace only whole word matches and to replace with case sensitivity or ignore case.
+#' It also allows backing up the file before making the replacements.
+#'
+#' @param file_path The path to the file where replacements will be made. Default: none.
+#' @param from The string to be replaced. Default: none.
+#' @param to The string that will replace `from`. Default: none.
+#' @param whole_word Logical. If `TRUE`, replaces only whole word matches. Default: `TRUE`.
+#' @param ignore_case Logical. If `TRUE`, the replacement is case insensitive. Default: `FALSE`.
+#' @param perl Logical. If `TRUE`, use Perl-compatible regular expressions. Default: `TRUE`.
+#' @param backup Logical. If `TRUE`, a backup of the original file is saved with a `.bac` extension.
+#'   Default: `FALSE`.
+#' @param ... Additional arguments to be passed to `gsub()` and `grepl()`.
+#'
+#' @return The function performs replacements in the file, returning the number of instances replaced
+#'   and outputting a message indicating the completion of the replacement process.
+#'
+#' @examples
+#' # Replace "from" with "to" in "my_file.txt", with case matching and whole word match.
+#' replace_a_string_in_a_file("my_file.txt", "from", "to")
+#'
+#' # Replace "from" with "to" without matching the case and ignoring whole word match.
+#' replace_a_string_in_a_file("my_file.txt", "from", "to", whole_word = FALSE, ignore_case = FALSE)
+#'
+#' @export
+replace_a_string_in_a_file <- function(file_path, from, to, whole_word = TRUE, ignore_case = FALSE
+                                       , perl = TRUE, backup = FALSE
+                                       , ...) {
+
+  # Input argument assertions
+  stopifnot(
+    is.character(file_path) && length(file_path) == 1,
+    file.exists(file_path),
+    is.character(from) && length(from) == 1,
+    is.character(to) && length(to) == 1,
+    is.logical(whole_word) && length(whole_word) == 1,
+    is.logical(ignore_case) && length(ignore_case) == 1,
+    is.logical(perl) && length(perl) == 1,
+    is.logical(backup) && length(backup) == 1
+  )
+
+  # Read the file content
+  file_content <- readLines(file_path)
+
+  # Create the pattern for replacement, with or without whole word match
+  pattern <- if (whole_word) paste0("\\b", from, "\\b") else from
+
+  # Backup the file if requested
+  if (backup) {
+    backup_file_path <- paste0(file_path, ".bac")
+    file.copy(file_path, backup_file_path, overwrite = TRUE)
+    message("Backup created: ", backup_file_path)
+  }
+
+  # Count the number of matches before replacement
+  match_count <- sum(grepl(pattern, file_content, ignore.case = ignore_case, perl = perl, ...))
+
+  # Perform replacement based on case sensitivity
+  updated_content <- gsub(pattern, to, file_content, ignore.case = ignore_case, perl = perl, ...)
+
+  # Write the updated content back to the file
+  writeLines(updated_content, file_path)
+
+  # Message the number of instances replaced
+  message("Replacement complete: '", from, "' -> '", to, "'\nin ", file_path,
+          ".\n", match_count, " instances replaced.")
+
+  return(invisible(match_count))  # Return the count of replacements made
+}
+
+
+
+# _____________________________________________________________________________________________
 #' @title Replace T and F with TRUE and FALSE in R Scripts
 #'
 #' @description This function reads an R script, safely replaces all instances of `T` with `TRUE`

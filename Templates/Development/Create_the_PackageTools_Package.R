@@ -63,7 +63,7 @@ TEMPLATE::extract_package_dependencies(repository.dir)
 
 # Try to find and add missing @importFrom statements------------------------------------------------
 devtools::load_all("~/GitHub/Packages/TEMPLATE/")
-(ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T, pattern = "*.R$"))
+(ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T, pattern = .R$, pattern = "*.R$"))
 
 if (F) {
   (excluded.packages <- unlist(strsplit(DESCRIPTION$'depends', split = ", ")))

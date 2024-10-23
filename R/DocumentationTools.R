@@ -129,6 +129,10 @@ document_and_create_package <- function(package_dir,
       '", family = "', DESCRIPTION$"author.family",
       '", email = "', DESCRIPTION$"author.email", '", role = c("aut", "cre"))'
     ),
+    # Maintainer = person(
+    #   given = DESCRIPTION$"maintainer.given", family = DESCRIPTION$"maintainer.family",
+    #   email = DESCRIPTION$"maintainer.email", role = "ctb"
+    # ),
     Description = DESCRIPTION$"description",
     License = DESCRIPTION$"license",
     Depends = DESCRIPTION$"depends",
