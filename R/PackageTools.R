@@ -100,7 +100,7 @@ list_of_funs_to_markdown_simple <- function(
 
   message("\nOutput written to:\nfile.edit(", output_file, ")\n")
   message('file.edit("~/GitHub/Packages/Stringendo/README.md")')
-  message("file.remove(", output_file, ")\n")
+  message("file.remove('", output_file, "')\n")
 
   if (open_results) try(system(paste0("open ", output_file), wait = FALSE), silent = TRUE)
 }
@@ -246,8 +246,11 @@ list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutpu
   # Output assertion (Check if output file exists after writing)
   stopifnot(file.exists(output_file))
 
+  message("\nOutput written to:\nfile.edit('", output_file, "')\n")
+  message('file.edit("~/GitHub/Packages/Stringendo/README.md")')
+  message("file.remove(", output_file, ")\n")
+
   if (open_results) system(paste0("open ", output_file), wait = FALSE)
-  print(paste("Output written to", output_file))
 }
 
 
@@ -629,8 +632,8 @@ parse_rmd_vignette_from_roxygen <- function(
   # Output assertion
   stopifnot(file.exists(output_file))
 
+  message(paste("Output written to:\n", output_file))
   if (open_results) system(paste0("open -a Rstudio ", output_file), wait = FALSE)
-  print(paste("Output written to", output_file))
 }
 
 
@@ -698,7 +701,10 @@ parse_rmd_vignette_from_roxygen <- function(
 
   # Replace the file extension and modify the filename
   outputFileName <- sub("\\.R$", ext, basename(inputPath))
-  # outputPath <- gsub("(.*/)?(.*)\\.md$", "\\1list.of.functions.in.\\2", outputPath)
+
+  # replace multiple subsequent slashes with single slashes
+  outputFileName <- gsub("/{2,}", "/", outputFileName)
+
   outputPath <- paste0(dirname(inputPath), "/", fn_prefix, ".", outputFileName)
 
   stopifnot(is.character(outputPath), nchar(outputPath) > 0)

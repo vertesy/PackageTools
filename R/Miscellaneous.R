@@ -141,11 +141,9 @@ copy_github_badge <- function(status = "experimental",
   badge_link <- paste0(prefix, status, ".svg")
   markdown_text <- paste0("![status: ", status, "](", badge_link, ")")
 
-  if (copy_to_clipboard & require(clipr)) {
-    clipr::write_clip(markdown_text)
-  } else {
-    return(markdown_text)
-  }
+  # Copy to clipboard, or return the Markdown text
+  if (copy_to_clipboard & require(clipr)) clipr::write_clip(markdown_text) else return(markdown_text)
+
 }
 
 

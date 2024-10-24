@@ -7,11 +7,11 @@ try(dev.off(), silent = TRUE)
 
 # Functions ------------------------
 require(PackageTools)
-(package.name <- basename(repository.dir))
 devtools::load_all("~/GitHub/Packages/PackageTools/")
 
 # Setup ------------------------
 repository.dir <- "~/GitHub/Packages/PackageTools"
+(package.name <- basename(repository.dir))
 config.path <- file.path(repository.dir, "Development/config.R")
 
 "TAKE A LOOK AT"
@@ -38,8 +38,8 @@ pak::pkg_install(remote.path)
 # # remove.packages(DESCRIPTION$'package.name')
 
 # CMD CHECK ------------------------------------------------
-# checkres <-
-  devtools::check(repository.dir, cran = FALSE)
+devtools::check_man(repository.dir)
+checkres <- devtools::check(repository.dir, cran = FALSE)
 
 
 

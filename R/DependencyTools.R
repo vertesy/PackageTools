@@ -369,9 +369,7 @@ convert_igraph_to_mermaid <- function(
 
   stopifnot("Mermaid.js code should be a non-empty string" = is.character(mermaid_code) && nchar(mermaid_code) > 0)
 
-  if (copy_to_clipboard) {
-    clipr::write_clip(mermaid_code)
-  }
+  if (copy_to_clipboard & require(clipr)) clipr::write_clip(mermaid_code)
 
   print("Check output on https://mermaid.live")
   if (openMermaid) browseURL("https://mermaid.live")

@@ -180,8 +180,10 @@ document_and_create_package <- function(package_dir,
 #' @param package_dir The path to the package directory. Default: '~/GitHub/Packages/PackageX'.
 #' @param output_file The relative path from the package directory to the dependencies file.
 #'                      Default: 'Development/Dependencies.R'.
-#' @return None
+#' @param copy_to_clipboard Logical. If TRUE, the dependencies are copied to the clipboard.
+#' Default: FALSE.
 #'
+#' @return None
 #' @examples
 #' extract_package_dependencies(
 #'   "~/GitHub/Packages/PackageX",
@@ -192,7 +194,8 @@ document_and_create_package <- function(package_dir,
 #' @importFrom clipr write_clip
 #'
 #' @export
-extract_package_dependencies <- function(package_dir, output_file = "Development/Dependencies.R") {
+extract_package_dependencies <- function(package_dir, output_file = "Development/Dependencies.R"
+                                         , copy_to_clipboard = FALSE) {
   # Assertions
   stopifnot(
     is.character(package_dir),
@@ -210,7 +213,8 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
   for (file in r_files) {
     print(file)
     f.deps <- NCmisc::list.functions.in.file(filename = file)
-    clipr::write_clip(f.deps)
+
+    if (copy_to_clipboard & require(clipr)) clipr::write_clip(f.deps) else Stringendo::message2(f.deps)
 
     # Writing to dependencies file
     sink(file = depFile, append = TRUE)
@@ -225,4 +229,5 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
   }
   # Output assertion
   stopifnot(file.exists(depFile))
+
 }
