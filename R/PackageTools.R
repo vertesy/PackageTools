@@ -124,6 +124,7 @@ list_of_funs_to_markdown_simple <- function(
 #'                          Default: TRUE.
 #' @param fun_header_level The markdown header level to be used for function names.
 #'                         Default: "####".
+#' @param package.name The name of the package to be used in the output.
 #' @param open_results Open resulting file? Default: TRUE.
 # #' @param add_script_name add the R script's name to .md? Default: TRUE.
 #' @return This function does not return a value; it writes output to the specified markdown file.
@@ -133,8 +134,10 @@ list_of_funs_to_markdown_simple <- function(
 #' }
 #' @export
 
-list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
-                                     write_title_field = TRUE, fun_header_level = "####", open_results = TRUE
+list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md")
+                                     , write_title_field = TRUE, fun_header_level = "####"
+                                     , package.name = "XXXX"
+                                     , open_results = TRUE
                                      # add_script_name = TRUE
 ) {
   warning("Does not find all functions sometimes!!!")

@@ -6,7 +6,8 @@
 \usage{
 extract_package_dependencies(
   package_dir,
-  output_file = "Development/Dependencies.R"
+  output_file = "Development/Dependencies.R",
+  copy_to_clipboard = FALSE
 )
 }
 \arguments{
@@ -14,6 +15,9 @@ extract_package_dependencies(
 
 \item{output_file}{The relative path from the package directory to the dependencies file.
 Default: 'Development/Dependencies.R'.}
+
+\item{copy_to_clipboard}{Logical. If TRUE, the dependencies are copied to the clipboard.
+Default: FALSE.}
 }
 \value{
 None

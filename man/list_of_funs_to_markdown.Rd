@@ -9,6 +9,7 @@ list_of_funs_to_markdown(
   output_file = .convertFilePathToOutput(file, ext = ".det.md"),
   write_title_field = TRUE,
   fun_header_level = "####",
+  package.name = "XXXX",
   open_results = TRUE
 )
 }
@@ -24,6 +25,8 @@ Default: TRUE.}
 
 \item{fun_header_level}{The markdown header level to be used for function names.
 Default: "####".}
+
+\item{package.name}{The name of the package to be used in the output.}
 
 \item{open_results}{Open resulting file? Default: TRUE.}
 }
