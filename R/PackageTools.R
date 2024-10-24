@@ -246,9 +246,9 @@ list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutpu
   # Output assertion (Check if output file exists after writing)
   stopifnot(file.exists(output_file))
 
-  message("\nOutput written to:\nfile.edit('", output_file, "')\n")
+  message('\nOutput written to:\nfile.edit("', output_file, '")\n')
   message('file.edit("~/GitHub/Packages/Stringendo/README.md")')
-  message("file.remove(", output_file, ")\n")
+  message('file.remove("', output_file, '")\n')
 
   if (open_results) system(paste0("open ", output_file), wait = FALSE)
 }
