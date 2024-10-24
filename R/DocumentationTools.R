@@ -206,6 +206,7 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
   depFile <- file.path(package_dir, output_file)
   r_files <- list.files(file.path(package_dir, "R"), full.names = TRUE, pattern = "\\.R$")
 
+
   # Overwrite with timestamp at the beginning
   cat(paste("Dependency file generated on", date(), "\n\n"), append = FALSE, file = depFile)
 
@@ -214,7 +215,8 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
     print(file)
     f.deps <- NCmisc::list.functions.in.file(filename = file)
 
-    if (copy_to_clipboard & require(clipr)) clipr::write_clip(f.deps) else Stringendo::message2(f.deps)
+    # Copying to clipboard or printing to console
+    if (copy_to_clipboard & require(clipr)) clipr::write_clip(f.deps) else print(f.deps)
 
     # Writing to dependencies file
     sink(file = depFile, append = TRUE)
@@ -227,6 +229,7 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
     p.deps <- gsub(x = names(f.deps), pattern = "package:", replacement = "")
     write(x = p.deps, file = depFile, append = TRUE)
   }
+
   # Output assertion
   stopifnot(file.exists(depFile))
 
