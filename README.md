@@ -1,4 +1,5 @@
 # PackageTools ![status: experimental](https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/experimental.svg)
+
 Functions and wrappers to manage R packages (creation, documentation, dependencies, checks).
 
 ![PackageTools.logo.small](Development/PackageTools.logo.small.png)
@@ -11,7 +12,7 @@ Functions and wrappers to manage R packages (creation, documentation, dependenci
 
 ## Overview
 
-`PackageTools` is designed for parsing R function source files, specifically the extraction of function  documentation details from Roxygen comments. It offers two primary functions: `list_of_funs_to_markdown_simple()` and the recommended `list_of_funs_to_markdown()`. Both functions serve to automate the process of generating markdown documentation from Roxygen comments in R source files, streamlining the process of maintaining up-to-date documentation for R packages.
+`PackageTools` is designed for parsing R function source files, such as the extraction of function documentation details from Roxygen comments. The `PackageTools.R` chapter offers two primary functions: `list_of_funs_to_markdown_simple()` and the recommended `list_of_funs_to_markdown()`. Both functions serve to automate the process of generating markdown documentation from Roxygen comments in R source files, streamlining the process of maintaining up-to-date documentation for R packages.
 
 ### `list_of_funs_to_markdown_simple()`
 
