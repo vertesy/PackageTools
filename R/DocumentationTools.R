@@ -30,6 +30,8 @@
 #'                    Default: 'config.R'.
 #' @param update_citation Whether to update the CITATION file. Default: FALSE.
 #' @param backup_r_script Whether to backup the previous r script into another file. Default: FALSE.
+#' @param dev_folder The name of the development folder. Default: 'Development'.
+#'
 #' @return None
 #' @importFrom usethis create_package
 #' @importFrom devtools create document
@@ -95,6 +97,7 @@ document_and_create_package <- function(package_dir,
 
   # Compile Package
   setwd(RepositoryDir)
+  message("> devtools::document...")
   devtools::document(pkg = RepositoryDir)
   warnings()
 
@@ -175,7 +178,7 @@ document_and_create_package <- function(package_dir,
 #' by script.
 #'
 #' @param package_dir The path to the package directory. Default: '~/GitHub/Packages/PackageX'.
-#' @param path_dep_file The relative path from the package directory to the dependencies file.
+#' @param output_file The relative path from the package directory to the dependencies file.
 #'                      Default: 'Development/Dependencies.R'.
 #' @return None
 #'

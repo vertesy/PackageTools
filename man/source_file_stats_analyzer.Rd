@@ -11,12 +11,12 @@ source_file_stats_analyzer(
 )
 }
 \arguments{
-\item{file_path}{The path to the file to be analyzed. Default: None (mandatory).}
+\item{file_path}{The path to the file to be analyzed.}
 
-\item{pattern}{The regular expression pattern used to identify comment lines. Default: "^\\s*#".}
+\item{pattern}{The regular expression pattern used to identify comment lines. Default: \verb{^\\\\s*#"}.}
 
 \item{patter_sourced_files}{The regular expression pattern used to identify lines where files are sourced.
-Default: "source\\s*\\(\\s*\href{[^'\"]+}{'\"}\link[='\\"]{'\"}\\s*\\)".}
+Default: \verb{source\\\\s*\\\\(\\\\s*['\\"]([^'\\"]+)['\\"]\\\\s*\\\\)}.}
 }
 \value{
 A list containing the number of lines of code, the number of comment lines,

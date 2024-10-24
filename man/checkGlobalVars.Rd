@@ -11,6 +11,8 @@ checkGlobalVars(f, silent = FALSE, warn = TRUE)
 
 \item{silent}{Logical parameter with a default value of \code{FALSE}.
 If \code{TRUE}, the function suppresses warnings about global variable usage.}
+
+\item{warn}{Logical parameter with a default value of \code{TRUE}.}
 }
 \value{
 Returns \code{TRUE} if no global variables are used in the function \code{f}, \code{FALSE} otherwise.
@@ -18,8 +20,8 @@ If \code{silent} is \code{FALSE} and global variables are found, a warning is is
 }
 \description{
 This function checks whether the specified function (\code{f}) uses any global variables.
-It returns \code{TRUE} if no global variables are used, and \code{FALSE} otherwise. If global variables are found
-and \code{silent} is \code{FALSE}, a warning is issued listing the global variables.
+It returns \code{TRUE} if no global variables are used, and \code{FALSE} otherwise. If global variables
+are found and \code{silent} is \code{FALSE}, a warning is issued listing the global variables.
 }
 \examples{
 testFunction <- function(x, y) {

@@ -7,7 +7,8 @@
 add_importFrom_statements(
   file_path,
   suffix = "ADDED_BY_add_importFrom_statements",
-  exclude_packages = c("MarkdownReports")
+  exclude_packages = c("MarkdownReports"),
+  sure = FALSE
 )
 }
 \arguments{
@@ -18,6 +19,8 @@ Default: "ADDED_BY_add_importFrom_statements".}
 
 \item{exclude_packages}{Packages to exclude from adding \verb{@importFrom} statements.
 Default: c("MarkdownReports").}
+
+\item{sure}{Logical indicating whether to proceed with the function.}
 }
 \description{
 Reads an R script file, processes its content to find and add \verb{@importFrom} statements

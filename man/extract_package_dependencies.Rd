@@ -12,7 +12,7 @@ extract_package_dependencies(
 \arguments{
 \item{package_dir}{The path to the package directory. Default: '~/GitHub/Packages/PackageX'.}
 
-\item{path_dep_file}{The relative path from the package directory to the dependencies file.
+\item{output_file}{The relative path from the package directory to the dependencies file.
 Default: 'Development/Dependencies.R'.}
 }
 \value{

@@ -21,6 +21,8 @@ Default: 'config.R'.}
 \item{backup_r_script}{Whether to backup the previous r script into another file. Default: FALSE.}
 
 \item{update_citation}{Whether to update the CITATION file. Default: FALSE.}
+
+\item{dev_folder}{The name of the development folder. Default: 'Development'.}
 }
 \value{
 None

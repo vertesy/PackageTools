@@ -12,6 +12,8 @@
 # _____________________________________________________________________________________________ ----
 # 1. Function List from Roxygen ---------------------------------------------------------------------------
 
+
+
 #' @title Parse Roxygen Comments
 #'
 #' @description Extracts and summarizes Roxygen documentation comments from a specified R script file.
@@ -335,12 +337,14 @@ checkGlobalVarsInPackage <- function(packageName, warn = TRUE) {
 #' @title Check for Use of Global Variables in a Function
 #'
 #' @description This function checks whether the specified function (`f`) uses any global variables.
-#' It returns `TRUE` if no global variables are used, and `FALSE` otherwise. If global variables are found
-#' and `silent` is `FALSE`, a warning is issued listing the global variables.
+#' It returns `TRUE` if no global variables are used, and `FALSE` otherwise. If global variables
+#' are found and `silent` is `FALSE`, a warning is issued listing the global variables.
 #'
 #' @param f The function to be checked for global variable usage.
 #' @param silent Logical parameter with a default value of `FALSE`.
 #' If `TRUE`, the function suppresses warnings about global variable usage.
+#' @param warn Logical parameter with a default value of `TRUE`.
+#'
 #' @importFrom codetools findGlobals
 #' @return Returns `TRUE` if no global variables are used in the function `f`, `FALSE` otherwise.
 #' If `silent` is `FALSE` and global variables are found, a warning is issued.
@@ -379,10 +383,10 @@ checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
 #' It also identifies files that are sourced within the provided file. The function uses regular
 #' expressions to differentiate between code and comment lines and to extract the names of sourced files.
 #'
-#' @param file_path The path to the file to be analyzed. Default: None (mandatory).
-#' @param pattern The regular expression pattern used to identify comment lines. Default: "^\\s*#".
+#' @param file_path The path to the file to be analyzed.
+#' @param pattern The regular expression pattern used to identify comment lines. Default: `^\\s*#"`.
 #' @param patter_sourced_files The regular expression pattern used to identify lines where files are sourced.
-#' Default: "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)".
+#' Default: `source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)`.
 #'
 #' @return A list containing the number of lines of code, the number of comment lines,
 #' and the names of any sourced files.

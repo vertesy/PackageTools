@@ -26,7 +26,7 @@ PackageTools::document_and_create_package(repository.dir, config_file = 'config.
 # Install your package ------------------------------------------------
 "disable rprofile by"
 rprofile()
-devtools::install_local(repository.dir, upgrade = F)
+devtools::install_local(repository.dir, upgrade = F) # , force = T
 
 
 # Test if you can install from github ------------------------------------------------
