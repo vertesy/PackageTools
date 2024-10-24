@@ -104,6 +104,86 @@ checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"
 }
 
 
+
+
+# _____________________________________________________________________________________________ ----
+## Package Section ---------------------------------------------------------------------------
+
+#' @title Copy GitHub Badge Markdown Image Link to Clipboard
+#'
+#' @description
+#' This function copies the Markdown code for a GitHub badge to the clipboard based on the
+#' specified status. It supports four statuses: 'experimental', 'active', 'archive', and
+#' 'hibernate'.
+#'
+#' @param status The status of the project, determining which badge is copied.
+#'               Valid options are 'experimental', 'active', 'archive', and 'hibernate'.
+#'               Default: 'experimental'.
+#' @param prefix The URL prefix for the badge images.
+#'               Default: "https:,//raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".
+#' @param copy_to_clipboard Logical. If TRUE, the badge Markdown code is copied to the clipboard.
+#'
+#' @return The function does not return a value but copies the relevant badge Markdown code to the clipboard.
+#' @examples
+#' copy_github_badge("experimental")
+#' copy_github_badge("active", "https://example.com/badges/")
+#' @importFrom clipr write_clip
+#' @export
+copy_github_badge <- function(status = "experimental",
+                              prefix = "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/",
+                              copy_to_clipboard = FALSE
+                              ) {
+  valid_statuses <- c("experimental", "active", "archive", "hibernate")
+  if (!status %in% valid_statuses) {
+    stop("Invalid status. Choose from 'experimental', 'active', 'archive', 'hibernate'.")
+  }
+
+  badge_link <- paste0(prefix, status, ".svg")
+  markdown_text <- paste0("![status: ", status, "](", badge_link, ")")
+
+  if (copy_to_clipboard & require(clipr)) {
+    clipr::write_clip(markdown_text)
+  } else {
+    return(markdown_text)
+  }
+}
+
+
+
+
+# _____________________________________________________________________________________________
+#' @title Open README.md of the Current Active RStudio Project
+#'
+#' @description Opens the README.md file located in the root of the currently active RStudio project.
+#'              This function automatically detects the operating system to use the appropriate
+#'              system command for opening the file.
+#'
+#' @return Invisible NULL. The function is used for its side effect of opening a file.
+#' @importFrom rstudioapi getActiveProject
+#' @examples openReadme() # Opens README.md in the active RStudio project
+#' @export
+
+openReadme <- function() {
+  if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    readme_path <- file.path(rstudioapi::getActiveProject(), "README.md")
+  } else {
+    stop("rstudioapi package is required.")
+  }
+
+  if (Sys.info()["sysname"] == "Darwin") {
+    system(paste("open", shQuote(readme_path)))
+  } else if (Sys.info()["sysname"] == "Windows") {
+    system(paste("start", shQuote(readme_path)), wait = FALSE)
+  } else if (Sys.info()["sysname"] == "Linux") {
+    system(paste("xdg-open", shQuote(readme_path)))
+  } else {
+    stop("Unsupported operating system.")
+  }
+}
+
+
+
+
 # # _____________________________________________________________________________________________ ----
 # #' @title Find which Package a given Function belongs to
 # #' @description Determines the package that a given function is defined in and optionally copies
@@ -168,76 +248,3 @@ checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"
 #   }
 #   return(foundPackage)
 # }
-
-
-
-# _____________________________________________________________________________________________ ----
-## Package Section ---------------------------------------------------------------------------
-
-#' Copy GitHub Badge Markdown Image Link to Clipboard
-#'
-#' @description
-#' This function copies the Markdown code for a GitHub badge to the clipboard based on the
-#' specified status. It supports four statuses: 'experimental', 'active', 'archive', and
-#' 'hibernate'.
-#'
-#' @param status The status of the project, determining which badge is copied.
-#'               Valid options are 'experimental', 'active', 'archive', and 'hibernate'.
-#'               Default: 'experimental'.
-#' @param prefix The URL prefix for the badge images.
-#'               Default: "https:,//raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".
-#' @return The function does not return a value but copies the relevant badge Markdown#'         code to the clipboard.
-#' @examples
-#' copy_github_badge("experimental")
-#' copy_github_badge("active", "https://example.com/badges/")
-#' @importFrom clipr write_clip
-#' @export
-copy_github_badge <- function(status = "experimental",
-                              prefix = "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/") {
-  valid_statuses <- c("experimental", "active", "archive", "hibernate")
-  if (!status %in% valid_statuses) {
-    stop("Invalid status. Choose from 'experimental', 'active', 'archive', 'hibernate'.")
-  }
-
-  badge_link <- paste0(prefix, status, ".svg")
-  markdown_text <- paste0("![status: ", status, "](", badge_link, ")")
-
-  if (require(clipr)) {
-    clipr::write_clip(markdown_text)
-  } else {
-    return(markdown_text)
-  }
-}
-
-
-
-
-# _____________________________________________________________________________________________
-#' @title Open README.md of the Current Active RStudio Project
-#'
-#' @description Opens the README.md file located in the root of the currently active RStudio project.
-#'              This function automatically detects the operating system to use the appropriate
-#'              system command for opening the file.
-#'
-#' @return Invisible NULL. The function is used for its side effect of opening a file.
-#' @importFrom rstudioapi getActiveProject
-#' @examples openReadme() # Opens README.md in the active RStudio project
-#' @export
-
-openReadme <- function() {
-  if (requireNamespace("rstudioapi", quietly = TRUE)) {
-    readme_path <- file.path(rstudioapi::getActiveProject(), "README.md")
-  } else {
-    stop("rstudioapi package is required.")
-  }
-
-  if (Sys.info()["sysname"] == "Darwin") {
-    system(paste("open", shQuote(readme_path)))
-  } else if (Sys.info()["sysname"] == "Windows") {
-    system(paste("start", shQuote(readme_path)), wait = FALSE)
-  } else if (Sys.info()["sysname"] == "Linux") {
-    system(paste("xdg-open", shQuote(readme_path)))
-  } else {
-    stop("Unsupported operating system.")
-  }
-}
