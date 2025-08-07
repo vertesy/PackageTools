@@ -178,8 +178,8 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
 #' @param output_path A string representing the path to save the modified R script.
 #' Default is the same as `file_path`.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return None
 #' @importFrom stringr str_replace_all
@@ -290,8 +290,8 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #'
 #' @param line A single line from an R script.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return A string representing the modified line.
 #' @importFrom stringr str_detect

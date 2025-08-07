@@ -20,7 +20,7 @@
 
 #' @title Create R Package from Configuration
 #'
-#' @description Automate the creation of an R package from a configuration file.
+#' @description Automates the creation of an R package from a configuration file.
 #' This function automates the creation of an R package by sourcing a configuration file
 #' from the specified package directory. It assumes the presence of a `config.R` file in
 #' the `Development` subdirectory of the package.
@@ -181,7 +181,7 @@ document_and_create_package <- function(package_dir,
 #' @param output_file The relative path from the package directory to the dependencies file.
 #'                      Default: 'Development/Dependencies.R'.
 #' @param copy_to_clipboard Logical. If TRUE, the dependencies are copied to the clipboard.
-#' Default: FALSE.
+#'                          Default: FALSE.
 #'
 #' @return None
 #' @examples

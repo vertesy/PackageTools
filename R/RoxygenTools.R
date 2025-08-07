@@ -25,7 +25,7 @@ add_importFrom_statements <- function(file_path, suffix = "ADDED_BY_add_importFr
                                       exclude_packages = c("MarkdownReports"), sure = FALSE) {
   stopifnot(file.exists(file_path), is.character(suffix), is.character(exclude_packages))
 
-  if (sure) stop("This function is not working properly - insterts too many @params. Set sure = FALSE to proceed.")
+  if (sure) stop("This function is not working properly - inserts too many @params. Set sure = FALSE to proceed.")
 
   file_content <- readLines(file_path, warn = FALSE)
   function_bodies <- get_function_bodies(file_content)
