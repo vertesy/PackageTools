@@ -18,9 +18,7 @@ Welcome to the **PackageTools** repository. This repository hosts an R package t
 
 ## Dependencies
 The package's core functionality depends only on the CRAN packages declared in `DESCRIPTION`.
-It does **not** require any additional `@vertesy` libraries. If you encounter
-example scripts that mention other repositories from the same author, those
-references are optional and can be skipped unless you wish to explore them.
+It does not require any additional `@vertesy` libraries. If you encounter a dependency, raise this problem.
 
 ## For Newcomers
 - Start by reading `README.md` for an overview of available tools.
