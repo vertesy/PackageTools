@@ -285,7 +285,7 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @title Safely Replace l() with length() in a Line of R Script
 #'
 #' @description This function safely replaces instances of `l(` with `length(` in a given line of R script.
-#' It can operate in a strict mode, which ensures that `length(` is replaced only when it is not part of a larger word
+#' It can operate in a strict mode, which ensures that `l(` is replaced only when it is not part of a larger word
 #' or variable name.
 #'
 #' @param line A single line from an R script.

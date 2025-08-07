@@ -288,11 +288,12 @@ filter_conflicts <- function(dependencies) {
 #' @param direction The direction of the flowchart. One of 'TB', 'TD', 'BT', 'RL', 'LR'. Default: 'LR'.
 #' @param node_shape The shape of the nodes in the flowchart. One of 'round' or 'default'. Default: 'round'.
 #' @param copy_to_clipboard Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.
-#' @param openMermaid Open www.mermaid.live website? Default: TRUE.
+#' @param openMermaid Open the www.mermaid.live website? Default: TRUE.
 #' @param add_subgraph_template Add subgraph template? Default: TRUE.
 #' @param add_embedding_comments Add lines for direct markdown embedding of the code,
 #' formatted as mermaid comments. The `%%` must be removed in the `.md` file.
-#' @param pkg_path_for_scripts_as_subgraphs Provide the package path for scripts represented as subgraphs.
+#' @param pkg_path_for_scripts_as_subgraphs Add scripts as subgraphs? Provide the package
+#'  path for scripts represented as subgraphs.
 #' @return A string containing the Mermaid.js code for the flowchart.
 #' @examples
 #' result <- pkgnet::CreatePackageReport("YourPackage")

@@ -115,7 +115,7 @@ find_package_calls <- function(body_content, pattern = "\\b\\w+::[\\w.]+\\b", ex
 #' Default: Suffix for added lines is "ADDED_BY_add_importFrom_statements".
 #' @param file_content A character vector representing the lines of an R script.
 #' @param bodies A list of function body line numbers.
-#' @param suffix A string suffix to add to the` @importFrom` lines.
+#' @param suffix A string suffix to add to the `@importFrom` lines.
 #' Default: "ADDED_BY_add_importFrom_statements".
 #' @param exclude_packages Packages to exclude from adding `@importFrom` statements.
 #' Default: empty character vector.

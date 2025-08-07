@@ -393,7 +393,7 @@ checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
 #' expressions to differentiate between code and comment lines and to extract the names of sourced files.
 #'
 #' @param file_path The path to the file to be analyzed.
-#' @param pattern The regular expression pattern used to identify comment lines. Default: `^\\s*#"`.
+#' @param pattern The regular expression pattern used to identify comment lines. Default: `^\\s*#`.
 #' @param pattern_sourced_files The regular expression pattern used to identify lines where files are sourced.
 #' Default: `source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)`.
 #'
