@@ -21,7 +21,7 @@
 #' @param package_name Name of the new package. Default: 'NewPackage'.
 #' @param packages_path Path to the packages directory. Default: '~/GitHub/Packages/'.
 #' @param template_pkg Name of the template package. Default: 'PackageTools'.
-#' @param place_holder place holder string to replace. Default: 'TEMPLATE'.
+#' @param place_holder Placeholder string to replace. Default: 'TEMPLATE'.
 #'
 #' @return None
 #' @export
@@ -44,10 +44,10 @@ setup_new_package_from_template <- function(package_name = "NewPackage",
 
   if (dir.exists(new_package_path)) {
     warning("new_package_path already exists.")
-  } else {
-    warning("new_package_path does not exists. Use usethis create_package().")
-    dir.create(new_package_path, recursive = TRUE)
-  }
+    } else {
+      warning("new_package_path does not exist. Use usethis::create_package().")
+      dir.create(new_package_path, recursive = TRUE)
+    }
 
   # Copying contents from template directory
   file.copy(list.files(template_path, full.names = TRUE), new_package_path, recursive = TRUE)
