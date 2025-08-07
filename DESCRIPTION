@@ -4,8 +4,8 @@ Version: 0.7.9
 Authors@R: 
     person("Abel", "Vertesy", , "av@imba.oeaw.ac.at", role = c("aut", "cre"))
 Author: Abel Vertesy <av@imba.oeaw.ac.at> [aut, cre]
-Description: PackageTools is a collection of utility functions for code
-    base statistics & and dependencies.
+Description: PackageTools is a collection of utility functions for
+    codebase statistics and dependencies.
 License: GPL-3 + file LICENSE
 BugReports: https://github.com/vertesy/PackageTools/issues
 Imports: 
@@ -19,6 +19,6 @@ Imports:
     usethis,
     xfun
 Encoding: UTF-8
-Packaged: 2024-10-24 10:39:44.198975
+Packaged: 2025-08-07 13:01:22 UTC; root
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
