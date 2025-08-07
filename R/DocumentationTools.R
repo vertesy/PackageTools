@@ -216,7 +216,7 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
     f.deps <- NCmisc::list.functions.in.file(filename = file)
 
     # Copying to clipboard or printing to console
-    if (copy_to_clipboard & require(clipr)) clipr::write_clip(f.deps) else print(f.deps)
+    if (copy_to_clipboard && requireNamespace("clipr", quietly = TRUE)) clipr::write_clip(f.deps) else print(f.deps)
 
     # Writing to dependencies file
     sink(file = depFile, append = TRUE)
