@@ -107,7 +107,7 @@ Filter out functions with no dependencies / only with dependencies:
 
 ```R
 funs_with_deps <- filter_dependencies(dependencies, include_only_with_deps = TRUE)
-funs_no_deps <- filter_dependencies(dependencies, include_only_with_deps = TRUE)
+funs_no_deps <- filter_dependencies(dependencies, include_only_with_deps = FALSE)
 ```
 
 ### Identifying Conflicts
@@ -137,7 +137,7 @@ For `filter_dependencies` and `filter_conflicts`, the output will be similar but
 ------------------------------
 
 # 3. RoxygenTools
-`Currenly limited in scope`
+`Currently limited in scope`
 ## Goal: Adding @importFrom Statements to Roxygen
 
 This R package provides functionality to automatically add `@importFrom` statements to the Roxygen documentation of functions in an R script. It scans for functions called using the `::` operator within function bodies and appends the corresponding `@importFrom` directives to the Roxygen blocks above the function definitions.
@@ -340,7 +340,7 @@ Updated: 2024/01/25 15:22
 
 - #### 1 `document_and_create_package()`
 
-  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcinÏg a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
+  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcing a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package.
 
 - #### 2 `.parse_description()`
 
@@ -348,7 +348,7 @@ Updated: 2024/01/25 15:22
 
 - #### 3 `.update_citation_file()`
 
-  Helper function to update the CITATION file of a package.. Update the CITATION.cff file of a package based on its version. 
+  Helper function to update the CITATION file of a package. Update the CITATION.cff file of a package based on its version.
 
 
 
@@ -388,13 +388,13 @@ Updated: 2024/01/25 15:22
 
 Updated: 2024/01/25 15:22
 
-- #### 1 `# from()`
+- #### 1 `from()`
 
   Check Script Environment. Checks if all functions and variables called in a script are found in a specified environment.               Optionally replaces missing function calls in the script with their fully qualified names. 
 
 - #### 2 `copy_github_badge()`
 
-  .   This function copies the Markdown code for a GitHub badge to the clipboard based on the  specified status. It supports four statuses: 'experimental', 'active', 'archive', and  'hibernate'. 
+  This function copies the Markdown code for a GitHub badge to the clipboard based on the specified status. It supports four statuses: 'experimental', 'active', 'archive', and 'hibernate'.
 
 
 
