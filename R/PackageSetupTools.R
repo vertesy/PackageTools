@@ -21,7 +21,7 @@
 #' @param package_name Name of the new package. Default: 'NewPackage'.
 #' @param packages_path Path to the packages directory. Default: '~/GitHub/Packages/'.
 #' @param template_pkg Name of the template package. Default: 'PackageTools'.
-#' @param place_holder place holder string to replace. Default: 'TEMPLATE'.
+#' @param place_holder Placeholder string to replace. Default: 'TEMPLATE'.
 #'
 #' @return None
 #' @export
