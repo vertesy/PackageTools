@@ -333,8 +333,8 @@ checkGlobalVarsInPackage <- function(packageName, warn = TRUE) {
   funcNames <- all_funs(packageName)
 
   # Check global variables for each function
-  funzy <- lapply(funcNames, get)
-  for (i in seq(funzy)) {
+  funzy <- lapply(funcNames, function(fn) get(fn, envir = asNamespace(packageName)))
+  for (i in seq_along(funzy)) {
     message("----------------")
     message(funcNames[i])
     checkGlobalVars(f = funzy[[i]], warn = warn)
