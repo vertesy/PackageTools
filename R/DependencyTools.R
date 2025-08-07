@@ -103,7 +103,7 @@ map_functions_to_packages <- function(
 #'                  Default: None, a valid function name must be provided.
 #' @param package_name The name of the package containing the function.
 #'                     Default: None, a valid package name must be provided.
-#' @param ls_fun_names_to_map A list function names mapped to their source package.
+#' @param ls_fun_names_to_map A list of function names mapped to their source package.
 #'                        Default: None, a valid mapping must be provided.
 #' @param exclude_packages A vector of package names whose functions should be excluded from the analysis.
 #'                         Default: c("base", "utils", "methods", "stats").
@@ -256,11 +256,11 @@ filter_conflicts <- function(dependencies) {
 }
 
 # _____________________________________________________________________________________________
-#' @title Count and print the number of functions results
+#' @title Count and Print the Number of Functions in Results
 #'
 #' @description Private function to count and print the number of functions in results ("dependencies").
 #'
-#' @param dependencies Result from above functions dependencies
+#' @param dependencies Results from the above functions' dependencies
 #' @return Nothing.
 .count_and_print_function_summary <- function(dependencies) {
   counts <- sapply(dependencies, function(pkg_deps) length(pkg_deps))
@@ -286,14 +286,13 @@ filter_conflicts <- function(dependencies) {
 #'
 #' @param graph An igraph object representing a network graph. Default: None (must be provided).
 #' @param direction The direction of the flowchart. One of 'TB', 'TD', 'BT', 'RL', 'LR'. Default: 'LR'.
-#' @param node_shape The shape of the nodes in the flowchart. One of 'round', 'default'. Default: 'round'.
+#' @param node_shape The shape of the nodes in the flowchart. One of 'round' or 'default'. Default: 'round'.
 #' @param copy_to_clipboard Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.
-#' @param openMermaid open www.mermaid.live website? Default: TRUE.
+#' @param openMermaid Open www.mermaid.live website? Default: TRUE.
 #' @param add_subgraph_template Add subgraph template? Default: TRUE.
 #' @param add_embedding_comments Add lines for direct markdown embedding of the code,
 #' formatted as mermaid comments. The `%%` must be removed in the `.md` file.
-#' @param pkg_path_for_scripts_as_subgraphs Do you want to add it to subgraphs? Provide the package
-#'  path for scripts represented as subgraphs."
+#' @param pkg_path_for_scripts_as_subgraphs Provide the package path for scripts represented as subgraphs.
 #' @return A string containing the Mermaid.js code for the flowchart.
 #' @examples
 #' result <- pkgnet::CreatePackageReport("YourPackage")
