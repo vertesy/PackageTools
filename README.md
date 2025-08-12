@@ -63,7 +63,7 @@ You can install DependencyTools from GitHub using the following command:
 
 ```R
 # install.packages("devtools")
-devtools::install_github("vertesy/PackageTools")
+devtools::install_github("vertesy/PackageTools", ref = "main")
 ```
 
 ## Usage Example
