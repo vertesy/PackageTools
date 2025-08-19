@@ -108,6 +108,8 @@ document_and_create_package <- function(package_dir,
 }
 # document_and_create_package(repository.dir, config_file = 'config.R')
 
+
+
 # _____________________________________________________________________________________________
 #' @title Parse DESCRIPTION File
 #'
@@ -124,10 +126,10 @@ document_and_create_package <- function(package_dir,
     # Type = "Package",
     Title = DESCRIPTION$"title",
     Version = DESCRIPTION$"version",
-    Author = person(
-      given = DESCRIPTION$"author.given", family = DESCRIPTION$"author.family",
-      email = DESCRIPTION$"author.email", role = c("aut", "cre")
-    ),
+    # Author = person(
+    #   given = DESCRIPTION$"author.given", family = DESCRIPTION$"author.family",
+    #   email = DESCRIPTION$"author.email", role = c("aut", "cre")
+    # ),
     "Authors@R" = paste0(
       'person(given = "', DESCRIPTION$"author.given",
       '", family = "', DESCRIPTION$"author.family",
@@ -135,7 +137,11 @@ document_and_create_package <- function(package_dir,
     ),
     # Maintainer = person(
     #   given = DESCRIPTION$"maintainer.given", family = DESCRIPTION$"maintainer.family",
-    #   email = DESCRIPTION$"maintainer.email", role = "ctb"
+    #   email = DESCRIPTION$"maintainer.email", role = "cre"
+    # ),
+    # Maintainer = person(
+    #   given = DESCRIPTION$"author.given", family = DESCRIPTION$"author.family",
+    #   email = DESCRIPTION$"author.email", role = "cre"
     # ),
     Description = DESCRIPTION$"description",
     License = DESCRIPTION$"license",
