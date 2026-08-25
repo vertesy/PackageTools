@@ -48,8 +48,9 @@ get_package_functions <- function(package_name) {
 #' map_functions_to_packages(c("stats", "utils"), extended_search = TRUE)
 #' @export
 map_functions_to_packages <- function(
-    packages, extended_search = FALSE, verbose = TRUE,
-    exclude_from_extended = character()) {
+  packages, extended_search = FALSE, verbose = TRUE,
+  exclude_from_extended = character()
+) {
   stopifnot(is.character(packages), is.logical(extended_search), is.character(exclude_from_extended))
 
   func_to_pkg <- list()
@@ -93,7 +94,6 @@ map_functions_to_packages <- function(
 }
 
 
-
 # _____________________________________________________________________________________________
 #' @title Analyze Function Dependencies with Exclusions
 #'
@@ -120,9 +120,10 @@ map_functions_to_packages <- function(
 #'
 #' @export
 analyze_function_dependencies <- function(
-    func_name, package_name, ls_fun_names_to_map,
-    exclude_packages = c("base", "utils", "methods", "stats"),
-    exclude_strings = c("HYPERLINK", "Deprecated")) {
+  func_name, package_name, ls_fun_names_to_map,
+  exclude_packages = c("base", "utils", "methods", "stats"),
+  exclude_strings = c("HYPERLINK", "Deprecated")
+) {
   # Input assertions
   stopifnot(is.character(func_name), is.character(package_name), is.list(ls_fun_names_to_map), is.character(exclude_packages), is.character(exclude_strings))
 
@@ -154,8 +155,6 @@ analyze_function_dependencies <- function(
 }
 
 
-
-
 # _____________________________________________________________________________________________
 #' @title Analyze Package Dependencies
 #'
@@ -174,8 +173,9 @@ analyze_function_dependencies <- function(
 #' @export
 
 analyze_package_dependencies <- function(
-    packages, exclude_packages = c("base", "utils", "methods", "stats"),
-    extended_search = FALSE, verbose = FALSE) {
+  packages, exclude_packages = c("base", "utils", "methods", "stats"),
+  extended_search = FALSE, verbose = FALSE
+) {
   # Input assertions
   stopifnot(is.character(packages), is.character(exclude_packages), is.logical(extended_search))
   ls_fun_names_to_map <- map_functions_to_packages(packages, extended_search, verbose = verbose)
@@ -186,7 +186,6 @@ analyze_package_dependencies <- function(
   })
   setNames(dependencies, packages)
 }
-
 
 
 # _____________________________________________________________________________________________
@@ -271,11 +270,8 @@ filter_conflicts <- function(dependencies) {
 }
 
 
-
 # _____________________________________________________________________________________________ ----
 ## Diagram visualization ---------------------------------------------------------------------------
-
-
 
 
 #' @title Convert an igraph object to a Mermaid.js flowchart
@@ -304,10 +300,11 @@ filter_conflicts <- function(dependencies) {
 #' @importFrom clipr write_clip
 #' @export
 convert_igraph_to_mermaid <- function(
-    graph, direction = "LR", node_shape = "round",
-    copy_to_clipboard = TRUE, openMermaid = TRUE,
-    pkg_path_for_scripts_as_subgraphs = FALSE,
-    add_subgraph_template = TRUE, add_embedding_comments = TRUE) {
+  graph, direction = "LR", node_shape = "round",
+  copy_to_clipboard = TRUE, openMermaid = TRUE,
+  pkg_path_for_scripts_as_subgraphs = FALSE,
+  add_subgraph_template = TRUE, add_embedding_comments = TRUE
+) {
   stopifnot(
     "graph must be an igraph object" = inherits(graph, "igraph"),
     "direction must be one of 'TB', 'TD', 'BT', 'RL', 'LR'" = direction %in% c("TB", "TD", "BT", "RL", "LR")

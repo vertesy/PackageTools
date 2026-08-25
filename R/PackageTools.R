@@ -8,10 +8,8 @@
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
-
 # _____________________________________________________________________________________________ ----
 # 1. Function List from Roxygen ---------------------------------------------------------------------------
-
 
 
 #' @title Parse Roxygen Comments
@@ -34,8 +32,9 @@
 #' @export
 
 list_of_funs_to_markdown_simple <- function(
-    file, output_file = .convertFilePathToOutput(file),
-    fun_header_level = "####", open_results = TRUE) {
+  file, output_file = .convertFilePathToOutput(file),
+  fun_header_level = "####", open_results = TRUE
+) {
   # Input argument assertions
   stopifnot(is.character(file), length(file) == 1, file.exists(file))
   stopifnot(is.character(output_file), length(output_file) == 1)
@@ -134,11 +133,12 @@ list_of_funs_to_markdown_simple <- function(
 #' }
 #' @export
 
-list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutput(file, ext = ".det.md")
-                                     , write_title_field = TRUE, fun_header_level = "####"
-                                     , package.name = "XXXX"
-                                     , open_results = TRUE
-                                     # add_script_name = TRUE
+list_of_funs_to_markdown <- function(
+  file, output_file = .convertFilePathToOutput(file, ext = ".det.md"),
+  write_title_field = TRUE, fun_header_level = "####",
+  package.name = "XXXX",
+  open_results = TRUE
+  # add_script_name = TRUE
 ) {
   warning("Does not find all functions sometimes!!!")
 
@@ -257,10 +257,8 @@ list_of_funs_to_markdown <- function(file, output_file = .convertFilePathToOutpu
 }
 
 
-
 # Use the function
 # list_of_funs_to_markdown("~/GitHub/Packages/CodeAndRoll2/R/CodeAndRoll2.R")
-
 
 
 # __________________________________________________________________________________________
@@ -294,8 +292,6 @@ all_funs <- function(packageName) {
   items <- setdiff(items, excludedItems)
   return(items[!grepl("^\\.", items)])
 }
-
-
 
 
 # _____________________________________________________________________________________________ ----
@@ -383,8 +379,6 @@ checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
 }
 
 
-
-
 # _____________________________________________________________________________________________
 #' @title Analyze File for Code and Comment Statistics
 #'
@@ -435,10 +429,7 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
 }
 
 
-
-
 # _____________________________________________________________________________________________
-
 
 
 # _____________________________________________________________________________________________ ----
@@ -469,15 +460,16 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
 #' @export
 #'
 parse_rmd_vignette_from_roxygen <- function(
-    file,
-    output_file = .convertFilePathToOutput(file,
-      fn_prefix = "Vignette",
-      ext = ".Rmd"
-    ),
-    fun_header_level = "####",
-    open_results = TRUE,
-    parse_examples = TRUE,
-    package_desc = .get_description_from_config(file)) {
+  file,
+  output_file = .convertFilePathToOutput(file,
+    fn_prefix = "Vignette",
+    ext = ".Rmd"
+  ),
+  fun_header_level = "####",
+  open_results = TRUE,
+  parse_examples = TRUE,
+  package_desc = .get_description_from_config(file)
+) {
   print(output_file)
   # Input argument assertions
   stopifnot(is.character(file), length(file) == 1, file.exists(file))
@@ -698,8 +690,9 @@ parse_rmd_vignette_from_roxygen <- function(
 # .convertFilePathToOutput("path/to/your_script.R", fn_prefix = "custom.prefix.", ext = ".txt")
 #' }
 .convertFilePathToOutput <- function(
-    inputPath, fn_prefix = "list.of.functions.in",
-    ext = ".md") {
+  inputPath, fn_prefix = "list.of.functions.in",
+  ext = ".md"
+) {
   stopifnot(is.character(inputPath), length(inputPath) == 1)
 
   # Replace the file extension and modify the filename

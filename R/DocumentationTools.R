@@ -5,9 +5,6 @@
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
-
-
-
 # _____________________________________________________________________________________________ ----
 
 
@@ -109,7 +106,6 @@ document_and_create_package <- function(package_dir,
 # document_and_create_package(repository.dir, config_file = 'config.R')
 
 
-
 # _____________________________________________________________________________________________
 #' @title Parse DESCRIPTION File
 #'
@@ -173,7 +169,6 @@ document_and_create_package <- function(package_dir,
 }
 
 
-
 # _____________________________________________________________________________________________ ----
 # 2. Documenting Dependencies ---------------------------------------------------------------------------
 
@@ -199,9 +194,12 @@ document_and_create_package <- function(package_dir,
 #' @importFrom NCmisc list.functions.in.file
 #' @importFrom clipr write_clip
 #'
-#' @export
-extract_package_dependencies <- function(package_dir, output_file = "Development/Dependencies.R"
-                                         , copy_to_clipboard = FALSE) {
+#' @export extract_package_dependencies
+
+extract_package_dependencies <- function(
+  package_dir, output_file = "Development/Dependencies.R",
+  copy_to_clipboard = FALSE
+) {
   # Assertions
   stopifnot(
     is.character(package_dir),
@@ -238,5 +236,4 @@ extract_package_dependencies <- function(package_dir, output_file = "Development
 
   # Output assertion
   stopifnot(file.exists(depFile))
-
 }

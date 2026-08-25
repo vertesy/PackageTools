@@ -104,8 +104,6 @@ checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"
 }
 
 
-
-
 # _____________________________________________________________________________________________ ----
 ## Package Section ---------------------------------------------------------------------------
 
@@ -131,8 +129,7 @@ checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"
 #' @export
 copy_github_badge <- function(status = "experimental",
                               prefix = "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/",
-                              copy_to_clipboard = FALSE
-                              ) {
+                              copy_to_clipboard = FALSE) {
   valid_statuses <- c("experimental", "active", "archive", "hibernate")
   if (!status %in% valid_statuses) {
     stop("Invalid status. Choose from 'experimental', 'active', 'archive', 'hibernate'.")
@@ -143,10 +140,7 @@ copy_github_badge <- function(status = "experimental",
 
   # Copy to clipboard, or return the Markdown text
   if (copy_to_clipboard & require(clipr)) clipr::write_clip(markdown_text) else message(markdown_text)
-
 }
-
-
 
 
 # _____________________________________________________________________________________________
@@ -178,8 +172,6 @@ openReadme <- function() {
     stop("Unsupported operating system.")
   }
 }
-
-
 
 
 # # _____________________________________________________________________________________________ ----

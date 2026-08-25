@@ -3,7 +3,7 @@
 
 DESCRIPTION <- list(
   package.name = "PackageTools",
-  version = "0.7.9",
+  version = "0.8.1",
   title = "PackageTools - Help for R package development.",
   description = "PackageTools is a collection of utility functions for code base statistics & and dependencies.",
 

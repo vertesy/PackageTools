@@ -262,9 +262,9 @@ config <- list(
 
 # List of Functions
 
-## List of Functions in PackageTools.R (6) 
+## List of Functions in PackageTools.R (8) 
 
-Updated: 2024/01/25 15:22
+Updated: 2026/08/25 17:03
 
 - #### 1 `  function_lines()`
 
@@ -284,17 +284,51 @@ Updated: 2024/01/25 15:22
 
 - #### 5 `checkGlobalVars()`
 
-  Check for Use of Global Variables in a Function. This function checks whether the specified function (`f`) uses any global variables.  It returns `TRUE` if no global variables are used, and `FALSE` otherwise. If global variables are found  and `silent` is `FALSE`, a warning is issued listing the global variables. 
+  Check for Use of Global Variables in a Function. This function checks whether the specified function (`f`) uses any global variables.  It returns `TRUE` if no global variables are used, and `FALSE` otherwise. If global variables  are found and `silent` is `FALSE`, a warning is issued listing the global variables. 
 
 - #### 6 `source_file_stats_analyzer()`
 
   Analyze File for Code and Comment Statistics. This function analyzes a given file, counting the number of lines of code and comments.  It also identifies files that are sourced within the provided file. The function uses regular  expressions to differentiate between code and comment lines and to extract the names of sourced files. 
 
+- #### 7 `    idx_function_def()`
 
+  Parse RMD Vignette from Roxygen. Extracts and summarizes Roxygen documentation comments from a specified R script file  and creates a simple R Markdown vignette. It reads an R script, identifies Roxygen comments for  function titles and descriptions, and writes a summary to an output file. If `parse_examples` is  TRUE, it also includes examples found in the Roxygen comments. 
+
+- #### 8 `.get_description_from_config()`
+
+  Helper to Get Description from Config. This function retrieves the "description" field from the `DESCRIPTION` object,  which is sourced from a `config.R` file located two directories above the specified file. The  function checks for the existence of `config.R`, sources it, and validates the presence and  non-nullity of the "description" field in the `DESCRIPTION` object. 
+
+## List of Functions in ReplacementTools.R (6) 
+
+Updated: 2026/08/25 17:03
+
+- #### 1 `replace_a_string_in_a_file()`
+
+  Replace a string in a file with options for whole word and case matching.   The `replace_a_string_in_a_file()` function replaces all instances of a string in a file, with  options to replace only whole word matches and to replace with case sensitivity or ignore case.  It also allows backing up the file before making the replacements. 
+
+- #### 2 `replace_tf_with_true_false()`
+
+  Replace T and F with TRUE and FALSE in R Scripts. This function reads an R script, safely replaces all instances of `T` with `TRUE`  and `F` with `FALSE`, under specific conditions, and writes the modified script back to a file. 
+
+- #### 3 `replace_short_calls()`
+
+  Replace Short Function Calls with Full Names in an R Script. Reads an R script file and replaces instances of `length(` with `length(` and `p0` with `paste0(`.  It supports a strict mode to ensure accurate replacements. 
+
+- #### 4 `replace_l_with_length()`
+
+  Replace length() with length() in an R Script. This function reads an R script file and replaces instances of `length(` with `length(`.  It supports a strict mode to ensure accurate replacement. 
+
+- #### 5 `.safely_replace_tf()`
+
+  Safely Replace T and F in a Line of R Script. This helper function replaces instances of `T` and `F` in a single line of R  script based on the specified mode and character constraints. 
+
+- #### 6 `.safely_replace_calls()`
+
+  Safely Replace Short Function Calls in a Line of R Script. Safely replaces instances of `length(` with `length(` and `p0` with `paste0(` in a given line of R script.  Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
 
 ## List of Functions in RoxygenTools.R (3) 
 
-Updated: 2024/01/25 15:22
+Updated: 2026/08/25 17:03
 
 - #### 1 `add_importFrom_statements()`
 
@@ -310,33 +344,9 @@ Updated: 2024/01/25 15:22
 
 
 
-## List of Functions in ReplacementTools.R (5) 
+## List of Functions in DocumentationTools.R (3)
 
-Updated: 2024/01/25 15:22
-
-- #### 1 `replace_tf_with_true_false()`
-
-  Replace T and F with TRUE and FALSE in R Scripts. This function reads an R script, safely replaces all instances of `T` with `TRUE`  and `F` with `FALSE`, under specific conditions, and writes the modified script back to a file. 
-
-- #### 2 `replace_short_calls()`
-
-  Replace Short Function Calls with Full Names in an R Script. Reads an R script file and replaces instances of `l(` with `length(` and `p0` with `paste0(`.  It supports a strict mode to ensure accurate replacements. 
-
-- #### 3 `replace_l_with_length()`
-
-  Replace l() with length() in an R Script. This function reads an R script file and replaces instances of `l(` with `length(`.  It supports a strict mode to ensure accurate replacement. 
-
-- #### 4 `.safely_replace_tf()`
-
-  Safely Replace T and F in a Line of R Script. This helper function replaces instances of `T` and `F` in a single line of R  script based on the specified mode and character constraints. 
-
-- #### 5 `.safely_replace_calls()`
-
-  Safely Replace Short Function Calls in a Line of R Script. Safely replaces instances of `l(` with `length(` and `p0` with `paste0(` in a given line of R script.  Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
-
-## List of Functions in DocumentationTools.R (3) 
-
-Updated: 2024/01/25 15:22
+Updated: 2026/08/25 17:03
 
 - #### 1 `document_and_create_package()`
 
@@ -350,11 +360,9 @@ Updated: 2024/01/25 15:22
 
   Helper function to update the CITATION file of a package.. Update the CITATION.cff file of a package based on its version. 
 
+## List of Functions in DependencyTools.R (8)
 
-
-## List of Functions in DependencyTools.R (7) 
-
-Updated: 2024/01/25 15:22
+Updated: 2026/08/25 17:03
 
 - #### 1 `get_package_functions()`
 
@@ -380,21 +388,15 @@ Updated: 2024/01/25 15:22
 
   Filter Out Conflict Dependencies. Filters the dependencies to extract only those with conflicts. 
 
-- #### 7 `  format_node()`
+- #### 7 `.count_and_print_function_summary()`
 
   Count and print the number of functions results. Private function to count and print the number of functions in results ("dependencies"). 
 
-## List of Functions in Miscellaneous.R (2) 
+- #### 8 `  format_node()`
 
-Updated: 2024/01/25 15:22
+  Convert an igraph object to a Mermaid.js flowchart. This function takes an igraph object representing a network graph and  converts it into Mermaid.js code for creating a flowchart. It allows customization of the  flowchart's direction and node shapes and can optionally copy the resulting code to the clipboard. 
 
-- #### 1 `# from()`
 
-  Check Script Environment. Checks if all functions and variables called in a script are found in a specified environment.               Optionally replaces missing function calls in the script with their fully qualified names. 
-
-- #### 2 `copy_github_badge()`
-
-  .   This function copies the Markdown code for a GitHub badge to the clipboard based on the  specified status. It supports four statuses: 'experimental', 'active', 'archive', and  'hibernate'. 
 
 
 
