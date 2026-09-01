@@ -15,6 +15,12 @@ Welcome to the **PackageTools** repository. This repository hosts an R package t
 2. **Testing/Checks**: Run `R CMD check .` before committing changes. This performs a standard R package check.
 3. **Style**: Follow conventional R style (e.g., tidyverse style) and ensure code is well-commented.
 4. **Commits**: Use concise commit messages describing the changes.
+5. **Package version**: Never update the package version unless the user explicitly requests it, and do not raise code-review findings that ask for a version bump.
+
+## Pull Request Descriptions
+Open each PR with a few bullets per major change: what was wrong, how it was fixed, and whether it changes the function's output or behavior.
+- Scale the description to the change: a typo or comment-only fix needs one short line, not a paragraph.
+- Keep the whole description under 250 words; reserve that ceiling for genuinely complex PRs. If it doesn't fit, split the PR instead of writing more.
 
 ## Dependencies
 The package's core functionality depends only on the CRAN packages declared in `DESCRIPTION`.
