@@ -133,9 +133,9 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
 #' @title Replace Short Function Calls with Full Names in an R Script
 #'
 #' @description Reads an R script file and replaces short developer shorthands for common
-#' functions and package calls with their full names, e.g. `length(` with `length(`, `paste0(` with
-#' `paste0(`, `unique(` with `unique(`, `dplyr::filter(` with `dplyr::filter(`, `dplyr::select(` with
-#' `dplyr::select(`, and `gtools::mixedsort(` with `gtools::mixedsort(`.
+#' functions and package calls with their full names, e.g. `l(` with `length(`, `p0(` with
+#' `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with
+#' `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`.
 #' It supports a strict mode to ensure accurate replacements.
 #'
 #' @param file_path A string representing the path to the R script file.
@@ -165,7 +165,36 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
 
   script_lines <- readLines(file_path, warn = FALSE)
 
-  processed_lines <- sapply(script_lines, .safely_replace_calls, strict_mode, call_map, USE.NAMES = FALSE)
+  in_quote <- NULL
+  processed_lines <- character(length(script_lines))
+  for (i in seq_along(script_lines)) {
+    parsed <- .tokenize_r_line(script_lines[i], initial_quote = in_quote)
+    in_quote <- parsed$end_quote
+    tokens <- parsed$tokens
+
+    replaced_tokens <- sapply(tokens, function(tok) {
+      if (!tok$is_code || nchar(tok$text) == 0) {
+        return(tok$text)
+      }
+      t_text <- tok$text
+      escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
+      alternation <- paste(escaped_shorthands, collapse = "|")
+      boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
+      pattern <- paste0(boundary, "(?:", alternation, ")\\(")
+
+      matches <- gregexpr(pattern, t_text, perl = TRUE)
+      match_text <- regmatches(t_text, matches)[[1]]
+      if (length(match_text) == 0) {
+        return(t_text)
+      }
+
+      shorthand <- sub("\\($", "", match_text)
+      regmatches(t_text, matches) <- list(paste0(call_map[shorthand], "("))
+      return(t_text)
+    }, USE.NAMES = FALSE)
+
+    processed_lines[i] <- paste(replaced_tokens, collapse = "")
+  }
 
   writeLines(processed_lines, output_path)
 
@@ -176,17 +205,17 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
 
 
 # _____________________________________________________________________________________________
-#' @title Replace length() with length() in an R Script
+#' @title Replace l() with length() in an R Script
 #'
-#' @description This function reads an R script file and replaces instances of `length(` with `length(`.
+#' @description This function reads an R script file and replaces instances of `l(` with `length(`.
 #' It supports a strict mode to ensure accurate replacement.
 #'
 #' @param file_path A string representing the path to the R script file.
 #' @param output_path A string representing the path to save the modified R script.
 #' Default is the same as `file_path`.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return None
 #' @importFrom stringr str_replace_all
@@ -222,6 +251,68 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 # ____________________________________________________________________
 
 
+# Helper to tokenize a line of R script into code vs non-code (string literals and comments)
+.tokenize_r_line <- function(line, initial_quote = NULL) {
+  chars <- strsplit(line, "")[[1]]
+  n <- length(chars)
+  if (n == 0) {
+    return(list(tokens = list(list(text = "", is_code = TRUE)), end_quote = initial_quote))
+  }
+
+  tokens <- list()
+  current_text <- ""
+  current_is_code <- is.null(initial_quote)
+  in_quote <- initial_quote
+  escaped <- FALSE
+
+  i <- 1
+  while (i <= n) {
+    ch <- chars[i]
+    if (!is.null(in_quote)) {
+      current_text <- paste0(current_text, ch)
+      if (escaped) {
+        escaped <- FALSE
+      } else if (ch == "\\") {
+        escaped <- TRUE
+      } else if (ch == in_quote) {
+        tokens[[length(tokens) + 1]] <- list(text = current_text, is_code = FALSE)
+        current_text <- ""
+        in_quote <- NULL
+        current_is_code <- TRUE
+      }
+    } else {
+      if (ch == "#") {
+        if (nchar(current_text) > 0) {
+          tokens[[length(tokens) + 1]] <- list(text = current_text, is_code = TRUE)
+          current_text <- ""
+        }
+        comment_text <- paste(chars[i:n], collapse = "")
+        tokens[[length(tokens) + 1]] <- list(text = comment_text, is_code = FALSE)
+        i <- n + 1
+        break
+      } else if (ch == '"' || ch == "'") {
+        if (nchar(current_text) > 0) {
+          tokens[[length(tokens) + 1]] <- list(text = current_text, is_code = TRUE)
+          current_text <- ""
+        }
+        in_quote <- ch
+        current_text <- ch
+        current_is_code <- FALSE
+      } else {
+        current_text <- paste0(current_text, ch)
+      }
+    }
+    i <- i + 1
+  }
+
+  if (nchar(current_text) > 0) {
+    tokens[[length(tokens) + 1]] <- list(text = current_text, is_code = current_is_code)
+  }
+
+  return(list(tokens = tokens, end_quote = in_quote))
+}
+
+
 # _____________________________________________________________________________________________
 #' @title Safely Replace T and F in a Line of R Script
 #'
@@ -234,27 +325,34 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @param following_chars Characters that can follow `T` or `F` for replacement.
 #' @return The modified line of R script.
 .safely_replace_tf <- function(line, strict_mode, preceding_chars, following_chars) {
-  if (strict_mode) {
-    # Create regular expressions based on preceding and following characters
-    preceding_pattern <- paste0("(", paste0(preceding_chars, collapse = "|"), ")")
-    following_pattern <- paste0("(", paste0(following_chars, collapse = "|"), ")")
+  parsed <- .tokenize_r_line(line)
+  tokens <- parsed$tokens
 
-    # Replace 'T' and 'F'
-    modified_line <- gsub(paste0(preceding_pattern, "T", following_pattern),
-      "\\1TRUE\\2", line,
-      perl = TRUE
-    )
-    modified_line <- gsub(paste0(preceding_pattern, "F", following_pattern),
-      "\\1FALSE\\2", modified_line,
-      perl = TRUE
-    )
-  } else {
-    # Replace standalone 'T' and 'F'
-    modified_line <- gsub("\\bT\\b", "TRUE", line, perl = TRUE)
-    modified_line <- gsub("\\bF\\b", "FALSE", modified_line, perl = TRUE)
-  }
+  replaced_tokens <- sapply(tokens, function(tok) {
+    if (!tok$is_code || nchar(tok$text) == 0) {
+      return(tok$text)
+    }
+    t_text <- tok$text
+    if (strict_mode) {
+      preceding_pattern <- paste0("(", paste0(preceding_chars, collapse = "|"), ")")
+      following_pattern <- paste0("(", paste0(following_chars, collapse = "|"), ")")
 
-  return(modified_line)
+      modified <- gsub(paste0(preceding_pattern, "T", following_pattern),
+        "\\1TRUE\\2", t_text,
+        perl = TRUE
+      )
+      modified <- gsub(paste0(preceding_pattern, "F", following_pattern),
+        "\\1FALSE\\2", modified,
+        perl = TRUE
+      )
+    } else {
+      modified <- gsub("\\bT\\b", "TRUE", t_text, perl = TRUE)
+      modified <- gsub("\\bF\\b", "FALSE", modified, perl = TRUE)
+    }
+    return(modified)
+  }, USE.NAMES = FALSE)
+
+  paste(replaced_tokens, collapse = "")
 }
 
 
@@ -273,8 +371,8 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @title Safely Replace Short Function Calls in a Line of R Script
 #'
 #' @description Safely replaces short developer shorthands for common functions and package
-#' calls (e.g. `length(` with `length(`, `paste0(` with `paste0(`, `unique(` with `unique(`, `dplyr::filter(` with
-#' `dplyr::filter(`, `dplyr::select(` with `dplyr::select(`, and `gtools::mixedsort(` with
+#' calls (e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with
+#' `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with
 #' `gtools::mixedsort(`) in a given line of R script.
 #' Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name.
 #'
@@ -289,51 +387,66 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @importFrom stringr str_detect
 #' @export
 .safely_replace_calls <- function(line, strict_mode, call_map = .default_call_shorthands) {
-  # Escape any regex metacharacters (e.g. the "." in "sort.natural") in the shorthand names
-  escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
-  alternation <- paste(escaped_shorthands, collapse = "|")
-  boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
-  pattern <- paste0(boundary, "(?:", alternation, ")\\(")
+  parsed <- .tokenize_r_line(line)
+  tokens <- parsed$tokens
 
-  # Find all shorthand calls in one pass over the original line, so a replacement's own text
-  # (e.g. "b(" produced by mapping "a" -> "b") is never re-matched against another entry in call_map
-  matches <- gregexpr(pattern, line, perl = TRUE)
-  match_text <- regmatches(line, matches)[[1]]
-  if (length(match_text) == 0) {
-    return(line)
-  }
+  replaced_tokens <- sapply(tokens, function(tok) {
+    if (!tok$is_code || nchar(tok$text) == 0) {
+      return(tok$text)
+    }
+    t_text <- tok$text
+    escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
+    alternation <- paste(escaped_shorthands, collapse = "|")
+    boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
+    pattern <- paste0(boundary, "(?:", alternation, ")\\(")
 
-  shorthand <- sub("\\($", "", match_text)
-  regmatches(line, matches) <- list(paste0(call_map[shorthand], "("))
+    matches <- gregexpr(pattern, t_text, perl = TRUE)
+    match_text <- regmatches(t_text, matches)[[1]]
+    if (length(match_text) == 0) {
+      return(t_text)
+    }
 
-  return(line)
+    shorthand <- sub("\\($", "", match_text)
+    regmatches(t_text, matches) <- list(paste0(call_map[shorthand], "("))
+    return(t_text)
+  }, USE.NAMES = FALSE)
+
+  paste(replaced_tokens, collapse = "")
 }
 
 # _____________________________________________________________________________________________
-#' @title Safely Replace length() with length() in a Line of R Script
+#' @title Safely Replace l() with length() in a Line of R Script
 #'
-#' @description This function safely replaces instances of `length(` with `length(` in a given line of R script.
-#' It can operate in a strict mode, which ensures that `length(` is replaced only when it is not part of a larger word
+#' @description This function safely replaces instances of `l(` with `length(` in a given line of R script.
+#' It can operate in a strict mode, which ensures that `l(` is replaced only when it is not part of a larger word
 #' or variable name.
 #'
 #' @param line A single line from an R script.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return A string representing the modified line.
 #' @importFrom stringr str_detect
 #' @export
 .safely_replace_l <- function(line, strict_mode) {
-  if (strict_mode) {
-    # Replace 'length(' when it is likely a function call
-    modified_line <- gsub("(^|[^a-zA-Z0-9_])l\\(", "\\1length(", line)
-  } else {
-    # Replace all instances of 'length('
-    modified_line <- gsub("\\bl\\(", "length(", line, perl = TRUE)
-  }
+  parsed <- .tokenize_r_line(line)
+  tokens <- parsed$tokens
 
-  return(modified_line)
+  replaced_tokens <- sapply(tokens, function(tok) {
+    if (!tok$is_code || nchar(tok$text) == 0) {
+      return(tok$text)
+    }
+    t_text <- tok$text
+    if (strict_mode) {
+      modified <- gsub("(^|[^a-zA-Z0-9_])l\\(", "\\1length(", t_text)
+    } else {
+      modified <- gsub("\\bl\\(", "length(", t_text, perl = TRUE)
+    }
+    return(modified)
+  }, USE.NAMES = FALSE)
+
+  paste(replaced_tokens, collapse = "")
 }
 
 
