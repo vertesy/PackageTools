@@ -165,6 +165,11 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
 
   script_lines <- readLines(file_path, warn = FALSE)
 
+  escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
+  alternation <- paste(escaped_shorthands, collapse = "|")
+  boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
+  pattern <- paste0(boundary, "(?:", alternation, ")\\(")
+
   in_quote <- NULL
   processed_lines <- character(length(script_lines))
   for (i in seq_along(script_lines)) {
@@ -177,10 +182,6 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
         return(tok$text)
       }
       t_text <- tok$text
-      escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
-      alternation <- paste(escaped_shorthands, collapse = "|")
-      boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
-      pattern <- paste0(boundary, "(?:", alternation, ")\\(")
 
       matches <- gregexpr(pattern, t_text, perl = TRUE)
       match_text <- regmatches(t_text, matches)[[1]]
@@ -251,7 +252,16 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 # ____________________________________________________________________
 
 
-# Helper to tokenize a line of R script into code vs non-code (string literals and comments)
+# _____________________________________________________________________________________________
+#' @title Tokenize a Line of R Script into Code and Non-Code Tokens
+#'
+#' @description Splits a line of R script into tokens representing R code vs. non-code (string
+#' literals and comments) to prevent accidental replacements inside strings and comments.
+#'
+#' @param line A single line of R script.
+#' @param initial_quote String quote character if parsing resumes inside an open string literal.
+#' @return A list containing `tokens` (a list of token objects with `text` and `is_code`) and
+#' `end_quote` (the open quote character at the end of the line, or `NULL`).
 .tokenize_r_line <- function(line, initial_quote = NULL) {
   chars <- strsplit(line, "")[[1]]
   n <- length(chars)
@@ -390,15 +400,16 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
   parsed <- .tokenize_r_line(line)
   tokens <- parsed$tokens
 
+  escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
+  alternation <- paste(escaped_shorthands, collapse = "|")
+  boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
+  pattern <- paste0(boundary, "(?:", alternation, ")\\(")
+
   replaced_tokens <- sapply(tokens, function(tok) {
     if (!tok$is_code || nchar(tok$text) == 0) {
       return(tok$text)
     }
     t_text <- tok$text
-    escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
-    alternation <- paste(escaped_shorthands, collapse = "|")
-    boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
-    pattern <- paste0(boundary, "(?:", alternation, ")\\(")
 
     matches <- gregexpr(pattern, t_text, perl = TRUE)
     match_text <- regmatches(t_text, matches)[[1]]
