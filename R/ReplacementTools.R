@@ -115,11 +115,17 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
   # Read the file
   script_lines <- readLines(file_path, warn = FALSE)
 
-  # Process each line
-  processed_lines <- sapply(script_lines, .safely_replace_tf,
-    USE.NAMES = FALSE,
-    strict_mode, preceding_chars, following_chars
-  )
+  # Process each line, carrying open string/raw-string state across line boundaries
+  in_quote <- NULL
+  processed_lines <- character(length(script_lines))
+  for (i in seq_along(script_lines)) {
+    result <- .safely_replace_tf(
+      script_lines[i], strict_mode, preceding_chars, following_chars,
+      initial_quote = in_quote
+    )
+    processed_lines[i] <- result$text
+    in_quote <- result$end_quote
+  }
 
   # Write the modified script
   writeLines(processed_lines, output_path)
@@ -230,7 +236,14 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 
   script_lines <- readLines(file_path, warn = FALSE)
 
-  processed_lines <- sapply(script_lines, .safely_replace_l, strict_mode, USE.NAMES = FALSE)
+  # Process each line, carrying open string/raw-string state across line boundaries
+  in_quote <- NULL
+  processed_lines <- character(length(script_lines))
+  for (i in seq_along(script_lines)) {
+    result <- .safely_replace_l(script_lines[i], strict_mode, initial_quote = in_quote)
+    processed_lines[i] <- result$text
+    in_quote <- result$end_quote
+  }
 
   writeLines(processed_lines, output_path)
 
@@ -256,12 +269,16 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @title Tokenize a Line of R Script into Code and Non-Code Tokens
 #'
 #' @description Splits a line of R script into tokens representing R code vs. non-code (string
-#' literals and comments) to prevent accidental replacements inside strings and comments.
+#' literals and comments) to prevent accidental replacements inside strings and comments. Handles
+#' both ordinary quoted strings (with backslash escaping) and raw strings (e.g. `r"(...)"`,
+#' `R'---[...]---'`), whose closing delimiter is a bracket/dashes/quote sequence in which
+#' backslashes are literal, not escape characters.
 #'
 #' @param line A single line of R script.
-#' @param initial_quote String quote character if parsing resumes inside an open string literal.
+#' @param initial_quote A list describing an open string literal that parsing resumes inside of
+#' (as returned in `end_quote` by a previous call), or `NULL` if parsing starts in code.
 #' @return A list containing `tokens` (a list of token objects with `text` and `is_code`) and
-#' `end_quote` (the open quote character at the end of the line, or `NULL`).
+#' `end_quote` (the open string state at the end of the line, or `NULL`).
 .tokenize_r_line <- function(line, initial_quote = NULL) {
   chars <- strsplit(line, "")[[1]]
   n <- length(chars)
@@ -275,20 +292,30 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
   in_quote <- initial_quote
   escaped <- FALSE
 
+  matching_bracket <- c("(" = ")", "[" = "]", "{" = "}")
+
   i <- 1
   while (i <= n) {
     ch <- chars[i]
     if (!is.null(in_quote)) {
-      current_text <- paste0(current_text, ch)
-      if (escaped) {
-        escaped <- FALSE
-      } else if (ch == "\\") {
+      term <- in_quote$terminator
+      term_len <- nchar(term)
+      if (!in_quote$raw && !escaped && ch == "\\") {
+        current_text <- paste0(current_text, ch)
         escaped <- TRUE
-      } else if (ch == in_quote) {
+      } else if (!in_quote$raw && escaped) {
+        current_text <- paste0(current_text, ch)
+        escaped <- FALSE
+      } else if (i + term_len - 1 <= n && paste(chars[i:(i + term_len - 1)], collapse = "") == term) {
+        current_text <- paste0(current_text, term)
         tokens[[length(tokens) + 1]] <- list(text = current_text, is_code = FALSE)
         current_text <- ""
         in_quote <- NULL
         current_is_code <- TRUE
+        i <- i + term_len
+        next
+      } else {
+        current_text <- paste0(current_text, ch)
       }
     } else {
       if (ch == "#") {
@@ -301,13 +328,54 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
         i <- n + 1
         break
       } else if (ch == '"' || ch == "'") {
+        # Detect a raw-string prefix: an `r`/`R` immediately before the quote that is not
+        # itself part of a larger identifier, followed by optional dashes and an opening bracket.
+        is_raw_prefix <- FALSE
         if (nchar(current_text) > 0) {
-          tokens[[length(tokens) + 1]] <- list(text = current_text, is_code = TRUE)
-          current_text <- ""
+          last_char <- substr(current_text, nchar(current_text), nchar(current_text))
+          if (last_char %in% c("r", "R")) {
+            before_r <- if (nchar(current_text) > 1) {
+              substr(current_text, nchar(current_text) - 1, nchar(current_text) - 1)
+            } else {
+              ""
+            }
+            is_raw_prefix <- !grepl("[a-zA-Z0-9_.]", before_r, perl = TRUE)
+          }
         }
-        in_quote <- ch
-        current_text <- ch
-        current_is_code <- FALSE
+
+        raw_open <- NULL
+        if (is_raw_prefix) {
+          rest <- paste(chars[(i + 1):n], collapse = "")
+          m <- regmatches(rest, regexpr("^-*[(\\[{]", rest, perl = TRUE))
+          if (length(m) == 1 && nchar(m) > 0) {
+            open_bracket <- substr(m, nchar(m), nchar(m))
+            ndash <- nchar(m) - 1
+            close_bracket <- matching_bracket[[open_bracket]]
+            raw_open <- list(
+              opener = m,
+              terminator = paste0(close_bracket, strrep("-", ndash), ch)
+            )
+          }
+        }
+
+        if (!is.null(raw_open)) {
+          code_before <- substr(current_text, 1, nchar(current_text) - 1)
+          if (nchar(code_before) > 0) {
+            tokens[[length(tokens) + 1]] <- list(text = code_before, is_code = TRUE)
+          }
+          current_text <- paste0(last_char, ch, raw_open$opener)
+          in_quote <- list(terminator = raw_open$terminator, raw = TRUE)
+          current_is_code <- FALSE
+          i <- i + nchar(raw_open$opener)
+        } else {
+          if (nchar(current_text) > 0) {
+            tokens[[length(tokens) + 1]] <- list(text = current_text, is_code = TRUE)
+            current_text <- ""
+          }
+          in_quote <- list(terminator = ch, raw = FALSE)
+          current_text <- ch
+          current_is_code <- FALSE
+        }
       } else {
         current_text <- paste0(current_text, ch)
       }
@@ -333,9 +401,12 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @param strict_mode Logical; specifies the mode of replacement. Default: TRUE.
 #' @param preceding_chars Characters that can precede `T` or `F` for replacement.
 #' @param following_chars Characters that can follow `T` or `F` for replacement.
-#' @return The modified line of R script.
-.safely_replace_tf <- function(line, strict_mode, preceding_chars, following_chars) {
-  parsed <- .tokenize_r_line(line)
+#' @param initial_quote An open string/raw-string state to resume parsing inside of (as returned
+#' in `end_quote` by a previous call), or `NULL` if parsing starts in code. Default: `NULL`.
+#' @return A list with `text` (the modified line) and `end_quote` (the open string state at the
+#' end of the line, to be passed as `initial_quote` for the next line).
+.safely_replace_tf <- function(line, strict_mode, preceding_chars, following_chars, initial_quote = NULL) {
+  parsed <- .tokenize_r_line(line, initial_quote = initial_quote)
   tokens <- parsed$tokens
 
   replaced_tokens <- sapply(tokens, function(tok) {
@@ -362,7 +433,7 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
     return(modified)
   }, USE.NAMES = FALSE)
 
-  paste(replaced_tokens, collapse = "")
+  list(text = paste(replaced_tokens, collapse = ""), end_quote = parsed$end_quote)
 }
 
 
@@ -436,12 +507,15 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @param strict_mode A boolean flag to determine the strictness of the match.
 #' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
 #' If `FALSE`, all instances of `l(` are replaced.
+#' @param initial_quote An open string/raw-string state to resume parsing inside of (as returned
+#' in `end_quote` by a previous call), or `NULL` if parsing starts in code. Default: `NULL`.
 #'
-#' @return A string representing the modified line.
+#' @return A list with `text` (the modified line) and `end_quote` (the open string state at the
+#' end of the line, to be passed as `initial_quote` for the next line).
 #' @importFrom stringr str_detect
 #' @export
-.safely_replace_l <- function(line, strict_mode) {
-  parsed <- .tokenize_r_line(line)
+.safely_replace_l <- function(line, strict_mode, initial_quote = NULL) {
+  parsed <- .tokenize_r_line(line, initial_quote = initial_quote)
   tokens <- parsed$tokens
 
   replaced_tokens <- sapply(tokens, function(tok) {
@@ -457,7 +531,7 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
     return(modified)
   }, USE.NAMES = FALSE)
 
-  paste(replaced_tokens, collapse = "")
+  list(text = paste(replaced_tokens, collapse = ""), end_quote = parsed$end_quote)
 }
 
 
