@@ -290,7 +290,7 @@ Updated: 2026/08/25 17:03
 
   Analyze File for Code and Comment Statistics. This function analyzes a given file, counting the number of lines of code and comments.  It also identifies files that are sourced within the provided file. The function uses regular  expressions to differentiate between code and comment lines and to extract the names of sourced files. 
 
-- #### 7 `    idx_function_def()`
+- #### 7 `parse_rmd_vignette_from_roxygen()`
 
   Parse RMD Vignette from Roxygen. Extracts and summarizes Roxygen documentation comments from a specified R script file  and creates a simple R Markdown vignette. It reads an R script, identifies Roxygen comments for  function titles and descriptions, and writes a summary to an output file. If `parse_examples` is  TRUE, it also includes examples found in the Roxygen comments. 
 
@@ -437,4 +437,3 @@ end
 Contributions to DependencyTools are welcome, please communicate via issues.
 
 ---
-

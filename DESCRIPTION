@@ -19,6 +19,6 @@ Imports:
     usethis,
     xfun
 Encoding: UTF-8
-Packaged: 2026-08-25 17:10:15.224014
+Packaged: 2026-08-25 17:10:15 UTC; root
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
