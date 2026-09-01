@@ -18,7 +18,7 @@ Default: None, a valid file path must be provided.}
 \item{output_file}{Path to the output file where the summary will be written.
 Default: "1list.of.functions.in.YOURFILE.md"}
 
-\item{fun_header_level}{header level for functions. Default: "####"}
+\item{fun_header_level}{Header level for functions. Default: "####"}
 
 \item{open_results}{Open resulting file? Default: TRUE.}
 }

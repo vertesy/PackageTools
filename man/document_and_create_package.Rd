@@ -18,7 +18,7 @@ document_and_create_package(
 \item{config_file}{The configuration file name within the package's Development directory.
 Default: 'config.R'.}
 
-\item{backup_r_script}{Whether to backup the previous r script into another file. Default: FALSE.}
+\item{backup_r_script}{Whether to back up the previous R script into another file. Default: FALSE.}
 
 \item{update_citation}{Whether to update the CITATION file. Default: FALSE.}
 
@@ -28,8 +28,8 @@ Default: 'config.R'.}
 None
 }
 \description{
-Automate the creation of an R package from a configuration file.
-This function automates the creation of an R package by sourcinÏg a configuration file
+Automates the creation of an R package from a configuration file.
+This function automates the creation of an R package by sourcing a configuration file
 from the specified package directory. It assumes the presence of a \code{config.R} file in
 the \code{Development} subdirectory of the package.
 }

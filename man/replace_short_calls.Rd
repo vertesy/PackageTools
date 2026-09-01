@@ -31,8 +31,8 @@ None
 }
 \description{
 Reads an R script file and replaces short developer shorthands for common
-functions and package calls with their full names, e.g. \verb{l(} with \verb{length(}, \verb{p0(} with
-\verb{paste0(}, \verb{u(} with \verb{unique(}, \verb{dfilter(} with \verb{dplyr::filter(}, \verb{dselect(} with
-\verb{dplyr::select(}, and \verb{sort.natural(} with \verb{gtools::mixedsort(}.
+functions and package calls with their full names, e.g. \verb{length(} with \verb{length(}, \verb{paste0(} with
+\verb{paste0(}, \verb{unique(} with \verb{unique(}, \verb{dplyr::filter(} with \verb{dplyr::filter(}, \verb{dplyr::select(} with
+\verb{dplyr::select(}, and \verb{gtools::mixedsort(} with \verb{gtools::mixedsort(}.
 It supports a strict mode to ensure accurate replacements.
 }

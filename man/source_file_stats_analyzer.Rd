@@ -14,7 +14,7 @@ source_file_stats_analyzer(
 \arguments{
 \item{file_path}{The path to the file to be analyzed.}
 
-\item{pattern}{The regular expression pattern used to identify comment lines. Default: \verb{^\\\\s*#"}.}
+\item{pattern}{The regular expression pattern used to identify comment lines. Default: \verb{^\\\\s*#}.}
 
 \item{pattern_sourced_files}{The regular expression pattern used to identify lines where files are sourced.
 Default: \verb{source\\\\s*\\\\(\\\\s*['\\"]([^'\\"]+)['\\"]\\\\s*\\\\)}.}

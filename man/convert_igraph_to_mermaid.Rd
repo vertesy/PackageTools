@@ -20,14 +20,14 @@ convert_igraph_to_mermaid(
 
 \item{direction}{The direction of the flowchart. One of 'TB', 'TD', 'BT', 'RL', 'LR'. Default: 'LR'.}
 
-\item{node_shape}{The shape of the nodes in the flowchart. One of 'round', 'default'. Default: 'round'.}
+\item{node_shape}{The shape of the nodes in the flowchart. One of 'round' or 'default'. Default: 'round'.}
 
 \item{copy_to_clipboard}{Whether to copy the resulting Mermaid.js code to the clipboard. Default: TRUE.}
 
-\item{openMermaid}{open www.mermaid.live website? Default: TRUE.}
+\item{openMermaid}{Open the www.mermaid.live website? Default: TRUE.}
 
-\item{pkg_path_for_scripts_as_subgraphs}{Do you want to add it to subgraphs? Provide the package
-path for scripts represented as subgraphs."}
+\item{pkg_path_for_scripts_as_subgraphs}{Add scripts as subgraphs? Provide the package
+path for scripts represented as subgraphs.}
 
 \item{add_subgraph_template}{Add subgraph template? Default: TRUE.}
 

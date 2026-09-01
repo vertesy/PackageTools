@@ -16,7 +16,7 @@ Valid options are 'experimental', 'active', 'archive', and 'hibernate'.
 Default: 'experimental'.}
 
 \item{prefix}{The URL prefix for the badge images.
-Default: "https:,//raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".}
+Default: "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".}
 
 \item{copy_to_clipboard}{Logical. If TRUE, the badge Markdown code is copied to the clipboard.}
 }

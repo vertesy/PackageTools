@@ -21,8 +21,8 @@ A string representing the modified line.
 }
 \description{
 Safely replaces short developer shorthands for common functions and package
-calls (e.g. \verb{l(} with \verb{length(}, \verb{p0(} with \verb{paste0(}, \verb{u(} with \verb{unique(}, \verb{dfilter(} with
-\verb{dplyr::filter(}, \verb{dselect(} with \verb{dplyr::select(}, and \verb{sort.natural(} with
+calls (e.g. \verb{length(} with \verb{length(}, \verb{paste0(} with \verb{paste0(}, \verb{unique(} with \verb{unique(}, \verb{dplyr::filter(} with
+\verb{dplyr::filter(}, \verb{dplyr::select(} with \verb{dplyr::select(}, and \verb{gtools::mixedsort(} with
 \verb{gtools::mixedsort(}) in a given line of R script.
 Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name.
 }
