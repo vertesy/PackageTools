@@ -396,6 +396,8 @@ checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
 #' @param pattern The regular expression pattern used to identify comment lines. Default: `^\\s*#`.
 #' @param pattern_sourced_files The regular expression pattern used to identify lines where files are sourced.
 #' Default: `source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)`.
+#' @param patter_sourced_files Deprecated alias for `pattern_sourced_files`, kept for backward
+#' compatibility with the old (typo'd) argument name. Default: `NULL`.
 #'
 #' @return A list containing the number of lines of code, the number of comment lines,
 #' and the names of any sourced files.
@@ -405,7 +407,13 @@ checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
 #' source_file_stats_analyzer("path/to/your/script.R")
 #' @export
 source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
-                                       pattern_sourced_files = "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)") {
+                                       pattern_sourced_files = "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)",
+                                       patter_sourced_files = NULL) {
+  if (!is.null(patter_sourced_files)) {
+    warning("`patter_sourced_files` is deprecated; use `pattern_sourced_files` instead.")
+    pattern_sourced_files <- patter_sourced_files
+  }
+
   # Input argument assertions
   stopifnot(is.character(file_path), length(file_path) == 1)
   stopifnot(is.character(pattern), length(pattern) == 1)

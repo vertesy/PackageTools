@@ -292,27 +292,22 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @importFrom stringr str_detect
 #' @export
 .safely_replace_calls <- function(line, strict_mode, call_map = .default_call_shorthands) {
-  for (shorthand in names(call_map)) {
-    full_call <- call_map[[shorthand]]
-    escaped_shorthand <- gsub(".", "\\.", shorthand, fixed = TRUE)
+  # Escape any regex metacharacters (e.g. the "." in "sort.natural") in the shorthand names
+  escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
+  alternation <- paste(escaped_shorthands, collapse = "|")
+  boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
+  pattern <- paste0(boundary, "(?:", alternation, ")\\(")
 
-    if (strict_mode) {
-      # Replace the shorthand when it is likely a function call, i.e. not part of a larger identifier
-      line <- gsub(
-        paste0("(^|[^a-zA-Z0-9_.])", escaped_shorthand, "\\("),
-        paste0("\\1", full_call, "("),
-        line
-      )
-    } else {
-      # Replace all instances of the shorthand call
-      line <- gsub(
-        paste0("\\b", escaped_shorthand, "\\("),
-        paste0(full_call, "("),
-        line,
-        perl = TRUE
-      )
-    }
+  # Find all shorthand calls in one pass over the original line, so a replacement's own text
+  # (e.g. "b(" produced by mapping "a" -> "b") is never re-matched against another entry in call_map
+  matches <- gregexpr(pattern, line, perl = TRUE)
+  match_text <- regmatches(line, matches)[[1]]
+  if (length(match_text) == 0) {
+    return(line)
   }
+
+  shorthand <- sub("\\($", "", match_text)
+  regmatches(line, matches) <- list(paste0(call_map[shorthand], "("))
 
   return(line)
 }
