@@ -332,7 +332,7 @@ Updated: 2026/09/01 10:43
 
 - #### 1 `document_and_create_package()`
 
-  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcing a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package.
+  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcing a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
 
 - #### 2 `.parse_description()`
 
