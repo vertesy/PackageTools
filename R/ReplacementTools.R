@@ -345,7 +345,7 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 
         raw_open <- NULL
         if (is_raw_prefix) {
-          rest <- paste(chars[(i + 1):n], collapse = "")
+          rest <- if (i < n) paste(chars[(i + 1):n], collapse = "") else ""
           m <- regmatches(rest, regexpr("^-*[(\\[{]", rest, perl = TRUE))
           if (length(m) == 1 && nchar(m) > 0) {
             open_bracket <- substr(m, nchar(m), nchar(m))
