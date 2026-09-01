@@ -133,9 +133,9 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
 #' @title Replace Short Function Calls with Full Names in an R Script
 #'
 #' @description Reads an R script file and replaces short developer shorthands for common
-#' functions and package calls with their full names, e.g. `length(` with `length(`, `paste0(` with
-#' `paste0(`, `unique(` with `unique(`, `dplyr::filter(` with `dplyr::filter(`, `dplyr::select(` with
-#' `dplyr::select(`, and `gtools::mixedsort(` with `gtools::mixedsort(`.
+#' functions and package calls with their full names, e.g. `l(` with `length(`, `p0(` with
+#' `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with
+#' `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`.
 #' It supports a strict mode to ensure accurate replacements.
 #'
 #' @param file_path A string representing the path to the R script file.
@@ -176,17 +176,17 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
 
 
 # _____________________________________________________________________________________________
-#' @title Replace length() with length() in an R Script
+#' @title Replace l() with length() in an R Script
 #'
-#' @description This function reads an R script file and replaces instances of `length(` with `length(`.
+#' @description This function reads an R script file and replaces instances of `l(` with `length(`.
 #' It supports a strict mode to ensure accurate replacement.
 #'
 #' @param file_path A string representing the path to the R script file.
 #' @param output_path A string representing the path to save the modified R script.
 #' Default is the same as `file_path`.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return None
 #' @importFrom stringr str_replace_all
@@ -273,8 +273,8 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @title Safely Replace Short Function Calls in a Line of R Script
 #'
 #' @description Safely replaces short developer shorthands for common functions and package
-#' calls (e.g. `length(` with `length(`, `paste0(` with `paste0(`, `unique(` with `unique(`, `dplyr::filter(` with
-#' `dplyr::filter(`, `dplyr::select(` with `dplyr::select(`, and `gtools::mixedsort(` with
+#' calls (e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with
+#' `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with
 #' `gtools::mixedsort(`) in a given line of R script.
 #' Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name.
 #'
@@ -310,26 +310,26 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 }
 
 # _____________________________________________________________________________________________
-#' @title Safely Replace length() with length() in a Line of R Script
+#' @title Safely Replace l() with length() in a Line of R Script
 #'
-#' @description This function safely replaces instances of `length(` with `length(` in a given line of R script.
-#' It can operate in a strict mode, which ensures that `length(` is replaced only when it is not part of a larger word
+#' @description This function safely replaces instances of `l(` with `length(` in a given line of R script.
+#' It can operate in a strict mode, which ensures that `l(` is replaced only when it is not part of a larger word
 #' or variable name.
 #'
 #' @param line A single line from an R script.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return A string representing the modified line.
 #' @importFrom stringr str_detect
 #' @export
 .safely_replace_l <- function(line, strict_mode) {
   if (strict_mode) {
-    # Replace 'length(' when it is likely a function call
+    # Replace 'l(' when it is likely a function call
     modified_line <- gsub("(^|[^a-zA-Z0-9_])l\\(", "\\1length(", line)
   } else {
-    # Replace all instances of 'length('
+    # Replace all instances of 'l('
     modified_line <- gsub("\\bl\\(", "length(", line, perl = TRUE)
   }
 
