@@ -4,7 +4,12 @@
 \alias{replace_short_calls}
 \title{Replace Short Function Calls with Full Names in an R Script}
 \usage{
-replace_short_calls(file_path, output_path = file_path, strict_mode = TRUE)
+replace_short_calls(
+  file_path,
+  output_path = file_path,
+  strict_mode = TRUE,
+  call_map = .default_call_shorthands
+)
 }
 \arguments{
 \item{file_path}{A string representing the path to the R script file.}
@@ -13,13 +18,21 @@ replace_short_calls(file_path, output_path = file_path, strict_mode = TRUE)
 Default is the same as \code{file_path}.}
 
 \item{strict_mode}{A boolean flag to determine the strictness of the matches.
-If \code{TRUE}, matches \verb{length(} and \code{p0} only when they're not part of larger alphanumeric strings.
-If \code{FALSE}, all instances of \verb{length(} and \code{p0} are replaced.}
+If \code{TRUE}, matches shorthand calls only when they're not part of larger alphanumeric strings.
+If \code{FALSE}, all instances of the shorthand calls are replaced.}
+
+\item{call_map}{A named character vector mapping each shorthand (the name) to the fully
+qualified function call it stands for (the value). Default: \code{.default_call_shorthands},
+covering the shorthands listed in the description. Pass your own map to add or override
+shorthands.}
 }
 \value{
 None
 }
 \description{
-Reads an R script file and replaces instances of \verb{length(} with \verb{length(} and \code{p0} with \verb{paste0(}.
+Reads an R script file and replaces short developer shorthands for common
+functions and package calls with their full names, e.g. \verb{l(} with \verb{length(}, \verb{p0(} with
+\verb{paste0(}, \verb{u(} with \verb{unique(}, \verb{dfilter(} with \verb{dplyr::filter(}, \verb{dselect(} with
+\verb{dplyr::select(}, and \verb{sort.natural(} with \verb{gtools::mixedsort(}.
 It supports a strict mode to ensure accurate replacements.
 }

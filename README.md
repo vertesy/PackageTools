@@ -320,7 +320,7 @@ Updated: 2024/01/25 15:22
 
 - #### 2 `replace_short_calls()`
 
-  Replace Short Function Calls with Full Names in an R Script. Reads an R script file and replaces instances of `l(` with `length(` and `p0` with `paste0(`.  It supports a strict mode to ensure accurate replacements. 
+  Replace Short Function Calls with Full Names in an R Script. Reads an R script file and replaces short developer shorthands for common functions and package calls with their full names, e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`.  It supports a strict mode to ensure accurate replacements. 
 
 - #### 3 `replace_l_with_length()`
 
@@ -332,7 +332,7 @@ Updated: 2024/01/25 15:22
 
 - #### 5 `.safely_replace_calls()`
 
-  Safely Replace Short Function Calls in a Line of R Script. Safely replaces instances of `l(` with `length(` and `p0` with `paste0(` in a given line of R script.  Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
+  Safely Replace Short Function Calls in a Line of R Script. Safely replaces short developer shorthands for common functions and package calls (e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`) in a given line of R script.  Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
 
 ## List of Functions in DocumentationTools.R (3) 
 

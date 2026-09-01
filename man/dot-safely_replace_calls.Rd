@@ -4,7 +4,7 @@
 \alias{.safely_replace_calls}
 \title{Safely Replace Short Function Calls in a Line of R Script}
 \usage{
-.safely_replace_calls(line, strict_mode)
+.safely_replace_calls(line, strict_mode, call_map = .default_call_shorthands)
 }
 \arguments{
 \item{line}{A single line from an R script.}
@@ -12,11 +12,17 @@
 \item{strict_mode}{A boolean flag to determine the strictness of the match.
 If \code{TRUE}, matches are made only when not part of larger alphanumeric strings.
 If \code{FALSE}, all instances are replaced.}
+
+\item{call_map}{A named character vector mapping each shorthand (the name) to the fully
+qualified function call it stands for (the value). Default: \code{.default_call_shorthands}.}
 }
 \value{
 A string representing the modified line.
 }
 \description{
-Safely replaces instances of \verb{length(} with \verb{length(} and \code{p0} with \verb{paste0(} in a given line of R script.
+Safely replaces short developer shorthands for common functions and package
+calls (e.g. \verb{l(} with \verb{length(}, \verb{p0(} with \verb{paste0(}, \verb{u(} with \verb{unique(}, \verb{dfilter(} with
+\verb{dplyr::filter(}, \verb{dselect(} with \verb{dplyr::select(}, and \verb{sort.natural(} with
+\verb{gtools::mixedsort(}) in a given line of R script.
 Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name.
 }
