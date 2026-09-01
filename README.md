@@ -290,7 +290,7 @@ Updated: 2026/09/01 10:43
 
   Analyze File for Code and Comment Statistics. This function analyzes a given file, counting the number of lines of code and comments.  It also identifies files that are sourced within the provided file. The function uses regular  expressions to differentiate between code and comment lines and to extract the names of sourced files. 
 
-- #### 7 `    idx_function_def()`
+- #### 7 `parse_rmd_vignette_from_roxygen()`
 
   Parse RMD Vignette from Roxygen. Extracts and summarizes Roxygen documentation comments from a specified R script file  and creates a simple R Markdown vignette. It reads an R script, identifies Roxygen comments for  function titles and descriptions, and writes a summary to an output file. If `parse_examples` is  TRUE, it also includes examples found in the Roxygen comments. 
 
@@ -312,11 +312,11 @@ Updated: 2026/09/01 10:43
 
 - #### 3 `replace_short_calls()`
 
-  Replace Short Function Calls with Full Names in an R Script. Reads an R script file and replaces short developer shorthands for common  functions and package calls with their full names, e.g. `length(` with `length(`, `paste0(` with  `paste0(`, `unique(` with `unique(`, `dplyr::filter(` with `dplyr::filter(`, `dplyr::select(` with  `dplyr::select(`, and `gtools::mixedsort(` with `gtools::mixedsort(`.  It supports a strict mode to ensure accurate replacements. 
+  Replace Short Function Calls with Full Names in an R Script. Reads an R script file and replaces short developer shorthands for common functions and package calls with their full names, e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`. It supports a strict mode to ensure accurate replacements. 
 
 - #### 4 `replace_l_with_length()`
 
-  Replace length() with length() in an R Script. This function reads an R script file and replaces instances of `length(` with `length(`.  It supports a strict mode to ensure accurate replacement. 
+  Replace l() with length() in an R Script. This function reads an R script file and replaces instances of `l(` with `length(`. It supports a strict mode to ensure accurate replacement. 
 
 - #### 5 `.safely_replace_tf()`
 
@@ -324,7 +324,7 @@ Updated: 2026/09/01 10:43
 
 - #### 6 `.safely_replace_calls()`
 
-  Safely Replace Short Function Calls in a Line of R Script. Safely replaces short developer shorthands for common functions and package  calls (e.g. `length(` with `length(`, `paste0(` with `paste0(`, `unique(` with `unique(`, `dplyr::filter(` with  `dplyr::filter(`, `dplyr::select(` with `dplyr::select(`, and `gtools::mixedsort(` with  `gtools::mixedsort(`) in a given line of R script.  Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
+  Safely Replace Short Function Calls in a Line of R Script. Safely replaces short developer shorthands for common functions and package calls (e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`) in a given line of R script. Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
 
 ## List of Functions in DocumentationTools.R (3) 
 
@@ -332,7 +332,7 @@ Updated: 2026/09/01 10:43
 
 - #### 1 `document_and_create_package()`
 
-  Create R Package from Configuration. Automates the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcing a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
+  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcing a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
 
 - #### 2 `.parse_description()`
 
@@ -340,7 +340,7 @@ Updated: 2026/09/01 10:43
 
 - #### 3 `.update_citation_file()`
 
-  Helper function to update the CITATION file of a package.. Update the CITATION.cff file of a package based on its version. 
+  Helper function to update the CITATION file of a package. Update the CITATION.cff file of a package based on its version.
 
 ## List of Functions in DependencyTools.R (8) 
 
@@ -377,7 +377,6 @@ Updated: 2026/09/01 10:43
 - #### 8 `  format_node()`
 
   Convert an igraph object to a Mermaid.js flowchart. This function takes an igraph object representing a network graph and  converts it into Mermaid.js code for creating a flowchart. It allows customization of the  flowchart's direction and node shapes and can optionally copy the resulting code to the clipboard. 
-
 
 
 ## List of Functions in RoxygenTools.R (3)
