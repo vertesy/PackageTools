@@ -10,7 +10,7 @@ require(PackageTools)
 devtools::load_all("~/GitHub/Packages/PackageTools/")
 
 # Setup ------------------------
-repository.dir <- "~/GitHub/Packages/PackageTools"
+repository.dir <- "~/GitHub/Packages/PackageTools/"
 (package.name <- basename(repository.dir))
 config.path <- file.path(repository.dir, "Development/config.R")
 
@@ -48,6 +48,7 @@ styler::style_pkg(repository.dir)
 
 
 # Extract package dependencies ------------------------------------------------
+devtools::load_all("~/GitHub/Packages/PackageTools/")
 PackageTools::extract_package_dependencies(repository.dir)
 # I have a list of functions where some are not properly separated at the bottom. Answer in text, not code.
 # I need the following:
@@ -69,7 +70,6 @@ PackageTools::extract_package_dependencies(repository.dir)
 
 
 # Try to find and add missing @importFrom statements------------------------------------------------
-devtools::load_all("~/GitHub/Packages/PackageTools/")
 (ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T, pattern = '.R$'))
 if (F) {
   (excluded.packages <- unlist(strsplit(DESCRIPTION$'depends', split = ", ")))
@@ -86,7 +86,7 @@ for (scriptX in ls.scripts.full.path) {
 }
 file.edit(paste0(repository.dir, "R/list.of.functions.in.", package.name, ".det.md"))
 file.edit(paste0(repository.dir, "README.md"))
-file.remove(paste0(repository.dir, "/R/list.of.functions.in.", package.name, ".det.md"))
+file.remove(paste0(repository.dir, "R/list.of.functions.in.", package.name, ".det.md"))
 
 r$PackageTools()
 PackageTools::copy_github_badge("active") # Add badge to readme via clipboard
@@ -102,5 +102,6 @@ for (scriptX in ls.scripts.full.path) {
 
 
 
+PackageTools::document_and_create_package(repository.dir, config_file = 'config.R')
 
 

@@ -5,9 +5,6 @@
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
-
-
-
 # _____________________________________________________________________________________________ ----
 
 #' Setup New Package from Template

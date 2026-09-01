@@ -5,7 +5,6 @@
 # stop(); rm(list = ls(all.names = TRUE)); try(dev.off(), silent = TRUE); gc()
 
 
-
 # ______________________________________________________________________________________________----
 # 1. Replacement Functions  ----
 # ____________________________________________________________________
@@ -40,9 +39,10 @@
 #'
 #' @export
 replace_a_string_in_a_file <- function(
-    file_path, from, to, whole_word = TRUE, ignore_case = FALSE,
-    perl = TRUE, backup = FALSE,
-    ...) {
+  file_path, from, to, whole_word = TRUE, ignore_case = FALSE,
+  perl = TRUE, backup = FALSE,
+  ...
+) {
   # Input argument assertions
   stopifnot(
     is.character(file_path) && length(file_path) == 1,
@@ -85,7 +85,6 @@ replace_a_string_in_a_file <- function(
 
   return(invisible(match_count)) # Return the count of replacements made
 }
-
 
 
 # _____________________________________________________________________________________________
@@ -212,12 +211,10 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 # replace_l_with_length('~/GitHub/Projects/CON/_sc6_19/Get.Annotation.from.Objectnames.sc16_19.R', strict_mode = TRUE)
 
 
-
 # _____________________________________________________________________________________________
 
 
 # _____________________________________________________________________________________________
-
 
 
 # ______________________________________________________________________________________________----
@@ -343,9 +340,7 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 # _____________________________________________________________________________________________
 
 
-
 # _____________________________________________________________________________________________
-
 
 
 # scriptPath <- '~/GitHub/Packages/Seurat.utils/R/Seurat.Utils.R'
