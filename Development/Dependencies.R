@@ -1,38 +1,52 @@
-Dependency file generated on Tue Aug 25 17:00:28 2026 
+Dependency file generated on Tue Sep  1 10:39:19 2026 
 
 #################################################################################################### 
 DependencyTools.R
 #################################################################################################### 
-$`c("package:MarkdownReports", "package:stats")`
+$`c(".GlobalEnv", "package:base")`
+[1] "ls"
+
+$`c("package:lubridate", "package:dplyr", "package:base")`
+[1] "setdiff"
+
+$`c("package:MarkdownReports", "package:CodeAndRoll2", "package:stats")`
 [1] "setNames"
 
-$`c("package:PackageTools", "package:MarkdownReports", "package:clipr")`
+$`c("package:PackageTools", "package:clipr", "package:MarkdownReports")`
 [1] "write_clip"
+
+$`c("package:PackageTools", "package:CodeAndRoll2")`
+[1] "getActiveProject"
 
 $`character(0)`
 [1] "format_node"
 
 $`package:base`
- [1] "asNamespace"  "body"         "c"            "cat"          "character"    "deparse"     
- [7] "dir.exists"   "file.exists"  "file.path"    "Filter"       "get"          "gregexpr"    
-[13] "grep"         "gsub"         "inherits"     "is.character" "is.function"  "is.list"     
-[19] "is.logical"   "is.null"      "isFALSE"      "lapply"       "length"       "list"        
-[25] "list.files"   "ls"           "message"      "names"        "nchar"        "nrow"        
-[31] "paste"        "paste0"       "print"        "regmatches"   "require"      "return"      
-[37] "sapply"       "setdiff"      "sprintf"      "stop"         "stopifnot"    "tryCatch"    
-[43] "unique"       "unlist"      
+ [1] "asNamespace"      "body"             "c"                "cat"             
+ [5] "character"        "deparse"          "dir.exists"       "file.exists"     
+ [9] "file.path"        "Filter"           "get"              "gregexpr"        
+[13] "grep"             "gsub"             "inherits"         "is.character"    
+[17] "is.function"      "is.list"          "is.logical"       "is.null"         
+[21] "isFALSE"          "lapply"           "length"           "list"            
+[25] "list.files"       "message"          "names"            "nchar"           
+[29] "nrow"             "paste"            "paste0"           "print"           
+[33] "regmatches"       "requireNamespace" "return"           "sapply"          
+[37] "sprintf"          "stop"             "stopifnot"        "tryCatch"        
+[41] "unique"           "unlist"          
 
 $`package:PackageTools`
 [1] ".count_and_print_function_summary" "analyze_function_dependencies"    
 [3] "dependencies"                      "get_package_functions"            
-[5] "get.edgelist"                      "getActiveProject"                 
-[7] "map_functions_to_packages"        
+[5] "get.edgelist"                      "map_functions_to_packages"        
 
 $`package:utils`
 [1] "browseURL"          "installed.packages"
 
-c("MarkdownReports", "stats")
-c("PackageTools", "MarkdownReports", "clipr")
+c(".GlobalEnv", "base")
+c("lubridate", "dplyr", "base")
+c("MarkdownReports", "CodeAndRoll2", "stats")
+c("PackageTools", "clipr", "MarkdownReports")
+c("PackageTools", "CodeAndRoll2")
 character(0)
 base
 PackageTools
@@ -40,33 +54,57 @@ utils
 #################################################################################################### 
 DocumentationTools.R
 #################################################################################################### 
-$`c("package:PackageTools", "package:MarkdownReports", "package:clipr")`
+$`c("package:lubridate", "package:base")`
+[1] "date"
+
+$`c("package:PackageTools", "package:clipr", "package:MarkdownReports")`
 [1] "write_clip"
 
+$`c("package:PackageTools", "package:devtools")`
+[1] "create"   "document"
+
+$`c("package:PackageTools", "package:Seurat.utils")`
+[1] "isAvailable"
+
+$`c("package:PackageTools", "package:usethis")`
+[1] "create_package"
+
 $`package:base`
- [1] "basename"     "c"            "cat"          "date"         "dir.create"   "dir.exists"  
- [7] "exists"       "file.copy"    "file.exists"  "file.path"    "file.remove"  "gsub"        
-[13] "is.character" "is.null"      "list"         "list.files"   "message"      "names"       
-[19] "paste"        "paste0"       "print"        "rep"          "require"      "sapply"      
-[25] "setwd"        "sink"         "source"       "stop"         "stopifnot"    "Sys.time"    
-[31] "warning"      "warnings"     "which"        "write"       
+ [1] "basename"         "c"                "cat"              "dir.create"      
+ [5] "dir.exists"       "exists"           "file.copy"        "file.exists"     
+ [9] "file.path"        "file.remove"      "gsub"             "is.character"    
+[13] "is.null"          "list"             "list.files"       "message"         
+[17] "names"            "paste"            "paste0"           "print"           
+[21] "rep"              "requireNamespace" "sapply"           "setwd"           
+[25] "sink"             "source"           "stop"             "stopifnot"       
+[29] "Sys.time"         "warning"          "warnings"         "which"           
+[33] "write"           
 
 $`package:PackageTools`
-[1] ".parse_description"     ".update_citation_file"  "create"                
-[4] "create_package"         "document"               "gsub_file"             
-[7] "isAvailable"            "list.functions.in.file"
+[1] ".parse_description"     ".update_citation_file"  "gsub_file"             
+[4] "list.functions.in.file"
 
-c("PackageTools", "MarkdownReports", "clipr")
+c("lubridate", "base")
+c("PackageTools", "clipr", "MarkdownReports")
+c("PackageTools", "devtools")
+c("PackageTools", "Seurat.utils")
+c("PackageTools", "usethis")
 base
 PackageTools
 #################################################################################################### 
 Miscellaneous.R
 #################################################################################################### 
-$`c("package:MarkdownReports", "package:stats")`
+$`c("package:lubridate", "package:dplyr", "package:base")`
+[1] "setdiff" "union"  
+
+$`c("package:MarkdownReports", "package:CodeAndRoll2", "package:stats")`
 [1] "na.omit"
 
-$`c("package:PackageTools", "package:MarkdownReports", "package:clipr")`
+$`c("package:PackageTools", "package:clipr", "package:MarkdownReports")`
 [1] "write_clip"
+
+$`c("package:PackageTools", "package:CodeAndRoll2")`
+[1] "getActiveProject"
 
 $`character(0)`
 [1] ".importPackageFunctions"
@@ -78,64 +116,70 @@ $`package:base`
 [13] "is.na"            "is.null"          "length"           "list"            
 [17] "list2env"         "message"          "mget"             "names"           
 [21] "Negate"           "new.env"          "parse"            "paste"           
-[25] "paste0"           "readLines"        "require"          "requireNamespace"
-[29] "return"           "sapply"           "setdiff"          "shQuote"         
-[33] "stop"             "stopifnot"        "Sys.info"         "system"          
-[37] "tryCatch"         "typeof"           "union"            "warning"         
-
-$`package:PackageTools`
-[1] "getActiveProject"
+[25] "paste0"           "readLines"        "requireNamespace" "return"          
+[29] "sapply"           "shQuote"          "stop"             "stopifnot"       
+[33] "Sys.info"         "system"           "tryCatch"         "typeof"          
+[37] "warning"         
 
 $`package:utils`
 [1] "find"
 
-c("MarkdownReports", "stats")
-c("PackageTools", "MarkdownReports", "clipr")
+c("lubridate", "dplyr", "base")
+c("MarkdownReports", "CodeAndRoll2", "stats")
+c("PackageTools", "clipr", "MarkdownReports")
+c("PackageTools", "CodeAndRoll2")
 character(0)
 base
-PackageTools
 utils
 #################################################################################################### 
 PackageSetupTools.R
 #################################################################################################### 
 $`package:base`
- [1] "dir.create"   "dir.exists"   "file.copy"    "file.path"    "file.rename"  "grepl"       
- [7] "gsub"         "is.character" "list.files"   "paste"        "print"        "readLines"   
-[13] "stopifnot"    "warning"      "writeLines"  
+ [1] "dir.create"   "dir.exists"   "file.copy"    "file.path"    "file.rename" 
+ [6] "grepl"        "gsub"         "is.character" "list.files"   "paste"       
+[11] "print"        "readLines"    "stopifnot"    "warning"      "writeLines"  
 
 base
 #################################################################################################### 
 PackageTools.R
 #################################################################################################### 
-$`c("package:MarkdownReports", "package:Stringendo")`
+$`c(".GlobalEnv", "package:base")`
+[1] "ls"
+
+$`c("package:lubridate", "package:dplyr", "package:base")`
+[1] "setdiff"
+
+$`c("package:Stringendo", "package:Seurat.utils", "package:MarkdownReports")`
 [1] "iprint"
 
 $`package:base`
- [1] "any"              "as.environment"   "basename"         "c"               
- [5] "cat"              "character"        "close"            "diff"            
- [9] "dirname"          "exists"           "file"             "file.exists"     
-[13] "file.path"        "format"           "getNamespace"     "grep"            
-[17] "grepl"            "gsub"             "invisible"        "is.character"    
-[21] "is.function"      "is.list"          "is.logical"       "is.na"           
-[25] "is.null"          "is.numeric"       "lapply"           "length"          
-[29] "list"             "logical"          "ls"               "match"           
-[33] "message"          "min"              "names"            "nchar"           
-[37] "nzchar"           "paste"            "paste0"           "print"           
-[41] "readLines"        "regexec"          "regmatches"       "requireNamespace"
-[45] "return"           "seq"              "seq_along"        "setdiff"         
-[49] "source"           "stop"             "stopifnot"        "sub"             
-[53] "sum"              "Sys.time"         "system"           "try"             
-[57] "unique"           "unlist"           "vapply"           "warning"         
-[61] "which"           
+ [1] "any"              "as.environment"   "asNamespace"      "basename"        
+ [5] "c"                "cat"              "character"        "close"           
+ [9] "diff"             "dirname"          "exists"           "file"            
+[13] "file.exists"      "file.path"        "format"           "get"             
+[17] "getNamespace"     "grep"             "grepl"            "gsub"            
+[21] "invisible"        "is.character"     "is.function"      "is.list"         
+[25] "is.logical"       "is.na"            "is.null"          "is.numeric"      
+[29] "lapply"           "length"           "list"             "logical"         
+[33] "match"            "message"          "min"              "names"           
+[37] "nchar"            "nzchar"           "paste"            "paste0"          
+[41] "print"            "readLines"        "regexec"          "regmatches"      
+[45] "requireNamespace" "return"           "seq_along"        "source"          
+[49] "stop"             "stopifnot"        "sub"              "sum"             
+[53] "Sys.time"         "system"           "try"              "unique"          
+[57] "unlist"           "vapply"           "warning"          "which"           
 
 $`package:PackageTools`
-[1] ".convertFilePathToOutput"     ".get_description_from_config" "all_funs"                    
-[4] "checkGlobalVars"              "findGlobals"                 
+[1] ".convertFilePathToOutput"     ".get_description_from_config"
+[3] "all_funs"                     "checkGlobalVars"             
+[5] "findGlobals"                 
 
 $`package:utils`
 [1] "tail"
 
-c("MarkdownReports", "Stringendo")
+c(".GlobalEnv", "base")
+c("lubridate", "dplyr", "base")
+c("Stringendo", "Seurat.utils", "MarkdownReports")
 base
 PackageTools
 utils
@@ -143,19 +187,22 @@ utils
 ReplacementTools.R
 #################################################################################################### 
 $`package:base`
- [1] "c"            "file.copy"    "file.exists"  "grepl"        "gsub"         "invisible"   
- [7] "is.character" "is.logical"   "length"       "message"      "paste0"       "readLines"   
-[13] "return"       "sapply"       "stopifnot"    "sum"          "warning"      "writeLines"  
+ [1] "c"            "file.copy"    "file.exists"  "gregexpr"     "grepl"       
+ [6] "gsub"         "invisible"    "is.character" "is.logical"   "length"      
+[11] "list"         "message"      "names"        "paste"        "paste0"      
+[16] "readLines"    "regmatches"   "return"       "sapply"       "stopifnot"   
+[21] "sub"          "sum"          "warning"      "writeLines"  
 
 base
 #################################################################################################### 
 RoxygenTools.R
 #################################################################################################### 
 $`package:base`
- [1] "append"       "c"            "file.exists"  "grep"         "grepl"        "is.character"
- [7] "is.list"      "lapply"       "length"       "list"         "max"          "paste"       
-[13] "paste0"       "readLines"    "regexpr"      "regmatches"   "return"       "stop"        
-[19] "stopifnot"    "strsplit"     "unique"       "writeLines"  
+ [1] "append"       "c"            "file.exists"  "grep"         "grepl"       
+ [6] "is.character" "is.list"      "lapply"       "length"       "list"        
+[11] "max"          "paste"        "paste0"       "readLines"    "regexpr"     
+[16] "regmatches"   "return"       "stop"         "stopifnot"    "strsplit"    
+[21] "unique"       "writeLines"  
 
 $`package:PackageTools`
 [1] "add_import_from"     "find_package_calls"  "get_function_bodies"

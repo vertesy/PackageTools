@@ -264,7 +264,7 @@ config <- list(
 
 ## List of Functions in PackageTools.R (8) 
 
-Updated: 2026/08/25 17:03
+Updated: 2026/09/01 10:43
 
 - #### 1 `  function_lines()`
 
@@ -300,7 +300,7 @@ Updated: 2026/08/25 17:03
 
 ## List of Functions in ReplacementTools.R (6) 
 
-Updated: 2026/08/25 17:03
+Updated: 2026/09/01 10:43
 
 - #### 1 `replace_a_string_in_a_file()`
 
@@ -326,31 +326,13 @@ Updated: 2026/08/25 17:03
 
   Safely Replace Short Function Calls in a Line of R Script. Safely replaces short developer shorthands for common functions and package calls (e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`) in a given line of R script. Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name. 
 
-## List of Functions in RoxygenTools.R (3) 
+## List of Functions in DocumentationTools.R (3) 
 
-Updated: 2026/08/25 17:03
-
-- #### 1 `add_importFrom_statements()`
-
-  Main Function to Process R Script for Package Calls. Reads an R script file, processes its content to find and add `@importFrom` statements  for package function calls in function bodies. The statements are added to the Roxygen documentation  blocks of the functions. Default: Excludes "MarkdownReports" from processing.
-
-- #### 2 `get_function_bodies()`
-
-  Extract Function Bodies from R Script. This function identifies the start and end lines of each function body in an R script.  Each function body is extracted for further processing. Default: Extracts function bodies from  a given R script content.
-
-- #### 3 `find_package_calls()`
-
-  Finding `::` Usage within Function Bodies. Searches for package function calls using the `::` operator within the given content of  function bodies, excluding specified packages. Default: Searches for `::` usage, excluding packages  listed in `exclude_packages`.
-
-
-
-## List of Functions in DocumentationTools.R (3)
-
-Updated: 2026/08/25 17:03
+Updated: 2026/09/01 10:43
 
 - #### 1 `document_and_create_package()`
 
-  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcing a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package.
+  Create R Package from Configuration. Automate the creation of an R package from a configuration file.  This function automates the creation of an R package by sourcing a configuration file  from the specified package directory. It assumes the presence of a `config.R` file in  the `Development` subdirectory of the package. 
 
 - #### 2 `.parse_description()`
 
@@ -360,9 +342,9 @@ Updated: 2026/08/25 17:03
 
   Helper function to update the CITATION file of a package. Update the CITATION.cff file of a package based on its version.
 
-## List of Functions in DependencyTools.R (8)
+## List of Functions in DependencyTools.R (8) 
 
-Updated: 2026/08/25 17:03
+Updated: 2026/09/01 10:43
 
 - #### 1 `get_package_functions()`
 
@@ -390,46 +372,67 @@ Updated: 2026/08/25 17:03
 
 - #### 7 `.count_and_print_function_summary()`
 
-  Count and print the number of functions results. Private function to count and print the number of functions in results ("dependencies"). 
+  Count and Print the Number of Functions in Results. Private function to count and print the number of functions in results ("dependencies"). 
 
 - #### 8 `  format_node()`
 
   Convert an igraph object to a Mermaid.js flowchart. This function takes an igraph object representing a network graph and  converts it into Mermaid.js code for creating a flowchart. It allows customization of the  flowchart's direction and node shapes and can optionally copy the resulting code to the clipboard. 
 
+
+## List of Functions in RoxygenTools.R (3)
+
+Updated: 2026/09/01 10:43
+
+- #### 1 `add_importFrom_statements()`
+
+  Main Function to Process R Script for Package Calls. Reads an R script file, processes its content to find and add `@importFrom` statements  for package function calls in function bodies. The statements are added to the Roxygen documentation  blocks of the functions. Default: Excludes "MarkdownReports" from processing.
+
+- #### 2 `get_function_bodies()`
+
+  Extract Function Bodies from R Script. This function identifies the start and end lines of each function body in an R script.  Each function body is extracted for further processing. Default: Extracts function bodies from  a given R script content.
+
+- #### 3 `find_package_calls()`
+
+  Finding `::` Usage within Function Bodies. Searches for package function calls using the `::` operator within the given content of  function bodies, excluding specified packages. Default: Searches for `::` usage, excluding packages  listed in `exclude_packages`.
+
+## List of Functions in Miscellaneous.R (2)
+
+Updated: 2026/09/01 10:43
+
+- #### 1 `checkScriptEnv_v1()`
+
+  Check Script Environment. Checks if all functions and variables called in a script are found in a specified environment.               Optionally replaces missing function calls in the script with their fully qualified names. 
+
+- #### 2 `copy_github_badge()`
+
+  Copy GitHub Badge Markdown Image Link to Clipboard.   This function copies the Markdown code for a GitHub badge to the clipboard based on the  specified status. It supports four statuses: 'experimental', 'active', 'archive', and  'hibernate'. 
+
+
+
 # Function relationships
  > (of connected functions)
 
- ```mermaid
+```mermaid
  flowchart LR 
-  
-subgraph DependencyTools.R
 
-    map_functions_to_packages(map_functions_to_packages) --> get_package_functions(get_package_functions)
-    analyze_package_dependencies(analyze_package_dependencies) --> map_functions_to_packages(map_functions_to_packages)
-    analyze_package_dependencies(analyze_package_dependencies) --> get_package_functions(get_package_functions)
-    analyze_package_dependencies(analyze_package_dependencies) --> analyze_function_dependencies(analyze_function_dependencies)
-  
-    filter_dependencies(filter_dependencies) --> .count_and_print_function_summary(.count_and_print_function_summary)
-    filter_conflicts(filter_conflicts) --> .count_and_print_function_summary(.count_and_print_function_summary)
-
-end
-
-subgraph DocumentationTools.R
-    document_and_create_package(document_and_create_package) --> .update_citation_file(.update_citation_file)
-    document_and_create_package(document_and_create_package) --> .parse_description(.parse_description)
-end
-
-
-subgraph ReplacementTools.R
-    replace_tf_with_true_false(replace_tf_with_true_false) --> .safely_replace_tf(.safely_replace_tf)
-end
-
-subgraph RoxygenTools.R
-add_import_from(add_import_from) --> find_package_calls(find_package_calls)
+  replace_tf_with_true_false(replace_tf_with_true_false) --> .safely_replace_tf(.safely_replace_tf)
+  replace_short_calls(replace_short_calls) --> .safely_replace_calls(.safely_replace_calls)
+  replace_l_with_length(replace_l_with_length) --> .safely_replace_l(.safely_replace_l)
+  filter_dependencies(filter_dependencies) --> .count_and_print_function_summary(.count_and_print_function_summary)
+  filter_conflicts(filter_conflicts) --> .count_and_print_function_summary(.count_and_print_function_summary)
+  document_and_create_package(document_and_create_package) --> .update_citation_file(.update_citation_file)
+  document_and_create_package(document_and_create_package) --> .parse_description(.parse_description)
+  checkGlobalVarsInPackage(checkGlobalVarsInPackage) --> checkGlobalVars(checkGlobalVars)
+  checkGlobalVarsInPackage(checkGlobalVarsInPackage) --> all_funs(all_funs)
+  map_functions_to_packages(map_functions_to_packages) --> get_package_functions(get_package_functions)
+  analyze_package_dependencies(analyze_package_dependencies) --> map_functions_to_packages(map_functions_to_packages)
+  analyze_package_dependencies(analyze_package_dependencies) --> get_package_functions(get_package_functions)
+  analyze_package_dependencies(analyze_package_dependencies) --> analyze_function_dependencies(analyze_function_dependencies)
+  add_import_from(add_import_from) --> find_package_calls(find_package_calls)
   add_importFrom_statements(add_importFrom_statements) --> get_function_bodies(get_function_bodies)
   add_importFrom_statements(add_importFrom_statements) --> add_import_from(add_import_from)
-end
- ```
+```
+
  *created by `convert_igraph_to_mermaid()`*
 
 # Contributing

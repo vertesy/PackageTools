@@ -315,7 +315,7 @@ convert_igraph_to_mermaid <- function(
 
   # Initialize Mermaid code with comments if requested
   if (add_embedding_comments) {
-    mermaid_code <- paste0("\n%%## Function relationships\n")
+    mermaid_code <- paste0("\n%% ## Function relationships\n")
     mermaid_code <- paste0(mermaid_code, "%% > (of connected functions)\n")
     mermaid_code <- paste0(mermaid_code, "\n%% ```mermaid\n")
   }

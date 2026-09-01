@@ -2,12 +2,12 @@
 % Please edit documentation in R/DependencyTools.R
 \name{.count_and_print_function_summary}
 \alias{.count_and_print_function_summary}
-\title{Count and print the number of functions results}
+\title{Count and Print the Number of Functions in Results}
 \usage{
 .count_and_print_function_summary(dependencies)
 }
 \arguments{
-\item{dependencies}{Result from above functions dependencies}
+\item{dependencies}{Results from the above functions' dependencies}
 }
 \value{
 Nothing.

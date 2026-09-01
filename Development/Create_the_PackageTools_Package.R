@@ -18,6 +18,20 @@ config.path <- file.path(repository.dir, "Development/config.R")
 file.edit(config.path)
 source(config.path)
 
+
+# Automated Codebase linting to tidyverse style ------------------------------------------------
+styler::style_pkg(repository.dir)
+
+
+# Replaces T with TRUE and F with FALSE ------------------------------------------------
+(ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T, pattern = '.R$'))
+for (scriptX in ls.scripts.full.path) {
+  # PackageTools::replace_tf_with_true_false(scriptX)
+  PackageTools::replace_short_calls(scriptX)
+}
+
+
+
 # Install your package ------------------------------------------------
 PackageTools::document_and_create_package(repository.dir, config_file = 'config.R')
 # document_and_create_package(repository.dir, config_file = 'config.R')
@@ -41,10 +55,6 @@ pak::pkg_install(remote.path)
 devtools::check_man(repository.dir)
 checkres <- devtools::check(repository.dir, cran = FALSE)
 
-
-
-# Automated Codebase linting to tidyverse style ------------------------------------------------
-styler::style_pkg(repository.dir)
 
 
 # Extract package dependencies ------------------------------------------------
@@ -86,20 +96,13 @@ for (scriptX in ls.scripts.full.path) {
 }
 file.edit(paste0(repository.dir, "R/list.of.functions.in.", package.name, ".det.md"))
 file.edit(paste0(repository.dir, "README.md"))
-file.remove(paste0(repository.dir, "R/list.of.functions.in.", package.name, ".det.md"))
+# file.remove(paste0(repository.dir, "R/list.of.functions.in.", package.name, ".det.md"))
+file.remove(list.files(file.path(repository.dir, "R"), pattern = "^list\\.of\\.functions\\.in\\..+\\.det\\.md$", full.names = TRUE))
+
 
 r$PackageTools()
 PackageTools::copy_github_badge("active") # Add badge to readme via clipboard
 file.edit(paste0(repository.dir, "README.md"))
-
-
-# Replaces T with TRUE and F with FALSE ------------------------------------------------
-(ls.scripts.full.path <- list.files(file.path(repository.dir, "R"), full.names = T, pattern = '.R$'))
-for (scriptX in ls.scripts.full.path) {
-  PackageTools::replace_tf_with_true_false(scriptX)
-  PackageTools::replace_short_calls(scriptX)
-}
-
 
 
 PackageTools::document_and_create_package(repository.dir, config_file = 'config.R')

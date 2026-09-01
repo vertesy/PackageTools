@@ -16,7 +16,7 @@ add_import_from(
 
 \item{bodies}{A list of function body line numbers.}
 
-\item{suffix}{A string suffix to add to the\verb{ @importFrom} lines.
+\item{suffix}{A string suffix to add to the \verb{@importFrom} lines.
 Default: "ADDED_BY_add_importFrom_statements".}
 
 \item{exclude_packages}{Packages to exclude from adding \verb{@importFrom} statements.

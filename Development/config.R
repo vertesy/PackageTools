@@ -1,9 +1,9 @@
 # Configuration for the Package
-# file.edit("~/GitHub/Packages/XXXXXXXXXX/Development/config.R")
+# file.edit("~/GitHub/Packages/PackageTools/Development/config.R")
 
 DESCRIPTION <- list(
   package.name = "PackageTools",
-  version = "0.8.1",
+  version = "0.9.0",
   title = "PackageTools - Help for R package development.",
   description = "PackageTools is a collection of utility functions for code base statistics & and dependencies.",
 

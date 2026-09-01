@@ -18,7 +18,7 @@ setup_new_package_from_template(
 
 \item{template_pkg}{Name of the template package. Default: 'PackageTools'.}
 
-\item{place_holder}{place holder string to replace. Default: 'TEMPLATE'.}
+\item{place_holder}{Placeholder string to replace. Default: 'TEMPLATE'.}
 }
 \value{
 None
