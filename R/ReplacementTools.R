@@ -266,7 +266,7 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
   chars <- strsplit(line, "")[[1]]
   n <- length(chars)
   if (n == 0) {
-    return(list(tokens = list(list(text = "", is_code = TRUE)), end_quote = initial_quote))
+    return(list(tokens = list(list(text = "", is_code = is.null(initial_quote))), end_quote = initial_quote))
   }
 
   tokens <- list()
