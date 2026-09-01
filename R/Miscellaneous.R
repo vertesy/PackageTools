@@ -118,7 +118,7 @@ checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"
 #'               Valid options are 'experimental', 'active', 'archive', and 'hibernate'.
 #'               Default: 'experimental'.
 #' @param prefix The URL prefix for the badge images.
-#'               Default: "https:,//raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".
+#'               Default: "https://raw.githubusercontent.com/vertesy/TheCorvinas/master/GitHub/Badges/".
 #' @param copy_to_clipboard Logical. If TRUE, the badge Markdown code is copied to the clipboard.
 #'
 #' @return The function does not return a value but copies the relevant badge Markdown code to the clipboard.
@@ -139,7 +139,7 @@ copy_github_badge <- function(status = "experimental",
   markdown_text <- paste0("![status: ", status, "](", badge_link, ")")
 
   # Copy to clipboard, or return the Markdown text
-  if (copy_to_clipboard & require(clipr)) clipr::write_clip(markdown_text) else message(markdown_text)
+  if (copy_to_clipboard && requireNamespace("clipr", quietly = TRUE)) clipr::write_clip(markdown_text) else message(markdown_text)
 }
 
 

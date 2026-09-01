@@ -44,9 +44,8 @@ scripts = c(
   # '~/GitHub/Packages/DatabaseLinke.R/R/DatabaseLinke.R',
 
   '~/GitHub/Packages/SCP.tools/R/SCP.functions.R',
-
-
-  "")
+  ""
+)
 
 
 for (i in 1:length(scripts)) {

@@ -7,7 +7,8 @@
 source_file_stats_analyzer(
   file_path,
   pattern = "^\\\\s*#",
-  patter_sourced_files = "source\\\\s*\\\\(\\\\s*['\\"]([^'\\"]+)['\\"]\\\\s*\\\\)"
+  pattern_sourced_files = "source\\\\s*\\\\(\\\\s*['\\"]([^'\\"]+)['\\"]\\\\s*\\\\)",
+  patter_sourced_files = NULL
 )
 }
 \arguments{
@@ -15,8 +16,11 @@ source_file_stats_analyzer(
 
 \item{pattern}{The regular expression pattern used to identify comment lines. Default: \verb{^\\\\s*#"}.}
 
-\item{patter_sourced_files}{The regular expression pattern used to identify lines where files are sourced.
+\item{pattern_sourced_files}{The regular expression pattern used to identify lines where files are sourced.
 Default: \verb{source\\\\s*\\\\(\\\\s*['\\"]([^'\\"]+)['\\"]\\\\s*\\\\)}.}
+
+\item{patter_sourced_files}{Deprecated alias for \code{pattern_sourced_files}, kept for backward
+compatibility with the old (typo'd) argument name. Default: \code{NULL}.}
 }
 \value{
 A list containing the number of lines of code, the number of comment lines,

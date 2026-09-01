@@ -17,8 +17,8 @@
 
 #' @title Create R Package from Configuration
 #'
-#' @description Automate the creation of an R package from a configuration file.
-#' This function automates the creation of an R package by sourcinÏg a configuration file
+#' @description Automates the creation of an R package from a configuration file.
+#' This function automates the creation of an R package by sourcing a configuration file
 #' from the specified package directory. It assumes the presence of a `config.R` file in
 #' the `Development` subdirectory of the package.
 #'
@@ -26,7 +26,7 @@
 #' @param config_file The configuration file name within the package's Development directory.
 #'                    Default: 'config.R'.
 #' @param update_citation Whether to update the CITATION file. Default: FALSE.
-#' @param backup_r_script Whether to backup the previous r script into another file. Default: FALSE.
+#' @param backup_r_script Whether to back up the previous R script into another file. Default: FALSE.
 #' @param dev_folder The name of the development folder. Default: 'Development'.
 #'
 #' @return None
@@ -135,10 +135,6 @@ document_and_create_package <- function(package_dir,
     #   given = DESCRIPTION$"maintainer.given", family = DESCRIPTION$"maintainer.family",
     #   email = DESCRIPTION$"maintainer.email", role = "cre"
     # ),
-    # Maintainer = person(
-    #   given = DESCRIPTION$"author.given", family = DESCRIPTION$"author.family",
-    #   email = DESCRIPTION$"author.email", role = "cre"
-    # ),
     Description = DESCRIPTION$"description",
     License = DESCRIPTION$"license",
     Depends = DESCRIPTION$"depends",
@@ -182,7 +178,7 @@ document_and_create_package <- function(package_dir,
 #' @param output_file The relative path from the package directory to the dependencies file.
 #'                      Default: 'Development/Dependencies.R'.
 #' @param copy_to_clipboard Logical. If TRUE, the dependencies are copied to the clipboard.
-#' Default: FALSE.
+#'                          Default: FALSE.
 #'
 #' @return None
 #' @examples
@@ -220,7 +216,7 @@ extract_package_dependencies <- function(
     f.deps <- NCmisc::list.functions.in.file(filename = file)
 
     # Copying to clipboard or printing to console
-    if (copy_to_clipboard & require(clipr)) clipr::write_clip(f.deps) else print(f.deps)
+    if (copy_to_clipboard && requireNamespace("clipr", quietly = TRUE)) clipr::write_clip(f.deps) else print(f.deps)
 
     # Writing to dependencies file
     sink(file = depFile, append = TRUE)

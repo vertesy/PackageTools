@@ -22,7 +22,7 @@
 #'             Default: None, a valid file path must be provided.
 #' @param output_file Path to the output file where the summary will be written.
 #'                    Default: "1list.of.functions.in.YOURFILE.md"
-#' @param fun_header_level header level for functions. Default: "####"
+#' @param fun_header_level Header level for functions. Default: "####"
 #' @param open_results Open resulting file? Default: TRUE.
 #' @return This function does not return a value; it writes output to the specified file.
 #' @examples
@@ -329,8 +329,8 @@ checkGlobalVarsInPackage <- function(packageName, warn = TRUE) {
   funcNames <- all_funs(packageName)
 
   # Check global variables for each function
-  funzy <- lapply(funcNames, get)
-  for (i in seq(funzy)) {
+  funzy <- lapply(funcNames, function(fn) get(fn, envir = asNamespace(packageName)))
+  for (i in seq_along(funzy)) {
     message("----------------")
     message(funcNames[i])
     checkGlobalVars(f = funzy[[i]], warn = warn)
@@ -387,9 +387,11 @@ checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
 #' expressions to differentiate between code and comment lines and to extract the names of sourced files.
 #'
 #' @param file_path The path to the file to be analyzed.
-#' @param pattern The regular expression pattern used to identify comment lines. Default: `^\\s*#"`.
-#' @param patter_sourced_files The regular expression pattern used to identify lines where files are sourced.
+#' @param pattern The regular expression pattern used to identify comment lines. Default: `^\\s*#`.
+#' @param pattern_sourced_files The regular expression pattern used to identify lines where files are sourced.
 #' Default: `source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)`.
+#' @param patter_sourced_files Deprecated alias for `pattern_sourced_files`, kept for backward
+#' compatibility with the old (typo'd) argument name. Default: `NULL`.
 #'
 #' @return A list containing the number of lines of code, the number of comment lines,
 #' and the names of any sourced files.
@@ -399,11 +401,17 @@ checkGlobalVars <- function(f, silent = FALSE, warn = TRUE) {
 #' source_file_stats_analyzer("path/to/your/script.R")
 #' @export
 source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
-                                       patter_sourced_files = "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)") {
+                                       pattern_sourced_files = "source\\s*\\(\\s*['\"]([^'\"]+)['\"]\\s*\\)",
+                                       patter_sourced_files = NULL) {
+  if (!is.null(patter_sourced_files)) {
+    warning("`patter_sourced_files` is deprecated; use `pattern_sourced_files` instead.")
+    pattern_sourced_files <- patter_sourced_files
+  }
+
   # Input argument assertions
   stopifnot(is.character(file_path), length(file_path) == 1)
   stopifnot(is.character(pattern), length(pattern) == 1)
-  stopifnot(is.character(patter_sourced_files), length(patter_sourced_files) == 1)
+  stopifnot(is.character(pattern_sourced_files), length(pattern_sourced_files) == 1)
 
   lines <- readLines(file_path, warn = FALSE)
   idx.lines.comment <- grepl(pattern, lines)
@@ -413,7 +421,7 @@ source_file_stats_analyzer <- function(file_path, pattern = "^\\s*#",
   code.lines <- lines[!idx.lines.comment & nzchar(lines)]
 
   # Extracting files sourced within this file
-  sourced_files <- regmatches(code.lines, regexec(patter_sourced_files, code.lines))
+  sourced_files <- regmatches(code.lines, regexec(pattern_sourced_files, code.lines))
   sourced_files <- unlist(lapply(sourced_files, function(x) if (length(x) > 1) x[2] else NA))
   sourced_files <- unique(sourced_files[!is.na(sourced_files)])
   print(sourced_files)

@@ -132,21 +132,29 @@ replace_tf_with_true_false <- function(file_path, output_path = file_path,
 
 #' @title Replace Short Function Calls with Full Names in an R Script
 #'
-#' @description Reads an R script file and replaces instances of `length(` with `length(` and `p0` with `paste0(`.
+#' @description Reads an R script file and replaces short developer shorthands for common
+#' functions and package calls with their full names, e.g. `l(` with `length(`, `p0(` with
+#' `paste0(`, `u(` with `unique(`, `dfilter(` with `dplyr::filter(`, `dselect(` with
+#' `dplyr::select(`, and `sort.natural(` with `gtools::mixedsort(`.
 #' It supports a strict mode to ensure accurate replacements.
 #'
 #' @param file_path A string representing the path to the R script file.
 #' @param output_path A string representing the path to save the modified R script.
 #' Default is the same as `file_path`.
 #' @param strict_mode A boolean flag to determine the strictness of the matches.
-#' If `TRUE`, matches `length(` and `p0` only when they're not part of larger alphanumeric strings.
-#' If `FALSE`, all instances of `length(` and `p0` are replaced.
+#' If `TRUE`, matches shorthand calls only when they're not part of larger alphanumeric strings.
+#' If `FALSE`, all instances of the shorthand calls are replaced.
+#' @param call_map A named character vector mapping each shorthand (the name) to the fully
+#' qualified function call it stands for (the value). Default: `.default_call_shorthands`,
+#' covering the shorthands listed in the description. Pass your own map to add or override
+#' shorthands.
 #'
 #' @return None
 #' @importFrom stringr str_detect
 #'
 #' @export
-replace_short_calls <- function(file_path, output_path = file_path, strict_mode = TRUE) {
+replace_short_calls <- function(file_path, output_path = file_path, strict_mode = TRUE,
+                                 call_map = .default_call_shorthands) {
   warning("It's safer to run styler::style_file(file_path) first. Did you do it?")
 
   stopifnot(
@@ -157,7 +165,7 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
 
   script_lines <- readLines(file_path, warn = FALSE)
 
-  processed_lines <- sapply(script_lines, .safely_replace_calls, strict_mode, USE.NAMES = FALSE)
+  processed_lines <- sapply(script_lines, .safely_replace_calls, strict_mode, call_map, USE.NAMES = FALSE)
 
   writeLines(processed_lines, output_path)
 
@@ -168,17 +176,17 @@ replace_short_calls <- function(file_path, output_path = file_path, strict_mode 
 
 
 # _____________________________________________________________________________________________
-#' @title Replace length() with length() in an R Script
+#' @title Replace l() with length() in an R Script
 #'
-#' @description This function reads an R script file and replaces instances of `length(` with `length(`.
+#' @description This function reads an R script file and replaces instances of `l(` with `length(`.
 #' It supports a strict mode to ensure accurate replacement.
 #'
 #' @param file_path A string representing the path to the R script file.
 #' @param output_path A string representing the path to save the modified R script.
 #' Default is the same as `file_path`.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return None
 #' @importFrom stringr str_replace_all
@@ -251,54 +259,77 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 
 
 # _____________________________________________________________________________________________
+# Default shorthand -> full call map shared by `replace_short_calls()` and `.safely_replace_calls()`.
+.default_call_shorthands <- c(
+  "l" = "length",
+  "p0" = "paste0",
+  "u" = "unique",
+  "dfilter" = "dplyr::filter",
+  "dselect" = "dplyr::select",
+  "sort.natural" = "gtools::mixedsort"
+)
+
+# _____________________________________________________________________________________________
 #' @title Safely Replace Short Function Calls in a Line of R Script
 #'
-#' @description Safely replaces instances of `length(` with `length(` and `p0` with `paste0(` in a given line of R script.
+#' @description Safely replaces short developer shorthands for common functions and package
+#' calls (e.g. `l(` with `length(`, `p0(` with `paste0(`, `u(` with `unique(`, `dfilter(` with
+#' `dplyr::filter(`, `dselect(` with `dplyr::select(`, and `sort.natural(` with
+#' `gtools::mixedsort(`) in a given line of R script.
 #' Operates in strict mode to ensure that replacements are made only when not part of a larger word or variable name.
 #'
 #' @param line A single line from an R script.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
 #' If `TRUE`, matches are made only when not part of larger alphanumeric strings.
 #' If `FALSE`, all instances are replaced.
+#' @param call_map A named character vector mapping each shorthand (the name) to the fully
+#' qualified function call it stands for (the value). Default: `.default_call_shorthands`.
 #'
 #' @return A string representing the modified line.
 #' @importFrom stringr str_detect
 #' @export
-.safely_replace_calls <- function(line, strict_mode) {
-  if (strict_mode) {
-    # Replace 'length(' and 'p0' when they are likely function calls
-    modified_line <- gsub("(^|[^a-zA-Z0-9_])l\\(", "\\1length(", line)
-    modified_line <- gsub("(^|[^a-zA-Z0-9_])p0\\(", "\\1paste0(", modified_line)
-  } else {
-    # Replace all instances of 'length(' and 'p0'
-    modified_line <- gsub("\\bl\\(", "length(", line, perl = TRUE)
-    modified_line <- gsub("\\bp0\\(", "paste0(", modified_line, perl = TRUE)
+.safely_replace_calls <- function(line, strict_mode, call_map = .default_call_shorthands) {
+  # Escape any regex metacharacters (e.g. the "." in "sort.natural") in the shorthand names
+  escaped_shorthands <- gsub(".", "\\.", names(call_map), fixed = TRUE)
+  alternation <- paste(escaped_shorthands, collapse = "|")
+  boundary <- if (strict_mode) "(?<![a-zA-Z0-9_.])" else "\\b"
+  pattern <- paste0(boundary, "(?:", alternation, ")\\(")
+
+  # Find all shorthand calls in one pass over the original line, so a replacement's own text
+  # (e.g. "b(" produced by mapping "a" -> "b") is never re-matched against another entry in call_map
+  matches <- gregexpr(pattern, line, perl = TRUE)
+  match_text <- regmatches(line, matches)[[1]]
+  if (length(match_text) == 0) {
+    return(line)
   }
 
-  return(modified_line)
+  shorthand <- sub("\\($", "", match_text)
+  regmatches(line, matches) <- list(paste0(call_map[shorthand], "("))
+
+  return(line)
 }
 
 # _____________________________________________________________________________________________
-#' @title Safely Replace length() with length() in a Line of R Script
+#' @title Safely Replace l() with length() in a Line of R Script
 #'
-#' @description This function safely replaces instances of `length(` with `length(` in a given line of R script.
-#' It can operate in a strict mode, which ensures that `length(` is replaced only when it is not part of a larger word
+#' @description This function safely replaces instances of `l(` with `length(` in a given line of R script.
+#' It can operate in a strict mode, which ensures that `l(` is replaced only when it is not part of a larger word
 #' or variable name.
 #'
 #' @param line A single line from an R script.
 #' @param strict_mode A boolean flag to determine the strictness of the match.
-#' If `TRUE`, matches `length(` only when it's not part of a larger alphanumeric string.
-#' If `FALSE`, all instances of `length(` are replaced.
+#' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
+#' If `FALSE`, all instances of `l(` are replaced.
 #'
 #' @return A string representing the modified line.
 #' @importFrom stringr str_detect
 #' @export
 .safely_replace_l <- function(line, strict_mode) {
   if (strict_mode) {
-    # Replace 'length(' when it is likely a function call
+    # Replace 'l(' when it is likely a function call
     modified_line <- gsub("(^|[^a-zA-Z0-9_])l\\(", "\\1length(", line)
   } else {
-    # Replace all instances of 'length('
+    # Replace all instances of 'l('
     modified_line <- gsub("\\bl\\(", "length(", line, perl = TRUE)
   }
 

@@ -3,8 +3,9 @@ Title: PackageTools - Help for R package development.
 Version: 0.8.1
 Authors@R: 
     person("Abel", "Vertesy", , "av@imba.oeaw.ac.at", role = c("aut", "cre"))
-Description: PackageTools is a collection of utility functions for code
-    base statistics & and dependencies.
+Author: Abel Vertesy <av@imba.oeaw.ac.at> [aut, cre]
+Description: PackageTools is a collection of utility functions for
+    codebase statistics and dependencies.
 License: GPL-3 + file LICENSE
 BugReports: https://github.com/vertesy/PackageTools/issues
 Imports: 
@@ -18,6 +19,6 @@ Imports:
     usethis,
     xfun
 Encoding: UTF-8
-Packaged: 2026-08-25 17:10:15.224014
+Packaged: 2026-08-25 17:10:15 UTC; root
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
