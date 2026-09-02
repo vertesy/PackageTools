@@ -4,7 +4,12 @@
 \alias{.safely_replace_l}
 \title{Safely Replace l() with length() in a Line of R Script}
 \usage{
-.safely_replace_l(line, strict_mode)
+.safely_replace_l(
+  line,
+  strict_mode,
+  initial_quote = NULL,
+  return_state = FALSE
+)
 }
 \arguments{
 \item{line}{A single line from an R script.}
@@ -12,9 +17,16 @@
 \item{strict_mode}{A boolean flag to determine the strictness of the match.
 If \code{TRUE}, matches \verb{l(} only when it's not part of a larger alphanumeric string.
 If \code{FALSE}, all instances of \verb{l(} are replaced.}
+
+\item{initial_quote}{An open string/raw-string state to resume parsing inside of (as returned
+in \code{end_quote} by a previous call), or \code{NULL} if parsing starts in code. Default: \code{NULL}.}
+
+\item{return_state}{Whether to return both the modified text and the ending quote state.
+Default: \code{FALSE}.}
 }
 \value{
-A string representing the modified line.
+A string representing the modified line. If \code{return_state = TRUE}, a list with
+\code{text} and \code{end_quote} is returned instead.
 }
 \description{
 This function safely replaces instances of \verb{l(} with \verb{length(} in a given line of R script.
