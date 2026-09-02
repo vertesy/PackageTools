@@ -240,7 +240,7 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
   in_quote <- NULL
   processed_lines <- character(length(script_lines))
   for (i in seq_along(script_lines)) {
-    result <- .safely_replace_l(script_lines[i], strict_mode, initial_quote = in_quote)
+    result <- .safely_replace_l_state(script_lines[i], strict_mode, initial_quote = in_quote)
     processed_lines[i] <- result$text
     in_quote <- result$end_quote
   }
@@ -507,14 +507,16 @@ replace_l_with_length <- function(file_path, output_path = file_path, strict_mod
 #' @param strict_mode A boolean flag to determine the strictness of the match.
 #' If `TRUE`, matches `l(` only when it's not part of a larger alphanumeric string.
 #' If `FALSE`, all instances of `l(` are replaced.
-#' @param initial_quote An open string/raw-string state to resume parsing inside of (as returned
-#' in `end_quote` by a previous call), or `NULL` if parsing starts in code. Default: `NULL`.
 #'
-#' @return A list with `text` (the modified line) and `end_quote` (the open string state at the
-#' end of the line, to be passed as `initial_quote` for the next line).
+#' @return A string representing the modified line.
 #' @importFrom stringr str_detect
 #' @export
-.safely_replace_l <- function(line, strict_mode, initial_quote = NULL) {
+.safely_replace_l <- function(line, strict_mode) {
+  .safely_replace_l_state(line, strict_mode)$text
+}
+
+# Return both the replaced text and parsing state for callers processing multiple lines.
+.safely_replace_l_state <- function(line, strict_mode, initial_quote = NULL) {
   parsed <- .tokenize_r_line(line, initial_quote = initial_quote)
   tokens <- parsed$tokens
 
