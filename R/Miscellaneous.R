@@ -47,9 +47,11 @@ checkScriptEnv_v1 <- function(path, input.variables, exclude_var = c("i", "path"
   }
 
   # Load the package into the specified environment
+  # NOTE: .importPackageFunctions() is isoENV's internal (non-exported) helper,
+  # reused here via ::: rather than duplicating it -- see isoENV/R/isoENV.R.
   if (length(all_packages_load)) {
     for (pkg in all_packages_load) {
-      .importPackageFunctions(pkg, env)
+      isoENV:::.importPackageFunctions(pkg, env)
     }
   }
 

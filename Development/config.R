@@ -14,7 +14,7 @@ DESCRIPTION <- list(
   license = "GPL-3 + file LICENSE",
   depends = "",
   imports = "NCmisc, clipr, devtools, igraph, usethis, xfun, rstudioapi, pkgnet, renv",
-  suggests = ""
+  suggests = "isoENV, Stringendo"
 )
 
 

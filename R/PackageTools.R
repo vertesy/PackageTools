@@ -561,7 +561,7 @@ parse_rmd_vignette_from_roxygen <- function(
 
   # Write each function name, title, and description to the output file
   for (i in seq_along(function_names)) {
-    iprint(">>>", function_names[i])
+    Stringendo::iprint(">>>", function_names[i])
 
     cat(paste0(fun_header_level, " ", i, ". ", titles[i], ": `", function_names[i], "()`\n"), file = file_conn)
 
