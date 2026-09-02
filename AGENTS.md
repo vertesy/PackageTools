@@ -1,4 +1,4 @@
-# Guidance for Codex AI Agents
+# Guidance for AI Agents
 
 Welcome to the **PackageTools** repository. This repository hosts an R package that provides utilities for R package development, focusing on documentation automation and dependency analysis.
 
@@ -16,6 +16,11 @@ Welcome to the **PackageTools** repository. This repository hosts an R package t
 3. **Style**: Follow conventional R style (e.g., tidyverse style) and ensure code is well-commented.
 4. **Commits**: Use concise commit messages describing the changes.
 5. **Package version**: Never update the package version unless the user explicitly requests it, and do not raise code-review findings that ask for a version bump.
+6. In `/Development/MYPACKAGE/Development/Create_the_MYPACKAGE_Package.R")`, `PackageTools::document_and_create_package()` recreates an R package’s metadata and documentation from a configuration file. It runs `devtools::document()` to regenerate package documentation, including the DESCRIPTION and NAMESPACE, from roxygen annotation and `config.R`. 
+
+### Update the Source, Not Just the Documentation
+
+Documentations rebuilt and overwritten from upstream sources: `.Rd` files from roxygen annotations and DESCRIPTION and NAMESPACE from  `config.R` by `PackageTools::document_and_create_package()` relying on  `devtools::document()`  when I manually, regularly run `/Development/MYPACKAGE/Development/Create_the_MYPACKAGE_Package.R")`. Thus  always update the upstream sources first, then fix the downstream documentations correspondingly.
 
 ## Pull Request Descriptions
 Open each PR with a few bullets per major change: what was wrong, how it was fixed, and whether it changes the function's output or behavior.
