@@ -4,7 +4,13 @@
 \alias{.safely_replace_tf}
 \title{Safely Replace T and F in a Line of R Script}
 \usage{
-.safely_replace_tf(line, strict_mode, preceding_chars, following_chars)
+.safely_replace_tf(
+  line,
+  strict_mode,
+  preceding_chars,
+  following_chars,
+  initial_quote = NULL
+)
 }
 \arguments{
 \item{line}{A single line of R script.}
@@ -14,9 +20,13 @@
 \item{preceding_chars}{Characters that can precede \code{T} or \code{F} for replacement.}
 
 \item{following_chars}{Characters that can follow \code{T} or \code{F} for replacement.}
+
+\item{initial_quote}{An open string/raw-string state to resume parsing inside of (as returned
+in \code{end_quote} by a previous call), or \code{NULL} if parsing starts in code. Default: \code{NULL}.}
 }
 \value{
-The modified line of R script.
+A list with \code{text} (the modified line) and \code{end_quote} (the open string state at the
+end of the line, to be passed as \code{initial_quote} for the next line).
 }
 \description{
 This helper function replaces instances of \code{T} and \code{F} in a single line of R
